@@ -48,8 +48,8 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
 	$url = sprintf(self::AVS_URL, strtoupper($this->getCountry()), rawurlencode($this->getQuery()));
 	try {
 	    $this->_client->setUri($url);
-	    $responseBody = $this->_client->request(Varien_Http_Client::GET)->getBody();
-	    return Mage::helper('core')->jsonDecode($responseBody);
+            $rawBody = $this->_client->request(Varien_Http_Client::GET)->getRawBody();
+            return Mage::helper('core')->jsonDecode($rawBody, true);
 	} catch (Exception $e) {
 	    Mage::log($e->getMessage(), null, 'temando.log', true);
 	    return array();

@@ -21,6 +21,11 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     const ERR_INTERNATIONAL   = 'International delivery is not available at this time.';
     
     /**
+     * Carrier's code
+     */
+    const CARRIER_CODE = 'temando';
+    
+    /**
      * Error Map
      * 
      * @var array 

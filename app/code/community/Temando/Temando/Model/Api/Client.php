@@ -13,6 +13,8 @@ class DebugSoapClient extends SoapClient {
 
 class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 
+    const NO_SHIP_DATE = 'Unable to send on the specified date and/or location.';
+    
     protected $_client = null;
     protected $_is_sand = null;
 
@@ -39,7 +41,7 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	ini_set("soap.wsdl_cache_enabled", "1");
 
 	// Create a new SoapClient referencing the Temando WSDL file.
-	$this->_client = new SoapClient($url, array('soap_version' => SOAP_1_2, 'trace' => TRUE));
+	$this->_client = new SoapClient($url, array('soap_version' => SOAP_1_2, 'trace' => TRUE, 'exceptions' => FALSE));
 
 	// Define the security string that wraps your login details. Due to limitations
 	// with the PHP language this header information can only be provided via a string.
@@ -78,7 +80,21 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	}
 	
 	$response = $this->_client->getQuotes($request);
-	
+	//check for no ship days - public holidays - and retry with date +1 (up to +10) days before exiting
+	if (isset($request['anytime']['readyDate'])) {
+	    while(is_soap_fault($response) && $response->faultstring == self::NO_SHIP_DATE && ++$i <= 10)
+	    {
+		$readyDate = strtotime($request['anytime']['readyDate']);
+		while (in_array(date('N', $readyDate), array(6, 7))) {
+		    $readyDate = strtotime('+1 day', $readyDate);
+		}
+		$request['anytime']['readyDate'] = date('Y-m-d', strtotime('+1 day', $readyDate));
+		$response = $this->_client->getQuotes($request);
+	    }
+	}
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
 	//make sure we have an array
 	if (!isset($response->quotes->quote)) {
 	    $response->quotes->quote = array();
@@ -106,7 +122,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	    return false;
 	}
 
-	return $this->_client->makeBooking($request);
+	$response = $this->_client->makeBooking($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     public function getRequest($request) {
@@ -114,7 +134,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	    return false;
 	}
 
-	return $this->_client->getRequest($request);
+	$response = $this->_client->getRequest($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     public function confirmManifest($request) {
@@ -122,7 +146,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	    return false;
 	}
 
-	return $this->_client->confirmManifest($request);
+	$response = $this->_client->confirmManifest($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     public function getManifest($request) {
@@ -130,7 +158,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	    return false;
 	}
 
-	return $this->_client->getManifest($request);
+	$response = $this->_client->getManifest($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     /**
@@ -144,7 +176,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	    return false;
 	}
 
-	return $this->_client->getLocations($request);
+	$response = $this->_client->getLocations($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     /**
@@ -160,7 +196,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 
 	$request['clientId'] = Mage::helper('temando')->getClientId();
 
-	return $this->_client->createLocation($request);
+	$response = $this->_client->createLocation($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     /**
@@ -176,7 +216,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	
 	$request['clientId'] = Mage::helper('temando')->getClientId();
 
-	return $this->_client->updateLocation($request);
+	$response = $this->_client->updateLocation($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
     /**
@@ -195,7 +239,11 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	    return false;
 	}
 
-	return $this->_client->getClient($request);
+	$response = $this->_client->getClient($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
     }
 
 

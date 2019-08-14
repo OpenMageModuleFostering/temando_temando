@@ -641,7 +641,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Use CTRL + click to select multiple carriers<br/>To load eParcel Australia Post rates please contact <a href="mailto:sales@temando.com">sales@temando.com</a>.]]></comment>
+                            <comment><![CDATA[Use CTRL + click to select multiple carriers<br/>A higher plan is required to load eParcel Australia Post rates. Please contact <a href="mailto:sales@temando.com">sales@temando.com</a>.]]></comment>
                         </allowed_methods>
                     </fields>
                 </temando>

@@ -29,7 +29,8 @@ var Autocomplete = function(el, options){
     maxHeight:300,
     deferRequestBy:300,
     width:200,
-    container:null
+    container:null,
+    suggestPositioning: 'absolute;'
   };
   this.countryEl = options.countryEl;
   if(options){ Object.extend(this.options, options); }
@@ -69,7 +70,7 @@ Autocomplete.prototype = {
 
     if (!this.options.width) { this.options.width = this.el.getWidth(); }
 
-    var div = new Element('div', { style: 'position:absolute;' });
+    var div = new Element('div', { style: 'position:'+this.options.suggestPositioning});
     div.update('<div class="autocomplete-w1"><div class="autocomplete-w2"><div class="autocomplete" id="Autocomplete_' + this.id + '" style="display:none; width:' + this.options.width + 'px;"></div></div></div>');
 
     this.options.container = $(this.options.container);

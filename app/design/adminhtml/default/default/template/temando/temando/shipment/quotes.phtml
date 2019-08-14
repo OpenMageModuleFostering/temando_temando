@@ -37,7 +37,15 @@
                             <td><?php echo $this->formatQuotePrice($_quote); ?></td>
                             <td><?php echo $this->getQuoteNotes($_quote); ?></td>
                             <td class="last">
-				<a href="<?php echo $this->getUrl('*/*/book', array('shipment' => $this->getShipment()->getId(), 'quote' => $_quote->getId())); ?>" onclick="javascript: return checkUnsavedChanges();"><?php echo $this->__('Make Booking'); ?></a>
+				<?php if ($this->getShipment()->isPickup()): ?>
+				    <?php if ($this->getShipment()->isReserved() && $this->getShipment()->getAdminSelectedQuoteId() == $_quote->getId()): ?>
+					<a href="<?php echo $this->getUrl('*/*/confirmReservation', array('shipment' => $this->getShipment()->getId(), 'quote' => $_quote->getId())); ?>" onclick="javascript: return checkUnsavedChanges();"><?php echo $this->__('Confirm Reservation'); ?></a>
+				    <?php else: ?>
+					<a href="<?php echo $this->getUrl('*/*/makeReservation', array('shipment' => $this->getShipment()->getId(), 'quote' => $_quote->getId())); ?>" onclick="javascript: return checkUnsavedChanges();"><?php echo $this->__('Make Reservation'); ?></a>
+				    <?php endif; ?>
+				<?php else: ?>
+				    <a href="<?php echo $this->getUrl('*/*/book', array('shipment' => $this->getShipment()->getId(), 'quote' => $_quote->getId())); ?>" onclick="javascript: return checkUnsavedChanges();"><?php echo $this->__('Make Booking'); ?></a>
+				<?php endif; ?>
 			    </td>
                         </tr>
                     </tbody>

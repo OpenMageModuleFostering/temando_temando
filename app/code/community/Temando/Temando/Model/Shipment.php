@@ -374,4 +374,25 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         return $options;
     }
     
+    /**
+     * Checks wether this shipment can be shipped
+     * 
+     * @return boolean
+     */
+    public function isStatusOpened()
+    {
+	return 
+	    $this->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING;
+    }
+    
+    /**
+     * Is this shipment a TZ pickup?
+     * 
+     * @return boolean
+     */
+    public function isPickup()
+    {
+	return (boolean)$this->getPickupDescription();
+    }
+    
 }

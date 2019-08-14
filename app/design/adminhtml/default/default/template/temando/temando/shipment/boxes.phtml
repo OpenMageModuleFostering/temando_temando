@@ -10,6 +10,7 @@
             <table>
                 <tr>
                     <td class="filter-actions a-right last">
+                        <button title="Dispatch a single order over multiple shipments" id="disabled_partial_shipment_button" class="scalable disabled" onclick="return false;"><span><?php echo $this->__('Partial Shipment'); ?></span></button>
                         <button id="box_add_button" class="scalable add" onclick="javascript:box_add(); return false;"><span><?php echo $this->__('Add Box'); ?></span></button>
                         <button id="box_clear_button" class="scalable delete" onclick="box_clear(); return false;"><span><?php echo $this->__('Clear'); ?></span></button>
                         <button id="box_import_button" class="scalable" onclick="box_import(); return false;"><span><?php echo $this->__('Import from Above'); ?></span></button>

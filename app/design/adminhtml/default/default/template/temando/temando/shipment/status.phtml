@@ -10,6 +10,12 @@
     <div class="fieldset">
         <table cellspacing="0" class="form-list">
             <tbody>
+		<?php if ($this->getShipment()->isPickup()): ?>
+		    <tr>
+			<td class="label"><label><?php echo $this->__('Selected Pickup Location'); ?></label></td>
+			<td class="value"><strong><?php echo $this->getShipment()->getPickupDescription(); ?></strong></td>
+		    </tr>
+		<?php endif; ?>
                 <tr>
                     <td class="label"><label><?php echo $this->__('Shipment Status'); ?></label></td>
                     <td class="value"><strong><?php echo $this->getShipmentStatusText(); ?></strong></td>
