@@ -1,15 +1,27 @@
 <?php
+
 /**
+ * Temando Carrier
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * @method Temando_Temando_Model_Shipping_Carrier_Temando setIsProductPage(boolean $flag)
  * @method Temando_Temando_Model_Shipping_Carrier_Temando setIsCartPage(boolean $flag)
- * 
+ * @method Temando_Temando_Model_Shipping_Carrier_Temando setDeliveryOptions()
+ * @method Temando_Temando_Model_Shipping_Carrier_Temando setDestinationType()
+ * @method Temando_Temando_Model_Shipping_Carrier_Temando setUpdateDeliveryOptions(boolean $flag)
+ *
  * @method boolean getIsProductPage()
  * @method boolean getIsCartPage()
+ * @method array   getDeliveryOptions()
+ * @method string  getDestinationType()
+ * @method boolean getUpdateDeliveryOptions()
  */
 
 
-class Temando_Temando_Model_Shipping_Carrier_Temando 
-    extends Mage_Shipping_Model_Carrier_Abstract 
+class Temando_Temando_Model_Shipping_Carrier_Temando
+    extends Mage_Shipping_Model_Carrier_Abstract
 	implements Mage_Shipping_Model_Carrier_Interface
 {
     /**
@@ -19,29 +31,29 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     const ERR_INVALID_DEST    = 'Please enter a delivery address to view available shipping methods';
     const ERR_NO_METHODS      = 'No shipping methods available';
     const ERR_INTERNATIONAL   = 'International delivery is not available at this time.';
-    
+
     /**
      * Carrier's code
      */
     const CARRIER_CODE = 'temando';
-    
+
     /**
      * Error Map
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected static $_errors_map = array(
         "The 'destinationCountry', 'destinationCode' and 'destinationSuburb' elements (within the 'Anywhere' type) do not contain valid values.  These values must match with the predefined settings in the Temando system."
                 => "Invalid suburb / postcode combination."
     );
-    
+
     /**
      * Carrier's code
      *
      * @var string
      */
     protected $_code = 'temando';
-    
+
     /**
      * Carrier's title
      *
@@ -55,16 +67,16 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
      * @var array|null
      */
     protected $_rates;
-    
+
     /**
      * @var Mage_Shipping_Model_Rate_Request
      */
     protected $_rate_request;
-    
+
     /**
      * Current pricing method as set in Temando Settings
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $_pricing_method;
 
@@ -77,7 +89,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         return true;
     }
-    
+
     /**
      * Check if carrier has shipping label option available
      *
@@ -87,16 +99,46 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         return false;
     }
-    
-    
+
+
     public function __construct()
     {
         parent::__construct();
         $this->_pricing_method = $this->getConfigData('pricing/method');
         $this->setIsProductPage(("etemando" == Mage::app()->getRequest()->getModuleName()) && ("pcs" == Mage::app()->getRequest()->getControllerName()));
 	$this->setIsCartPage(("checkout" == Mage::app()->getRequest()->getModuleName()) && ("cart" == Mage::app()->getRequest()->getControllerName()));
+
+        $this->setUpdateDeliveryOptions(Mage::app()->getRequest()->getParam('delivery_option_change', false));
+
+        if ($this->getUpdateDeliveryOptions()) {
+            Mage::getSingleton('checkout/session')->setData(
+                'selected_delivery_options',
+                Mage::app()->getRequest()->getParam(
+                    'delivery_options',
+                    array()
+                )
+            );
+            Mage::getSingleton('checkout/session')->setData(
+                'destination_type',
+                Mage::app()->getRequest()->getParam(
+                    'destination_type',
+                    Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE
+                )
+            );
+        }
+
+        $this->setDeliveryOptions(
+            is_array(Mage::getSingleton('checkout/session')->getData('selected_delivery_options')) ?
+            Mage::getSingleton('checkout/session')->getData('selected_delivery_options') :
+            array()
+        );
+        $this->setDestinationType(
+            Mage::getSingleton('checkout/session')->getData('destination_type') ?
+            Mage::getSingleton('checkout/session')->getData('destination_type') :
+            Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE
+        );
     }
-    
+
     /**
      * Checks if the to address is within allowed countries
      *
@@ -106,7 +148,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         return array_key_exists($request->getDestCountryId(), Mage::helper('temando')->getAllowedCountries());
     }
-    
+
     /**
      * Creates a rate method based on a Temando API quote.
      *
@@ -122,15 +164,15 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 
         $method = Mage::getModel('shipping/rate_result_method')
             ->setCarrier($this->_code)
-            ->setCarrierTitle($this->_title)
+            ->setCarrierTitle(self::getTitle())
             ->setMethodTitle($title)
             ->setMethod($method_id)
             ->setPrice($price)
             ->setCost($quote->getTotalPrice());
-        
+
         return $method;
     }
-    
+
     /**
      * Creates the flat rate method, with the price set in the config. An
      * optional parameter allows the price to be overridden.
@@ -138,7 +180,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
      * @return Mage_Shipping_Model_Rate_Result_Method
      */
     protected function _getFlatRateMethod($price = false, $free = false)
-    {   
+    {
         if ($price === false) {
             $cost = $this->getConfigData('pricing/shipping_fee');
 	    $price = $this->getFinalPriceWithHandlingFee($cost);
@@ -149,18 +191,18 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         $title = $free ? Mage::helper('temando')->__('Free Shipping') : Mage::helper('temando')->__('Flat Rate');
         $method = Mage::getModel('shipping/rate_result_method')
             ->setCarrier($this->_code)
-            ->setCarrierTitle($this->_title)
+            ->setCarrierTitle(self::getTitle())
             ->setMethodTitle($title)
             ->setMethod($free ? Temando_Temando_Model_Carrier::FREE : Temando_Temando_Model_Carrier::FLAT_RATE)
             ->setPrice($price)
             ->setCost($cost);
-            
+
         return $method;
     }
 
     /**
-     * Returns shipping rate result error method 
-     * 
+     * Returns shipping rate result error method
+     *
      * @param string $errorText
      * @return Mage_Shipping_Model_Rate_Result_Error
      */
@@ -168,7 +210,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         $error = Mage::getModel('shipping/rate_result_error');
         $error->setCarrier($this->_code);
-        $error->setCarrierTitle($this->_title);
+        $error->setCarrierTitle(self::getTitle());
         if (isset(self::$_errors_map[$errorText])) {
             $errorText = self::$_errors_map[$errorText];
         }
@@ -176,7 +218,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 
         return $error;
     }
-    
+
     /**
      * Creates a string describing the applicable elements of a rate request.
      *
@@ -193,18 +235,19 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         foreach ($request->getAllItems() as $item) {
             $requestString .= $item->getProductId() . 'x' . $item->getQty();
         }
-        
+
         $requestString .= '|' . $request->getDestCity();
         $requestString .= '|' . $request->getDestCountryId();
         $requestString .= '|' . $request->getDestPostcode();
-       
+        $requestString .= '|' . $this->getDestinationType();
+
         return $requestString;
     }
-    
+
     /**
      * Returns available shipping methods for current request based on pricing method
      * specified in Temando Settings
-     * 
+     *
      * @param Mage_Shipping_Model_Rate_Request $request
      * @return Mage_Shipping_Model_Rate_Result|Mage_Shipping_Model_Rate_Result_Error
      */
@@ -212,10 +255,13 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
 	$result = Mage::getModel('shipping/rate_result');
 	/* @var $result Mage_Shipping_Model_Rate_Result */
-	
+
 	//check origin/destination country
-        if (!$this->_canShip($request)) { 
-	    return $this->_getErrorMethod(self::ERR_INVALID_COUNTRY);
+        if (!$this->_canShip($request)) {
+            return;
+            // by default no error will show. Remove the above and uncomment
+            // the line below to enable an error in the shipping method
+	    // return $this->_getErrorMethod(self::ERR_INVALID_COUNTRY);
 	}
 
 	//OneStepCheckout inserts '-' in city/pcode if no default configured
@@ -223,7 +269,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 		$request->getDestPostcode() == '-' || $request->getDestCity() == '-') {
 	    return $this->_getErrorMethod(self::ERR_INVALID_DEST);
         }
-	
+
         //get magento sales quote & id
 	$salesQuote = Mage::getSingleton('checkout/session')->getQuote();
 	/* @var $salesQuote Mage_Sales_Model_Quote */
@@ -234,7 +280,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 	    $salesQuote = Mage::helper('temando')->getDummySalesQuoteFromRequest($request);
 	}
 	$salesQuoteId = $salesQuote->getId();
-	
+
 	//check if eligible for free shipping
         if ($this->isFreeShipping($salesQuote)) {
             $result->append($this->_getFlatRateMethod('0.00', true));
@@ -251,8 +297,8 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         $insurance = Mage::getModel('temando/option_insurance')->setSetting(Mage::getStoreConfig('temando/insurance/status'));
         $carbon = Mage::getModel('temando/option_carbonoffset')->setSetting(Mage::getStoreConfig('temando/carbon/status'));
 	$footprints = Mage::getModel('temando/option_footprints')->setSetting(Mage::getStoreConfig('temando/footprints/status'));
-        
-        if ($this->getIsProductPage() || $this->getIsCartPage()) 
+
+        if ($this->getIsProductPage() || $this->getIsCartPage())
 	{
             if (!in_array($insurance->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES, Temando_Temando_Model_Option_Boolean::NO))) {
                 $insurance->setForcedValue(Temando_Temando_Model_Option_Boolean::NO);
@@ -261,7 +307,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
             if (!in_array($carbon->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES, Temando_Temando_Model_Option_Boolean::NO))) {
                 $carbon->setForcedValue(Temando_Temando_Model_Option_Boolean::NO);
             }
-	    
+
 	    if (!in_array($footprints->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES, Temando_Temando_Model_Option_Boolean::NO))) {
                 $footprints->setForcedValue(Temando_Temando_Model_Option_Boolean::NO);
             }
@@ -277,17 +323,17 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 	//get available shipping methods (quotes from the API)
 	//check if request same as previous
 	$lastRequest = Mage::getSingleton('checkout/session')->getTemandoRequestString();
-        if ($lastRequest == $this->_createRequestString($request, $salesQuoteId)) 
+        if ($lastRequest == $this->_createRequestString($request, $salesQuoteId) && !$this->getUpdateDeliveryOptions())
 	{
             //request is the same as previous, load existing quotes from DB
             $quotes = Mage::getModel('temando/quote')->getCollection()
 		    ->addFieldToFilter('magento_quote_id', $salesQuoteId)
 		    ->getItems();
-        } 
-	else 
-	{  
+        }
+	else
+	{
             try {
-		$apiRequest = Mage::getModel('temando/api_request');		    
+		$apiRequest = Mage::getModel('temando/api_request');
 		$apiRequest
                     ->setUsername($this->getConfigData('general/username'))
                     ->setPassword($this->getConfigData('general/password'))
@@ -297,11 +343,13 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
                         $request->getDestCountryId(),
                         $request->getDestPostcode(),
                         $request->getDestCity(),
-                        $request->getDestStreet())
+                        $request->getDestStreet(),
+                        $this->getDestinationType())
                     ->setItems($request->getAllItems())
 		    ->setReady(Mage::helper('temando')->getReadyDate())
+                    ->setDeliveryOptions($this->getDeliveryOptions())
 		    ->setAllowedCarriers($this->getAllowedMethods());
-                 
+
                 $coll = $apiRequest->getQuotes();
 		if ($coll instanceof Temando_Temando_Model_Mysql4_Quote_Collection) {
 		    $quotes = $coll->getItems();
@@ -348,10 +396,10 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         Mage::getSingleton('checkout/session')->setTemandoRequestString($this->_createRequestString($request, $salesQuoteId));
         return $result;
     }
-    
+
     /**
      * Returns true if request is elegible for free shipping, false otherwise
-     * 
+     *
      * @param Mage_Sales_Model_Quote $salesQuote
      * @return boolean
      */
@@ -361,37 +409,28 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 	if($this->_pricing_method == Temando_Temando_Model_System_Config_Source_Pricing::FREE) {
 	    return true;
 	}
-	
+
 	//check if all items have free shipping or free shipping over amount enabled and valid for this request
 	$allItemsFree = true; $total = 0;
         foreach ($salesQuote->getAllItems() as $item) {
 	    /* @var $item Mage_Sales_Model_Quote_Item */
             if ($item->getProduct()->isVirtual() || $item->getParentItem()) { continue; }
             if ($item->getFreeShipping()) { continue; }
-	    
-	    $value = $item->getValue();
-            if (!$value) { $value = $item->getRowTotalInclTax(); }
-	    if (!$value) { $value = $item->getRowTotal(); }	    
-            if (!$value) {
-                $qty = $item->getQty() ? $item->getQty() : $item->getQtyOrdered();
-                $value = $item->getPrice() * $qty;
-            }
-	    $total += $value;
+
 	    //not all items with free shipping if here
             $allItemsFree = false;
         }
-	
-	if($allItemsFree ||
-		($this->getConfigData('free_shipping_enable') && $total >= $this->getConfigData('free_shipping_subtotal'))) {
+
+	if ($allItemsFree) {
 	     return true;
 	}
-	
+
 	return false;
     }
 
     /**
      * Return list of allowed carriers
-     * 
+     *
      * @return array
      */
     public function getAllowedMethods()
@@ -413,7 +452,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         }
 
         $status = $api->getRequest(array('requestId' => $tracking_number));
-        
+
         $result = Mage::getModel('shipping/tracking_result_abstract')
             ->setTracking($tracking_number);
         /* @var $result Mage_Shipping_Model_Tracking_Result_Abstract */
@@ -427,7 +466,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
             } else {
                 $result->setStatus(Mage::helper('temando')->__('Unavailable'));
             }
-            
+
             $text = '';
             if (isset($status->request->quotes->quote->trackingFurtherDetails)) {
                 $text .= $status->request->quotes->quote->trackingFurtherDetails;
@@ -435,35 +474,34 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
             if (isset($status->request->quotes->quote->trackingLastChecked)) {
                 $text .= 'Last Update: ' . date('Y-m-d h:ia', strtotime($status->request->quotes->quote->trackingLastChecked));
             }
-            
+
             if ($text) {
                 $result->setTrackSummary($text);
             }
-            
-            if (!isset($status->request->quotes->quote->trackingHistories->trackingHistory)) {
-                $status->request->quotes->quote->trackingHistories->trackingHistory = array();
-            } else if (isset($status->request->quotes->quote->trackingHistories->trackingHistory) && !is_array($status->request->quotes->quote->trackingHistories->trackingHistory)) {
-                $status->request->quotes->quote->trackingHistories->trackingHistory = array(0 => $status->request->quotes->quote->trackingHistories->trackingHistory);
-            }
 
-            $trackingHistories = array();
-            foreach ($status->request->quotes->quote->trackingHistories->trackingHistory as $trackData) {
-                $trackingHistories[] = array(
-                        'deliverylocation' => $trackData->trackingStatus,
-                        'deliverydate' => date('Y-m-d', strtotime($trackData->trackingStatusOccurred)),
-                        'deliverytime' => date('h:ia', strtotime($trackData->trackingStatusOccurred)),
-                        'activity' => $trackData->trackingFurtherDetails
-                    );
+            if (isset($status->request->quotes->quote->trackingHistories->trackingHistory)) {
+                if (!is_array($status->request->quotes->quote->trackingHistories->trackingHistory)) {
+                    $status->request->quotes->quote->trackingHistories->trackingHistory =
+                        array(0 => $status->request->quotes->quote->trackingHistories->trackingHistory);
+                }
+                $trackingHistories = array();
+                foreach ($status->request->quotes->quote->trackingHistories->trackingHistory as $trackData) {
+                    $trackingHistories[] = array(
+                            'deliverylocation' => $trackData->trackingStatus,
+                            'deliverydate' => date('Y-m-d', strtotime($trackData->trackingStatusOccurred)),
+                            'deliverytime' => date('h:ia', strtotime($trackData->trackingStatusOccurred)),
+                            'activity' => $trackData->trackingFurtherDetails
+                        );
+                }
+                $result->setProgressdetail($trackingHistories);
             }
-            
-            $result->setProgressdetail($trackingHistories);
         } else {
             $result->setErrorMessage(Mage::helper('temando')->__('An error occurred while fetching the shipment status.'));
         }
-        
+
         return $result;
     }
-    
+
     public function getConfigData($field)
     {
         if (in_array($field, array('handling_fee', 'handling_type'))) {
@@ -473,25 +511,26 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         $parent = parent::getConfigData($field);
         return $parent !== null ? $parent : Mage::helper('temando')->getConfigData($field);
     }
-    
+
     /**
      * Returns Temando carrier code
-     * 
+     *
      * @return string
      */
     public function getCode()
     {
         return $this->_code;
     }
-    
+
     /**
      * Returns Temando carrier title
-     * 
+     *
      * @return string
      */
-    public function getTitle()
+    static public function getTitle()
     {
-	return $this->_title;
+        $config = Mage::getStoreConfig('carriers/temando/title');
+        return $config ? $config : $this->_title;
     }
 
     /**
@@ -524,5 +563,5 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         return true;
     }
-    
+
 }

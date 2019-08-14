@@ -118,6 +118,47 @@
                         </show_transit_time>
                     </fields>
                 </options>
+                <checkout translate="label">
+		    <label>Checkout Options</label>
+		    <frontend_type>text</frontend_type>
+		    <sort_order>25</sort_order>
+		    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+		    <fields>
+			<delivery_options translate="label">
+                            <label>Show Delivery Options</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+			    <comment><![CDATA[Show extra delivery options on checkout page?]]></comment>
+                        </delivery_options>
+                        <location_type translate="label">
+                            <label>Destination Location Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+			    <depends><delivery_options>1</delivery_options></depends>
+			    <comment><![CDATA[Show Residence/Business toggle on checkout?]]></comment>
+                        </location_type>
+			<unattended_delivery translate="label">
+                            <label>Unattended Delivery</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+			    <depends><delivery_options>1</delivery_options></depends>
+                        </unattended_delivery>
+		    </fields>
+		</checkout>
                 <insurance translate="label">
                     <label>Insurance</label>
                     <frontend_type>text</frontend_type>
@@ -302,11 +343,21 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </fragile>
+                        <dangerous translate="label">
+                            <label>Dangerous</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </dangerous>
                         <length translate="label">
                             <label>Length</label>
                             <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
+                            <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -315,7 +366,7 @@
                             <label>Width</label>
                             <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
+                            <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -324,7 +375,7 @@
                             <label>Height</label>
                             <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -486,31 +537,11 @@
                             <show_in_store>0</show_in_store>
                             <comment><![CDATA[Does the warehouse have a dock?]]></comment>
                         </dock>
-                        <limited_access translate="label">
-                            <label>Limited Access</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>160</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[Does the warehouse have limited access?]]></comment>
-                        </limited_access>
-                        <pobox translate="label">
-                            <label>PO Box</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>160</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[Is the address of this warehouse a postal box?]]></comment>
-                        </pobox>
                         <warehouse_button translate="label">
                             <label></label>
                             <frontend_model>temando/adminhtml_system_config_form_button_warehouse</frontend_model>
                             <frontend_type>button</frontend_type>
-                            <sort_order>170</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -539,11 +570,20 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[The heading above the list of Temando shipping methods during checkout.]]></comment>
+                        </title>
                         <sallowspecific translate="label">
                             <label>Ship to applicable countries</label>
                             <frontend_type>select</frontend_type>
                             <config_path>carriers/temando/sallowspecific</config_path>
-                            <sort_order>20</sort_order>
+                            <sort_order>30</sort_order>
                             <frontend_class>shipping-applicable-country</frontend_class>
                             <source_model>adminhtml/system_config_source_shipping_allspecificcountries</source_model>
                             <show_in_default>1</show_in_default>
@@ -553,7 +593,7 @@
                         <specificcountry translate="label">
                             <label>Ship to specific countries</label>
                             <frontend_type>multiselect</frontend_type>
-                            <sort_order>30</sort_order>
+                            <sort_order>40</sort_order>
                             <source_model>adminhtml/system_config_source_country</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -562,34 +602,17 @@
                         <showmethod translate="label">
                             <label>Show method if not applicable</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>40</sort_order>
+                            <sort_order>50</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </showmethod>
-                        <free_shipping_enable translate="label">
-                            <label>Free Shipping with Minimum Order Amount</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </free_shipping_enable>
-                        <free_shipping_subtotal translate="label">
-                            <label>Minimum Order Amount for Free Shipping</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </free_shipping_subtotal>
                         <specificerrmsg translate="label">
                             <label>Displayed Error Message</label>
                             <frontend_type>textarea</frontend_type>
                             <config_path>carriers/temando/specificerrmsg</config_path>
-                            <sort_order>70</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -598,18 +621,18 @@
                             <label>Allowed Carriers</label>
                             <frontend_type>multiselect</frontend_type>
                             <config_path>carriers/temando/allowed_methods</config_path>
-                            <sort_order>80</sort_order>
+                            <sort_order>70</sort_order>
                             <source_model>temando/shipping_carrier_temando_source_method</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Use CTRL + click to select multiple carriers<br/>A higher plan is required to load eParcel Australia Post rates. Please contact <a href="mailto:sales@temando.com">sales@temando.com</a>.]]></comment>
+                            <comment><![CDATA[Use CTRL + click to select multiple carriers.]]></comment>
                         </allowed_methods>
                         <update_carrier translate="label">
                             <label></label>
                             <frontend_model>temando/adminhtml_system_config_form_button_update</frontend_model>
                             <frontend_type>button</frontend_type>
-                            <sort_order>90</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

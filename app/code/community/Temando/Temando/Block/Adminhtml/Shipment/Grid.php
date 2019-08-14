@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_Shipment_Grid extends Mage_Adminhtml_Block_Widget_Grid
+/**
+ * Shipment Grid
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_Shipment_Grid
+    extends Mage_Adminhtml_Block_Widget_Grid
 {
 
     public function __construct()

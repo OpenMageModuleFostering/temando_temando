@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Onepage_Shipping_Method_Available_Single extends Temando_Temando_Block_Onepage_Shipping_Method_Available
+/**
+ * Onepage Shipping Method Available Single
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Onepage_Shipping_Method_Available_Single
+    extends Temando_Temando_Block_Onepage_Shipping_Method_Available
 {
     /**
      * One shipping method only?
@@ -9,6 +15,9 @@ class Temando_Temando_Block_Onepage_Shipping_Method_Available_Single extends Tem
      */
     public function getSole()
     {
+        // by default the following will return false.  remove the
+        // line below to actually check if it is the only method
+        return false;
         $groups = $this->getShippingRates();
 	if(count($groups) == 1) {
 	    $rates = array_pop($groups);

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Json Controller
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller_Action {
     
     /**

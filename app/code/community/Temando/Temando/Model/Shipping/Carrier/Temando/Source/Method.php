@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Shipping Carrier Temando Source Method
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Shipping_Carrier_Temando_Source_Method
 {
     
@@ -8,6 +13,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando_Source_Method
         $options = array();
         
         $carriers = Mage::getModel('temando/carrier')->getCollection();
+        $carriers->setOrder('company_name', 'ASC');
         foreach ($carriers as $carrier) {
             $options[] = array('value' => $carrier->getCarrierId(), 'label' => $carrier->getCompanyName());
         }
@@ -28,6 +34,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando_Source_Method
         }
 
         $carriers = Mage::getModel('temando/carrier')->getCollection();
+        $carriers->setOrder('company_name', 'ASC');
         foreach ($carriers as $carrier) {
 	    if(!$carrier->getCarrierId())
 		continue;
@@ -51,6 +58,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando_Source_Method
     {
 	$options = array();
         $carriers = Mage::getModel('temando/carrier')->getCollection();
+        $carriers->setOrder('company_name', 'ASC');
         foreach ($carriers as $carrier) {
 	    if(!$carrier->getCarrierId())
 		continue;

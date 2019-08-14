@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Quote Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * @method Temando_Temando_Model_Quote setGenerated()
  * @method Temando_Temando_Model_Quote setAccepted()
  * @method Temando_Temando_Model_Quote setTotalPrice()
@@ -45,20 +50,20 @@
  */
 class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
 {
-    
+
     protected $_carrier = null;
-    
+
     public function _construct()
     {
         parent::_construct();
         $this->_init('temando/quote');
     }
-    
+
     public function __clone()
     {
         $this->_carrier = clone $this->getCarrier();
     }
-    
+
     /**
      * Sets the carrier providing this quote.
      *
@@ -70,7 +75,7 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
     {
         $carrier = Mage::getModel('temando/carrier')
             ->load($carrier_id);
-            
+
         if ($carrier->getId() == $carrier_id) {
             // exists in the database
             $this->_carrier = $carrier;
@@ -78,7 +83,7 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         }
         return $this;
     }
-    
+
     /**
      * Gets the carrier providing this quote.
      *
@@ -91,7 +96,7 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         }
         return $this->_carrier;
     }
-    
+
     /**
      * Loads values into this object from a
      *
@@ -103,7 +108,7 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         if ($response instanceof stdClass) {
             $carrier = Mage::getModel('temando/carrier')->load($response->carrier->id, 'carrier_id');
             /* @var $carrier Temando_Temando_Model_Carrier */
-                
+
             $carrier
                 ->setCarrierId(isset($response->carrier->id) ? $response->carrier->id : '')
                 ->setCompanyName(isset($response->carrier->companyName) ? $response->carrier->companyName : '')
@@ -124,14 +129,14 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
                 ->setEmail(isset($response->carrier->email) ? $response->carrier->email : '')
                 ->setWebsite(isset($response->carrier->website) ? $response->carrier->website : '')
                 ->save();
-            
-            $extras = $response->extras->extra;
+
+            $extras = isset($response->extras->extra) ? $response->extras->extra : array();
             if (!is_array($extras)) {
                 $extras = array($extras);
             }
-            
+
             $extras_array = array();
-            
+
             foreach ($extras as $extra) {
                 $extra_id = trim(strtolower($extra->summary));
                 $extra_id = str_replace(' ', '', $extra_id);
@@ -143,10 +148,17 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
                     'tax'        => $extra->tax,
                 );
             }
-            
+
+            $accepted = false;
+            if (isset($response->accepted)) {
+                if ($response->accepted == 'Y') {
+                    $accepted = true;
+                }
+            }
+
             $this
                 ->setCarrier($carrier->getId())
-                ->setAccepted($response->accepted == 'Y')
+                ->setAccepted($accepted)
                 ->setTotalPrice($response->totalPrice)
                 ->setBasePrice($response->basePrice)
                 ->setTax($response->tax)
@@ -163,29 +175,29 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         }
         return $this;
     }
-    
+
     public function toBookingRequestArray($options)
     {
         $extras = $this->getExtras();
-        
+
         if (isset($options['insurance']) && ($options['insurance'] === 'Y')) {
             $insurance = $extras['insurance'];
         } else {
             $insurance = false;
         }
-        
+
         if (isset($options['carbonoffset']) && ($options['carbonoffset'] === 'Y')) {
             $carbon = $extras['carbonoffset'];
         } else {
             $carbon = false;
         }
-	
+
 	if (isset($options['footprints']) && ($options['footprints'] === 'Y')) {
             $footprints = $extras['footprints'];
         } else {
             $footprints = false;
         }
-        
+
         $request = array(
             'totalPrice'     => $this->getTotalPrice(),
             'basePrice'      => $this->getBasePrice(),
@@ -197,12 +209,12 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
             'guaranteedEta'  => $this->getGuaranteedEta() ? 'Y' : 'N',
             'carrierId'      => $this->getCarrier()->getCarrierId(),
         );
-        
+
         if ($carbon || $insurance || $footprints) {
             $request['extras'] = array();
             $request['extras']['extra'] = array();
         }
-        
+
         if ($carbon) {
             $request['extras']['extra'][] = $carbon;
         }
@@ -212,16 +224,16 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
 	if ($footprints) {
 	    $request['extras']['extra'][] = $footprints;
 	}
-        
+
         return $request;
     }
-    
+
     public function setExtras($extras)
     {
         $this->setData('extras', serialize($extras));
         return $this;
     }
-    
+
     public function getExtras()
     {
         if ($this->getData('extras')) {
@@ -229,12 +241,12 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         }
         return null;
     }
-    
+
     public function getDescription($showMethod = true, $showEta = true)
     {
-        $title = '';    
+        $title = '';
         $title .= $this->getCarrier()->getCompanyName();
-	
+
 	if ($showMethod && $showEta) {
 	    $title .= ' - ' . $this->getDeliveryMethod(). ' [' . $this->getEtaDescription() . ']';
 	} else if ($showMethod) {
@@ -242,11 +254,11 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
 	} else if ($showEta) {
 	    $title .= ' [' . $this->getEtaDescription(). ']';
 	}
-        
+
         return $title . ' ' . $this->getExtraTitle();;
     }
-    
-    
+
+
     public function getTotalPriceIncSelectedExtras()
     {
 	$price = $this->getTotalPrice();
@@ -259,9 +271,9 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
 	if($this->getFootprintsIncluded()) {
 	    $price += $this->getFootprintsTotalPrice();
 	}
-	
+
 	return $price;
-	
+
     }
 
     public function getExtraTitle()
@@ -289,24 +301,24 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
 
         return $title;
     }
-    
+
     public function getEtaDescription()
     {
         $title = $this->getEtaFrom();
-        
+
         if ($this->getEtaFrom() != $this->getEtaTo()) {
             $title .= ' - ' . $this->getEtaTo();
         }
-        
+
         $title .= Mage::helper('temando')->__(' day');
-        
+
         if ($this->getEtaTo() > 1) {
             $title .= Mage::helper('temando')->__('s');
         }
-        
+
         return $title;
     }
-    
+
     /**
      * Returns the average ETA.
      *

@@ -1,0 +1,19 @@
+/* Cart page */
+
+.checkout-cart-index #postcode {
+    width: 365px !important;
+    max-width: 100% !important;
+}
+
+.destination-type li {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.destination-type label {
+    margin-top: 3px !important;
+}
+
+.destination-type input {
+    height: 20px !important;
+}

@@ -21,6 +21,21 @@
         }
         var validator  = new Validation('add_form');
         if (validator.validate()) {
+            $('add_form').writeAttribute('action', '<?php echo $this->getUrl('*/*/add'); ?>');
+            $('add_form').submit();
+        }
+    }
+</script>
+<script type="text/javascript">
+    function retrieveFormSubmit() {
+        var filters = $$('#add_form input', '#add_form select');
+        var elements = [];
+        for(var i in filters){
+            if(filters[i].value && filters[i].value.length && !filters[i].disabled) elements.push(filters[i]);
+        }
+        var validator  = new Validation('add_form');
+        if (validator.validate()) {
+            $('add_form').writeAttribute('action', '<?php echo $this->getUrl('*/*/retrieve'); ?>');
             $('add_form').submit();
         }
     }

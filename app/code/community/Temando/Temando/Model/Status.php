@@ -1,8 +1,13 @@
 <?php
-
+/**
+ * Module Status
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Status extends Varien_Object
 {
-    
+
     const STATUS_ENABLED = 1;
     const STATUS_DISABLED = 2;
 
@@ -20,5 +25,5 @@ class Temando_Temando_Model_Status extends Varien_Object
             self::STATUS_DISABLED => Mage::helper('temando')->__('Disabled')
         );
     }
-    
+
 }

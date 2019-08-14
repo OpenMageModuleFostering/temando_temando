@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Carrier Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * @method Temando_Temando_Model_Carrier setCarrierId()
  * @method Temando_Temando_Model_Carrier setCompanyName()
  * @method Temando_Temando_Model_Carrier setCompanyContact()

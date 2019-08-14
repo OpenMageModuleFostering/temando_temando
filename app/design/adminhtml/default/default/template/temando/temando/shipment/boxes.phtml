@@ -27,6 +27,7 @@
             <col style="width: 150px;" />
             <col style="width: 70px;" />
             <col style="width: 50px;" />
+            <col style="width: 50px;" />
             <col style="width: 70px;" />
             <col style="width: 120px;" />
             <col style="width: 90px;" />
@@ -45,6 +46,7 @@
                     <th><?php echo $this->__('Comment'); ?></th>
                     <th class="a-center"><?php echo $this->__('Packaging'); ?></th>
                     <th class="a-center"><?php echo $this->__('Fragile'); ?></th>
+                    <th class="a-center"><?php echo $this->__('Dangerous'); ?></th>
                     <th class="a-center"><?php echo $this->__('Qty'); ?></th>
                     <th class="a-center"><?php echo $this->__('Value'); ?> ($)</th>
                     <th class="a-center"><?php echo $this->__('Weight'); ?></th>
@@ -74,6 +76,13 @@
                             <select id="box_<?php echo $_i; ?>_fragile" name="box[<?php echo $_i; ?>][fragile]" class="select">
                                 <?php foreach (Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray() as $_option): ?>
                                     <option value="<?php echo $_option['value']; ?>"<?php if ($_option['value'] == $_box->getFragile()): ?> selected="selected"<?php endif; ?>><?php echo $_option['label']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td class="a-center">
+                            <select id="box_<?php echo $_i; ?>_dangerous" name="box[<?php echo $_i; ?>][dangerous]" class="select">
+                                <?php foreach (Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray() as $_option): ?>
+                                    <option value="<?php echo $_option['value']; ?>"<?php if ($_option['value'] == $_box->getDangerous()): ?> selected="selected"<?php endif; ?>><?php echo $_option['label']; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -122,6 +131,13 @@
                     </td>
                     <td class="a-center">
                         <select id="box_blank_@@id@@_fragile" name="box_blank[@@id@@][fragile]" class="select">
+                            <?php foreach (Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray() as $_option): ?>
+                                <option value="<?php echo $_option['value']; ?>"><?php echo $_option['label']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td class="a-center">
+                        <select id="box_blank_@@id@@_dangerous" name="box_blank[@@id@@][dangerous]" class="select">
                             <?php foreach (Mage::getModel('adminhtml/system_config_source_yesno')->toOptionArray() as $_option): ?>
                                 <option value="<?php echo $_option['value']; ?>"><?php echo $_option['label']; ?></option>
                             <?php endforeach; ?>

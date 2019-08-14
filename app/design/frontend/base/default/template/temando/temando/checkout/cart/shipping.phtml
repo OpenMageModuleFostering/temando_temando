@@ -28,6 +28,8 @@
 /**
  * @see Mage_Checkout_Block_Cart_Shipping
  */
+$residence = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE;
+$business = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_BUSINESS;
 ?>
 <div class="shipping">
     <h2><?php echo $this->__('Estimate Shipping and Tax') ?></h2>
@@ -52,9 +54,25 @@
                     <div class="input-box">
                         <input class="input-text validate-postcode<?php if ($this->isZipCodeRequired()):?> required-entry<?php endif;?>" type="text" id="postcode" name="estimate_postcode" value="<?php echo $this->htmlEscape($this->getEstimatePostcode()) ?>" />
                     </div>
-                </li>           
+                </li>
+                <?php if ($this->showLocationType()): ?>
+                <li>
+                    <label for="destination-type" class="required"><?php echo $this->__('Deliver To') ?></label>
+                    <div id="destination-type" class="input-box destination-type">
+                        <ul>
+                            <li>
+                                <input type="radio" class="radio destination-type-radio" id="residence" name="destination-type" value="<?php echo $residence; ?>" <?php if ($this->getDestinationType() == $residence) echo "checked='checked'" ?> />
+                                <label for="destination-type-residence"><?php echo ucwords($residence); ?></label>
+                            </li>
+                            <li>
+                                <input type="radio" class="radio destination-type-radio" id="business" name="destination-type" value="<?php echo $business; ?>" <?php if ($this->getDestinationType() == $business) echo "checked='checked'" ?> />
+                                <label for="destination-type-business"><?php echo ucwords($business); ?></label>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <?php endif; ?>
             </ul>
-            
             <div class="buttons-set">
                 <button type="button" title="<?php echo $this->__('Get a Quote') ?>" onclick="coShippingMethodForm.submit()" class="button"><span><span><?php echo $this->__('Get a Quote') ?></span></span></button>
             </div>
@@ -97,7 +115,7 @@
         //<![CDATA[
             var coShippingMethodForm = new VarienForm('shipping-zip-form');
             var countriesWithOptionalZip = <?php echo $this->helper('directory')->getCountriesWithOptionalZip(true) ?>;
-            
+
             coShippingMethodForm.submit = function () {
                 var country = $F('country');
                 var optionalZip = false;
@@ -120,7 +138,7 @@
     </div>
 </div>
 <script type="text/javascript">
-//<[CDATA[    
+//<[CDATA[
 var shipping_estimator_url = '<?php echo $this->getUrl('etemando/pcs/autocompletecart', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
 var avs = new Avs(
 	shipping_estimator_url,

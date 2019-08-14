@@ -37,11 +37,11 @@
                     </children>
                 </configuration>
                 <multiwarehouse translate="title" module="temando">
-                    <title>Multi Warehouse - Professional plan</title>
+                    <title>Multi Warehouse - Business plan</title>
                     <sort_order>40</sort_order>
                 </multiwarehouse>
                 <advancedrule translate="title" module="temando">
-                    <title>Advance Shipping Rules - Professional plan</title>
+                    <title>Advance Shipping Rules - Business plan</title>
                     <sort_order>50</sort_order>
                 </advancedrule>
                 <partialshipments translate="title" module="temando">
@@ -80,10 +80,10 @@
                                 </children>
                             </configuration>
                             <multiwarehouse>
-                                <title>Multi Warehouse - Professional plan</title>
+                                <title>Multi Warehouse - Business plan</title>
                             </multiwarehouse>
                             <advancedrule>
-                                <title>Advance Shipping Rules - Professional plan</title>
+                                <title>Advance Shipping Rules - Business plan</title>
                             </advancedrule>
                             <partialshipments>
                                 <title>Partial Shipments - Business plan</title>

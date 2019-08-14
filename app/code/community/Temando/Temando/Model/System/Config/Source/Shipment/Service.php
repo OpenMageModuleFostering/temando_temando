@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_System_Config_Source_Shipment_Service extends Temando_Temando_Model_System_Config_Source
+/**
+ * System Config Source Shipment Service
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_System_Config_Source_Shipment_Service
+    extends Temando_Temando_Model_System_Config_Source
 {
     
     const SAME_DAY	= 1;

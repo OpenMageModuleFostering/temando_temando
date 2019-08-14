@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Required extends Mage_Adminhtml_Block_System_Config_Form_Field
+/**
+ * System Config Form Field Required
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Required
+    extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     
     protected $_element;

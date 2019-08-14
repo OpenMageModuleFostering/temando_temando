@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_Option_Footprints extends Temando_Temando_Model_Option_Boolean
+/**
+ * Option Footprints
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_Option_Footprints
+    extends Temando_Temando_Model_Option_Boolean
 {
     
     protected $_id = 'footprints';

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Option Carbonoffset
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Option_Carbonoffset extends Temando_Temando_Model_Option_Boolean
 {
     

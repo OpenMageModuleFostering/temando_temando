@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Insurance extends Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Required
+/**
+ * System Config Form Field Insurance
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Insurance
+    extends Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Required
 {
 
     protected $_confirm_text = array(
@@ -23,7 +29,9 @@ Whilst every effort has been made to insure your item, you should understand tha
 
 - Motor Vehicles and boats (note, this does not mean car parts, which can be covered).
 
-Please also note that the insurance only covers items where the origin address and the delivery address are both located in Australia. In other words, if you are sending your item to a country that is not Australia, then there is no insurance. Conversely, if you are resident in a country other than Australia, but sending the item to Australia the insurance will not apply either.</textarea>
+Please also note that the insurance only covers items where the origin address and the delivery address are both located in Australia. In other words, if you are sending your item to a country that is not Australia, then there is no insurance. Conversely, if you are resident in a country other than Australia, but sending the item to Australia the insurance will not apply either.
+
+Insurance is not currently available for clients using this extension in the US and UK regions.</textarea>
 <table style='padding-top: 10px;'><tr><td class='c1'>%mandatory_input%</td><td class='c2'>I confirm that I have read &amp; understood the terms &amp; conditions outlined in the <a href='http://www.temando.com/downloads/Product%20Disclosure%20Statement%20and%20Wording.pdf' target='_blank'>Product Disclosure Statement and wording</a>, the <a href='http://www.temando.com/downloads/Financial%20Services%20Guide.pdf' target='_blank'>Financial Services Guide</a> and the <a href='http://www.temando.com/downloads/Privacy%20Statement.pdf' target='_blank'>Privacy Statement</a> and will take advantage of this offer.</td></tr></table>",
         "disabled" => "<div class='error-msg' style='height: 35px; border:  0 !important; background-color: transparent !important; padding-left: 33px; padding-top: 9px; color: #2F2F2F  !important;'>Even though Insurance will be unavailable to your buyers, you may still insure shipments as a seller.</div>
 <textarea style='height: 100px; width: 100%'>Athough every care is taken by the transport company whilst transporting and storing the item being transacted, it may still become lost or damaged.
@@ -44,7 +52,9 @@ Whilst every effort has been made to insure your item, you should understand tha
 
 - Motor Vehicles and boats (note, this does not mean car parts, which can be covered).
 
-Please also note that the insurance only covers items where the origin address and the delivery address are both located in Australia. In other words, if you are sending your item to a country that is not Australia, then there is no insurance. Conversely, if you are resident in a country other than Australia, but sending the item to Australia the insurance will not apply either.</textarea>
+Please also note that the insurance only covers items where the origin address and the delivery address are both located in Australia. In other words, if you are sending your item to a country that is not Australia, then there is no insurance. Conversely, if you are resident in a country other than Australia, but sending the item to Australia the insurance will not apply either. 
+
+Insurance is not currently available for clients using this extension in the US and UK regions.</textarea>
 <table style='padding-top: 10px;'><tr><td class='c1'>%disabled_input%</td><td class='c2'>I confirm that I have read &amp; understood the terms &amp; conditions outlined in the <a href='http://www.temando.com/downloads/Product%20Disclosure%20Statement%20and%20Wording.pdf' target='_blank'>Product Disclosure Statement and wording</a>, the <a href='http://www.temando.com/downloads/Financial%20Services%20Guide.pdf' target='_blank'>Financial Services Guide</a> and the <a href='http://www.temando.com/downloads/Privacy%20Statement.pdf' target='_blank'>Privacy Statement</a> and will take advantage of this offer.</td></tr></table>",
     );
 
@@ -80,5 +90,4 @@ Please also note that the insurance only covers items where the origin address a
 
         return $return;
     }
-
 }

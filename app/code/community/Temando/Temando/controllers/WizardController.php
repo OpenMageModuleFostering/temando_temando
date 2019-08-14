@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_WizardController extends Mage_Core_Controller_Front_Action {
+/**
+ * Wizard Controller
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_WizardController extends Mage_Core_Controller_Front_Action
+{
 
     const ERR_ORIGIN_EXISTS = 'This warehouse already exists.  Please select another name.';
     const ERR_NO_CONNECT = 'Cannot connect to the api. Please check your connection and try again.';

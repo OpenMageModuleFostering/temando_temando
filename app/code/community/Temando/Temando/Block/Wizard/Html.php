@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
+/**
+ * Wizard Html
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract
+{
 
     public function __construct() {
         parent::__construct();
@@ -11,7 +17,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * @param string $type
      * @return string
      */
-    public function getHtmlSelect($type) {
+    public function getHtmlSelect($type)
+    {
         $select = $this->getSelectOptions($type);
         $html = $this->getLayout()->createBlock('core/html_select')
                 ->setExtraParams($select['extraParams'])
@@ -29,7 +36,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * Gets Temando Account mode options
      * @return array
      */
-    public function modeOptions() {
+    public function modeOptions()
+    {
         $mode = array(
             array(
                 'value' => 0,
@@ -43,10 +51,11 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
     }
 
     /**
-     * Gets Temando Fragile options 
+     * Gets Temando Fragile options
      * @return array
      */
-    public function yesNoOptions() {
+    public function yesNoOptions()
+    {
         $yesno = array(
             array(
                 'value' => 0,
@@ -63,7 +72,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * Gets Temando Account Payment options
      * @return array
      */
-    public function paymentOptions() {
+    public function paymentOptions()
+    {
         $payment = array(
             array(
                 'value' => 'Credit',
@@ -80,7 +90,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * Gets Allowed or Specific Country options
      * @return array
      */
-    public function allowedCountryOptions() {
+    public function allowedCountryOptions()
+    {
         $country = array(
             array(
                 'value' => 0,
@@ -97,7 +108,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * Gets Temando Rule Type options
      * @return string
      */
-    public function ruleTypeOptions() {
+    public function ruleTypeOptions()
+    {
         $options = Mage::getModel('temando/system_config_source_pricing')->getOptions();
         return $options;
     }
@@ -108,7 +120,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * @param string $key
      * @return null
      */
-    public function getTmdSession($name, $key) {
+    public function getTmdSession($name, $key)
+    {
         $session = Mage::getSingleton('core/session')->getData($name);
         if (is_array($session)) {
             if (array_key_exists($key, $session)) {
@@ -126,17 +139,19 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * @param string $field
      * @return string
      */
-    public function getCarrierData($field) {
+    public function getCarrierData($field)
+    {
         $path = 'carriers/temando/' . $field;
         return Mage::getStoreConfig($path);
     }
-    
+
     /**
      * Gets Temando Carrier Data in Array
      * @param string $field
      * @return string
      */
-    public function getCarrierDataArray($field) {
+    public function getCarrierDataArray($field)
+    {
         $values = explode(',', Mage::getStoreConfig('carriers/temando/' . $field));
         return $values;
     }
@@ -145,7 +160,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * Gets current admin url
      * @return string
      */
-    public function getCancelUrl() {
+    public function getCancelUrl()
+    {
         return Mage::getSingleton('core/session')->getTemandoCancelUrl();
     }
 
@@ -154,7 +170,8 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
      * @param string $type
      * @return array
      */
-    protected function getSelectOptions($type) {
+    protected function getSelectOptions($type)
+    {
         $types = array(
             'mode' => array(
                 'extraParams' => '',
@@ -267,5 +284,4 @@ class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract {
         );
         return $types[$type];
     }
-
 }

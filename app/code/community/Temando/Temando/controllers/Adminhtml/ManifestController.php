@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Manifest Controller
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Controller_Action
 {
     
@@ -114,6 +119,68 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
         }
 
         $this->_redirect('*/*/');
+    }
+    
+    public function retrieveAction()
+    {
+        $postData = $this->getRequest()->getPost();
+        $post = $this->_filterDates($postData, array('from', 'to'));
+        $carriers = $this->getRequest()->getParam('carrier_id');
+        if (!is_array($carriers)) {
+            $carriers = array($carriers);
+        }
+        
+        if (count($carriers) != 1) {
+            $this->_getSession()->addError($this->__('Please only select one carrier at a time to retrieve a previous manifest.'));
+            $this->_redirect('*/*/');
+        } else {
+            $carriers_options = Mage::getModel('temando/shipping_carrier_temando_source_method')->getOptions();
+            $carrierId = $carriers[0];
+            
+            $request = array(
+                'carrierId' => $carrierId,
+                'location'  => $this->getRequest()->getParam('warehouse_id'),
+                'readyDate' => isset($post['from'])?$post['from']:'',
+                'type'      => 'Confirmed',
+                'labelPrinterType' => Mage::helper('temando')->getConfigData('options/label_type')
+            );
+            try {
+                $api = Mage::getModel('temando/api_client');
+		/* @var $api Temando_Temando_Model_Api_Client */
+		$api->connect(
+                    Mage::helper('temando')->getConfigData('general/username'),
+                    Mage::helper('temando')->getConfigData('general/password'),
+                    Mage::helper('temando')->getConfigData('general/sandbox'));
+                $result = $api->getManifest($request);
+                if (!$result) {
+                    throw new Exception('Cannot send request');
+                }
+                $carrier_name = $carriers_options[$carrierId];
+                if (!isset($result->manifestDocument) || !((string)$result->manifestDocument)) {
+                    throw new Exception('No data for carrier: ' . $carrier_name);
+                }
+
+                $doc = base64_decode($result->manifestDocument);
+                $length = strlen($doc);
+                if ($length) {
+                    $this->getResponse()
+                            ->setHttpResponseCode(200)
+                            ->setHeader('Pragma', 'public', true)
+                            ->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
+                            ->setHeader('Content-type', $result->manifestDocumentType, true)
+                            ->setHeader('Content-Length', $length)
+                            ->setHeader('Content-Disposition', 'attachment; filename="manifest-' . $carrierId . '-' . $post['from'] . '.pdf"')
+                            ->setHeader('Last-Modified', date('r'));
+                    $this->getResponse()->clearBody();
+                    $this->getResponse()->sendHeaders();
+                    print $doc;
+                }	    
+            } catch (Exception $e) {
+                $this->_getSession()
+                        ->addError($e->getMessage());
+                $this->_redirect('*/*/');
+            }
+        }
     }
     
     public function manifestAction()

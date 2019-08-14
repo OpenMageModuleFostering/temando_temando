@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Temando Helper Wizard
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Helper_Wizard extends Mage_Directory_Helper_Data {
 
     /**
@@ -7,7 +12,8 @@ class Temando_Temando_Helper_Wizard extends Mage_Directory_Helper_Data {
      *
      * @return string
      */
-    public function getRegionJson() {
+    public function getRegionJson()
+    {
 
         if (true/* empty($json) */) {
             $countryIds = array();
@@ -43,5 +49,4 @@ class Temando_Temando_Helper_Wizard extends Mage_Directory_Helper_Data {
 
         return $json;
     }
-
 }

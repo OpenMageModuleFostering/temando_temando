@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_Shipment_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
+/**
+ * Shipment Edit
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_Shipment_Edit
+    extends Mage_Adminhtml_Block_Widget_Form_Container
 {
 
     protected $_shipment;
@@ -125,6 +131,7 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit extends Mage_Adminhtml_Block
                         $('box_' + num + '_comment').value = box.comment;
                         $('box_' + num + '_packaging').value = box.packaging;
                         $('box_' + num + '_fragile').value = box.fragile;
+                        $('box_' + num + '_dangerous').value = box.dangerous;
                         $('box_' + num + '_qty').value = box.qty;
                         $('box_' + num + '_value').value = box.value;
                         $('box_' + num + '_weight').value = box.weight;
@@ -197,12 +204,14 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit extends Mage_Adminhtml_Block
             $width = (float) $product->getTemandoWidth();
             $packaging = $product->getTemandoPackaging();
             $fragile = $product->getTemandoFragile();
+            $dangerous = $product->getTemandoDangerous();
             
             $products .= "
                 $variable_name.push({
                     'comment': '" . addslashes($product->getName()) . "',
                     'packaging': '{$packaging}',
                     'fragile': '{$fragile}',
+                    'dangerous': '{$dangerous}',
                     'qty': '{$item->getQtyToShip()}',
                     'value': '{$item->getRowTotal()}',
                     'weight': '$weight',

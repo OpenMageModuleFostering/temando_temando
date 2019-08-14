@@ -1,17 +1,17 @@
 function option_update(sole)
 {
     if (sole) return;
-    
+
     // build class
     classes = '';
-    
+
     checkboxes = $$('#temando_checkboxes input[type=checkbox]');
     checkboxes.each(function (checkbox) {
         if (checkbox.id.indexOf('temando_checkbox_') === 0) {
             classes += '.' + checkbox.id.replace(/temando_checkbox_/, '') + '_' + (checkbox.checked  ? 'Y' : 'N');
         }
     });
-    
+
     // hide all
     $$('input[name^=shipping_method]').each(function (control) {
 	if(control.id.match(/^s_method_temando_(\d+)/) && !control.id.match(/^s_method_temando_(free|flat)/)) {
@@ -19,7 +19,7 @@ function option_update(sole)
 	    control.checked = false;
 	}
     });
-    
+
     // show those matching the classes
     $$(classes).each(function (control) {
         control.up().show();
@@ -30,14 +30,14 @@ function option_update_onestep()
 {
     // build class
     classes = '';
-    
+
     checkboxes = $$('#temando_checkboxes input[type=checkbox]');
     checkboxes.each(function (checkbox) {
         if (checkbox.id.indexOf('temando_checkbox_') === 0) {
             classes += '.' + checkbox.id.replace(/temando_checkbox_/, '') + '_' + (checkbox.checked  ? 'Y' : 'N');
         }
     });
-    
+
     // hide all
     $$('input[name^=shipping_method]').each(function (control) {
 	if(control.id.match(/^s_method_temando_(\d+)/) && !control.id.match(/^s_method_temando_(free|flat)/)) {
@@ -45,12 +45,12 @@ function option_update_onestep()
 	    control.checked = false;
 	}
     });
-    
+
     // show those matching the classes
     $$(classes).each(function (control) {
         control.up().show();
     });
-    
+
     //preselect shipping method if single
     var visible = $$('input[name^=shipping_method]').findAll(function(el) { return el.offsetWidth > 0 && el.offsetHeight > 0; });
 	if(visible.size() == 1) {
@@ -60,6 +60,19 @@ function option_update_onestep()
 	    fireEvent(el, 'click');
 	}
     }
+
+function delivery_type_update(destType)
+{
+    if (destType == 'residence') {
+	$$('.business').each(function(el) {
+	    el.up().up().hide();
+	});
+    } else {
+	$$('.business').each(function(el) {
+	    el.up().up().show();
+	});
+    }
+}
 
 function includingShipping(getShippingCode) {
     if ((typeof(shippingMe) !== 'undefined') && (shippingMe != null) && shippingMe && shippingMe.length) {
@@ -84,7 +97,7 @@ function includingShipping(getShippingCode) {
     return false;
 }
 
-function refreshQuotes() {
+function refreshQuotes(delivery_option_change) {
     //get checked options
     var delivery_options = $$('input[id^=delivery_option_]');
     var params = Form.serializeElements(delivery_options);
@@ -95,9 +108,15 @@ function refreshQuotes() {
     if (validator.validate()) {
 	checkout.setLoadWaiting('shipping-method');
 	delivery_options.each(function(control) {
-	   control.disabled = true; 
+	   control.disabled = true;
 	});
 	params += params.length ? '&' + Form.serialize(shipping.form) : Form.serialize(shipping.form);
+	params += params.length ? '&delivery_option_change='+delivery_option_change : 'delivery_option_change='+delivery_option_change;
+	var destType = 'residence';
+	$$('input[name=destination-type]').each(function (control) {
+	    if (control.checked) { destType = control.value; }
+	});
+	params += '&destination_type=' + destType;
 	var request = new Ajax.Request(
 	    shipping.saveUrl,
 	    {
@@ -108,7 +127,7 @@ function refreshQuotes() {
 		parameters: params
 	    }
 	);
-	
+
     }
 }
 

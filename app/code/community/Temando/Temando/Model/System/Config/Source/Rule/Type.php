@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * System Config Source Rule Type
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_System_Config_Source_Rule_Type 
     extends Temando_Temando_Model_System_Config_Source {
     
@@ -8,7 +13,8 @@ class Temando_Temando_Model_System_Config_Source_Rule_Type
     const DYNAMIC  = '3';
     const RESTRICT = '4';
     
-    protected function _setupOptions() {
+    protected function _setupOptions()
+    {
 	$this->_options = array(
 	    self::FLATRATE => Mage::helper('temando')->__('Flat Rate'),
 	    self::FREE	   => Mage::helper('temando')->__('Free Shipping'),

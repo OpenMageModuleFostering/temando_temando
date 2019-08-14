@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract {
+/**
+ * Wizard Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
+{
 
     const ERR_WHS_SYNC = 'An error occured when synchronizing with temando.com.  Origin location not saved on temando.com.';
     const SUC_WHS_SYNC = 'Origin location saved on temando.com.';
@@ -78,8 +84,8 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract {
         try {
             $api = Mage::getModel('temando/api_client');
             $api->connect(
-                    Mage::helper('temando')->getConfigData('general/username'), 
-                    Mage::helper('temando')->getConfigData('general/password'), 
+                    Mage::helper('temando')->getConfigData('general/username'),
+                    Mage::helper('temando')->getConfigData('general/password'),
                     Mage::helper('temando')->getConfigData('general/sandbox')
             );
 

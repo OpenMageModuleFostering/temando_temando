@@ -1,33 +1,52 @@
 <?php
+/**
+ * Debugging SoapClient
+ * Logs request and response in var/log
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class DebugSoapClient extends SoapClient
+{
 
-class DebugSoapClient extends SoapClient {
-
-    public function __doRequest($request, $location, $action, $version, $one_way = 0) {
+    public function __doRequest($request, $location, $action, $version, $one_way = 0)
+    {
 	Mage::log($request, null, 'raw-request.xml', true);
 	$response = parent::__doRequest($request, $location, $action, $version, $one_way);
 	Mage::log($response, null, 'raw-response.xml', true);
 	return $response;
     }
-
 }
 
-class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
-
+/**
+ * Api Client
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract
+{
+    
     const NO_SHIP_DATE = 'Unable to send on the specified date and/or location.';
+    
+    protected $temandoApiSandbox = 'https://api-demo.temando.com/schema/2009_06/server.wsdl';
+    protected $temandoApi = 'https://api.temando.com/schema/2009_06/server.wsdl';
     
     protected $_client = null;
     protected $_is_sand = null;
 
-    public function __construct() {
+    public function __construct()
+    {
 	parent::__construct();
     }
 
-    public function connect($username = null, $password = null, $sandbox = false) {
+    public function connect($username = null, $password = null, $sandbox = false)
+    {
 	$this->_is_sand = $sandbox;
 	if ($sandbox) {
-	    $url = "https://api-demo.temando.com/schema/2009_06/server.wsdl";
+	    $url = $this->temandoApiSandbox;
 	} else {
-	    $url = "https://api.temando.com/schema/2009_06/server.wsdl";
+	    $url = $this->temandoApi;
 	}
 
 	if (!$username) {
@@ -66,11 +85,13 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
      * @param array $request the request parameters, in an array format.
      * @return array
      */
-    public function getQuotesByRequest($request) {
+    public function getQuotesByRequest($request)
+    {
 	return $this->getQuotes($request);
     }
 
-    public function getQuotes($request) {
+    public function getQuotes($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
@@ -81,6 +102,7 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	
 	$response = $this->_client->getQuotes($request);
 	//check for no ship days - public holidays - and retry with date +1 (up to +10) days before exiting
+        $i = 0;
 	if (isset($request['anytime']['readyDate'])) {
 	    while(is_soap_fault($response) && $response->faultstring == self::NO_SHIP_DATE && ++$i <= 10)
 	    {
@@ -92,7 +114,7 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 		$response = $this->_client->getQuotes($request);
 	    }
 	}
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	//make sure we have an array
@@ -110,11 +132,13 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	return $quotes;
     }
 
-    public function makeBookingByRequest($request) {
+    public function makeBookingByRequest($request)
+    {
 	return $this->makeBooking($request);
     }
     
-    public function makeBooking($request) {
+    public function makeBooking($request)
+    {
 	if (!$this->_is_sand) {
 	    $request['clientId'] = Mage::helper('temando')->getClientId();
 	}
@@ -123,43 +147,46 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	}
 
 	$response = $this->_client->makeBooking($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
     }
 
-    public function getRequest($request) {
+    public function getRequest($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
 
 	$response = $this->_client->getRequest($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
     }
 
-    public function confirmManifest($request) {
+    public function confirmManifest($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
 
 	$response = $this->_client->confirmManifest($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
     }
 
-    public function getManifest($request) {
+    public function getManifest($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
 
 	$response = $this->_client->getManifest($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
@@ -171,13 +198,14 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
      * @param $request
      * @return bool
      */
-    public function getLocations($request) {
+    public function getLocations($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
 
 	$response = $this->_client->getLocations($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
@@ -189,7 +217,8 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
      * @param $request
      * @return bool
      */
-    public function createLocation($request) {
+    public function createLocation($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
@@ -197,7 +226,7 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
 	$request['clientId'] = Mage::helper('temando')->getClientId();
 
 	$response = $this->_client->createLocation($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
@@ -209,7 +238,8 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
      * @param $request
      * @return bool
      */
-    public function updateLocation($request) {
+    public function updateLocation($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
@@ -229,13 +259,14 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
      * @param $request
      * @return bool
      */
-    public function getCarriers($request) {
+    public function getCarriers($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
 
 	$response = $this->_client->getCarriers($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
@@ -247,23 +278,22 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
      * To add insurance to a quote, the total price should be multiplied by
      * this value.
      */
-    public function getInsuranceMultiplier() {
+    public function getInsuranceMultiplier()
+    {
 	return 1.01; // 1%
     }
 
 
-    public function getClient($request) {
+    public function getClient($request)
+    {
 	if (!$this->_client) {
 	    return false;
 	}
 
 	$response = $this->_client->getClient($request);
-	if(is_soap_fault($response)) {
+	if (is_soap_fault($response)) {
 	    throw new Exception($response->faultstring);
 	}
 	return $response;
     }
-
-
-
 }

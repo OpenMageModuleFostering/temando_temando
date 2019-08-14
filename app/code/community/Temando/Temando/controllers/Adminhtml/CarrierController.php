@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Adminhtml_CarrierController extends Mage_Adminhtml_Controller_Action {
+/**
+ * Carrier Controller
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Adminhtml_CarrierController extends Mage_Adminhtml_Controller_Action
+{
 
     const CARRIER_ERROR = 'An error occured when synchronizing carriers with temando.com';
     const CARRIER_SUCCESS = 'Synchronized carriers';
@@ -9,7 +15,8 @@ class Temando_Temando_Adminhtml_CarrierController extends Mage_Adminhtml_Control
      * Adminhtml controller that refreshes carriers in the temando_carrier table.
      * @return
      */
-    public function indexAction() {
+    public function indexAction()
+    {
 
         try {
             $api = Mage::getModel('temando/api_client');

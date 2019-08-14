@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_Option_Action_Markup extends Temando_Temando_Model_Option_Action_Abstract
+/**
+ * Option Action Markup
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_Option_Action_Markup
+    extends Temando_Temando_Model_Option_Action_Abstract
 {
     
     /**

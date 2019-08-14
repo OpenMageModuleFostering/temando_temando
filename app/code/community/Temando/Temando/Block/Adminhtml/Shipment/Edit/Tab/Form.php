@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Shipment Edit Tab Form
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form
     extends Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract
     implements Mage_Adminhtml_Block_Widget_Tab_Interface

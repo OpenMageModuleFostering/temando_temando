@@ -1,5 +1,12 @@
 <?php
-class Temando_Temando_Block_Adminhtml_Manifest extends Mage_Adminhtml_Block_Widget_Grid_Container
+/**
+ * Admin Manifest Block
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_Manifest
+    extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
 
     public function __construct()
@@ -17,8 +24,12 @@ class Temando_Temando_Block_Adminhtml_Manifest extends Mage_Adminhtml_Block_Widg
         }
 
         $this->$add_button_method('add_form_submit', array(
-            'label'     => Mage::helper('temando')->__('Add Manifest'),
+            'label'     => Mage::helper('temando')->__('Draft Manifest'),
             'onclick'   => 'addFormSubmit()'
+        ));
+        $this->$add_button_method('retrieve', array(
+            'label'     => Mage::helper('temando')->__('Retrieve Previous Manifest'),
+            'onclick'   => 'retrieveFormSubmit()',
         ));
         $this->$add_button_method('confirm', array(
             'label'     => Mage::helper('temando')->__('Confirm Manifests'),

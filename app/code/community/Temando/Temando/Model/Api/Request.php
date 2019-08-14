@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Api Request
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
+ * @method Temando_Temando_Model_Api_Request setDeliveryOptions($options)
+ *
+ * @method array  getDeliveryOptions()
+ */
 class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
 { 
     /**
@@ -46,13 +55,15 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
         return $this;
     }
     
-    public function setDestination($country, $postcode, $city, $street = null)
+    public function setDestination($country, $postcode, $city, $street = null, $destinationType = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE)
     {
         $this->_anywhere
             ->setDestinationCountry($country)
             ->setDestinationPostcode($postcode)
             ->setDestinationCity($city)
-            ->setDestinationStreet($street);
+            ->setDestinationStreet($street)
+            ->setDestinationType($destinationType)
+            ->setDeliveryOptions($this->getDeliveryOptions());
         return $this;
     }
     
@@ -160,7 +171,10 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
         $goodsValue = $this->_anythings->getGoodsValue();        
         $return = array(
             'anythings' => $this->_anythings->toRequestArray(),
-            'anywhere' => $this->_anywhere->toRequestArray(),
+            'anywhere' => $this
+                ->_anywhere
+                ->setDeliveryOptions($this->getDeliveryOptions())
+                ->toRequestArray(),
         );
 
         if ($goodsValue) {

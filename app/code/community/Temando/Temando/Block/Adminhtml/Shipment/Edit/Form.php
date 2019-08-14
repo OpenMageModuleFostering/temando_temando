@@ -1,8 +1,19 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_Shipment_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
+/**
+ * Shipment Edit Form
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_Shipment_Edit_Form
+    extends Mage_Adminhtml_Block_Widget_Form
 {
 
+    /**
+     * Prepare the form
+     * 
+     * @return parent
+     */
     protected function _prepareForm()
     {
         $form = new Varien_Data_Form(

@@ -1,6 +1,12 @@
 <?php
-
-abstract class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract extends Mage_Adminhtml_Block_Template
+/**
+ * Shipment Edit Tab Abstract
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+abstract class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract
+    extends Mage_Adminhtml_Block_Template
 {
     
     protected $_helper = null;

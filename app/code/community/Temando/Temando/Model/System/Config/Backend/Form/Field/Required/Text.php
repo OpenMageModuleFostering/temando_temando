@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_System_Config_Backend_Form_Field_Required_Text extends Mage_Core_Model_Config_Data
+/**
+ * System Config Backend Form Field Required Text
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_System_Config_Backend_Form_Field_Required_Text
+    extends Mage_Core_Model_Config_Data
 {
     
     protected function _beforeSave()

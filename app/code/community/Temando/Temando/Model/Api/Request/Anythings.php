@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Api Request Anythings
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstract {
 
     /**
@@ -8,13 +13,15 @@ class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstra
     protected $_anythings;
     protected $_need_optimize = false;
 
-    public function _construct() {
+    public function _construct()
+    {
 	parent::_construct();
 	$this->_init('temando/api_request_anythings');
 	$this->_anythings = array();
     }
 
-    public function setItems($items) {
+    public function setItems($items)
+    {
 	$this->_anythings = array();
 	foreach ($items as $item) {
 	    if ($item->getParentItem() || $item->getIsVirtual()) {
@@ -36,7 +43,8 @@ class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstra
 	return $this;
     }
 
-    public function addItem($item) {
+    public function addItem($item)
+    {
 	if ($item instanceof Mage_Sales_Model_Quote_Item || $item instanceof Mage_Sales_Model_Order_Item || $item instanceof Mage_Sales_Model_Quote_Address_Item || $item instanceof Temando_Temando_Model_Box) {
 	    if ($item instanceof Mage_Sales_Model_Quote_Item || $item instanceof Mage_Sales_Model_Order_Item || $item instanceof Mage_Sales_Model_Quote_Address_Item) {
 		$this->_need_optimize = true;
@@ -48,11 +56,13 @@ class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstra
 	return $this;
     }
 
-    public function getItems() {
+    public function getItems()
+    {
 	return $this->_anythings;
     }
 
-    public function validate() {
+    public function validate()
+    {
 	if (!count($this->_anythings)) {
 	    // no child items
 	    return false;
@@ -70,20 +80,21 @@ class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstra
 
     /**
      * Prepares array of anythings for XML API SOAP call
-     * 
+     *
      * @return boolean
      */
-    public function toRequestArray() {
+    public function toRequestArray()
+    {
 	if (!$this->validate()) {
 	    return false;
 	}
 	$output = $this->_consolidate();
 	return $output;
     }
-    
+
     /**
      * Returns combined value of request items.
-     * 
+     *
      * @return float
      */
     public function getGoodsValue()
@@ -100,13 +111,14 @@ class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstra
 	}
 	return (float) $goodsValue;
     }
-    
+
     /**
      * Basic satchel or carton consolidation - 1x satchel or carton for items up to 5kg of weight
-     * 
+     *
      * @return string
      */
-    protected function _consolidate() {
+    protected function _consolidate()
+    {
 	$only_satchel_and_carton = true;
 	$has_carton = false;
 	$output = array();
@@ -158,7 +170,7 @@ class Temando_Temando_Model_Api_Request_Anythings extends Mage_Core_Model_Abstra
 	    } else {
 		$output[] = $request;
 	    }
-	    
+
 	    if ($only_satchel_and_carton && $has_carton) {
 		foreach ($output as $k => $v) {
 		    $v['packaging'] = 'Carton';

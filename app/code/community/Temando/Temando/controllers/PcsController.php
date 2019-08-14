@@ -1,21 +1,26 @@
 <?php
-
+/**
+ * Pcs Controller
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * @var Temando_Temando_Model_Pcs 
+     * @var Temando_Temando_Model_Pcs
      */
     protected $_validator = null;
-    
+
     public function testAction()
     {
 	$shippingMethod = 'temando_flat';
 	$selected_quote_id = preg_replace('#^[^_]*_#', '', $shippingMethod);
-	
+
 	echo Mage::helper('temando')->isQuoteDynamic($selected_quote_id) ?
 		'DYNAMIC' : 'FREE/FLAT';
     }
-    
+
     private $_result = array (
             'query' => '',
             'suggestions' => array(),
@@ -29,24 +34,24 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
                     )
             )
         );
-    
+
     public function construct() {
         parent:: construct();
-        
+
         $this->loadLayout();
         $this->renderLayout();
     }
-    
+
     protected function _makeAutocomplete($query, $country = null)
-    {       
+    {
         $country = $country ? $country : Mage::helper('temando')->getDefaultCountryId();
         $this->_result['query'] = Mage::helper('core')->escapeHtml($query);
-        
+
 	$this->_getValidator();
 	$this->_validator->setCountry($country)->setQuery($query);
-	
+
 	$suggestions = $this->_validator->getSuggestions();
-	
+
 	$i = -1;
 	if(!empty($suggestions)) {
 	    //have results - load into result array
@@ -56,7 +61,7 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
 		$fulltext = $item['name'] .', ';
 		$fulltext.= array_key_exists('postcodes', $item) && !empty($item['postcodes']) ? $item['postcodes'][0]['code'].' ' : ' ';
 		$fulltext.= $item['country']['iso_code2'];
-		
+
 		if (!in_array($fulltext, $this->_result['suggestions'])) {
 		    $i++; $this->_result['suggestions'][$i] = $fulltext;
 		}
@@ -77,12 +82,12 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
 
         return $result;
     }
-    
+
     public function autocompletecartAction() {
-        
+
         $query = $this->getRequest()->getParam('query');
 	$country = $this->getRequest()->getParam('country', Mage::helper('temando')->getDefaultCountryId());
-	
+
 	echo $this->_makeAutocomplete($query, $country);
         exit;
     }
@@ -157,7 +162,7 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
                     $options[$_t[0]] = $_t[1];
                 }
             }
-	    
+
 	    //get bundle products options
 	    $bundle_options = array();
 	    if($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE)
@@ -184,11 +189,11 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
 		    }
 		}
 	    }
-	    
+
             if (count($options)) {
                 $request['options'] = $options;
-            } 
-	    
+            }
+
 	    if(count($bundle_options)) {
 		$request['bundle_option'] = $bundle_options;
 	    }
@@ -241,7 +246,7 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
             die($e->getMessage());
         }
     }
-    
+
     protected function _getValidator()
     {
 	if(!$this->_validator) {
@@ -249,5 +254,5 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
 	}
 	return $this;
     }
-    
+
 }

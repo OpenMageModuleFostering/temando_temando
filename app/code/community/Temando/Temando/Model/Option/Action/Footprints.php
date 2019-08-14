@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_Option_Action_Footprints extends Temando_Temando_Model_Option_Action_Abstract
+/**
+ * Option Action Footprints
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_Option_Action_Footprints
+    extends Temando_Temando_Model_Option_Action_Abstract
 {
     
     public function apply(&$quote)

@@ -1,5 +1,10 @@
 <?php
 /**
+ * Pcs Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * @method Temando_Temando_Model_Pcs setCountry() 
  * @method Temando_Temando_Model_Pcs setQuery() 
  * 

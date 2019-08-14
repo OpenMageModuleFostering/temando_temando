@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Option Insurance
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Option_Insurance extends Temando_Temando_Model_Option_Boolean
 {
     

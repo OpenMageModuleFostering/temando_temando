@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * System Config Source
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 abstract class Temando_Temando_Model_System_Config_Source
 {
     

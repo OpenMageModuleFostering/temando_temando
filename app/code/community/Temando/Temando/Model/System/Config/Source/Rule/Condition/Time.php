@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * System Config Source Rule Condition Time
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_System_Config_Source_Rule_Condition_Time 
     extends Temando_Temando_Model_System_Config_Source {
     

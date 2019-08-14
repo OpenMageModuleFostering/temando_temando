@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Option Abstract
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 abstract class Temando_Temando_Model_Option_Abstract extends Varien_Object
 {
     

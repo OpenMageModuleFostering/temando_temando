@@ -1,6 +1,10 @@
 <?php
-
 /**
+ * Box Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * @method string getShipmentId()
  * @method string getComment()
  * @method string getQty()
@@ -11,6 +15,7 @@
  * @method string getWeight()
  * @method string getWeightUnit()
  * @method string getFragile()
+ * @method string getDangerous()
  *
  * @method Temando_Temando_Model_Box setShipmentId()
  * @method Temando_Temando_Model_Box setComment()
@@ -22,14 +27,15 @@
  * @method Temando_Temando_Model_Box setWeight()
  * @method Temando_Temando_Model_Box setWeightUnit()
  * @method Temando_Temando_Model_Box setFragile()
+ * @method Temando_Temando_Model_Box setDangerous()
  */
 class Temando_Temando_Model_Box extends Mage_Core_Model_Abstract
 {
-    
+
     public function _construct()
     {
         parent::_construct();
         $this->_init('temando/box');
     }
-    
+
 }

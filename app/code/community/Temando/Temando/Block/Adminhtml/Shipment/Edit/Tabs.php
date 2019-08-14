@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
+/**
+ * Shipment Edit Tabs
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tabs
+    extends Mage_Adminhtml_Block_Widget_Tabs
 {
 
     public function __construct()

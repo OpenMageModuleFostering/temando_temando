@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Origin extends Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract
+/**
+ * Shipment Edit Tab Form Origin
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Origin
+    extends Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract
 {
     
     public function getWarehouse() {

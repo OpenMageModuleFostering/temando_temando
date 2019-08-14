@@ -1,9 +1,16 @@
 <?php
-
-class Temando_Temando_Model_System_Config_Source_Sales_Order_Status {
+/**
+ * System Config Source Sales Order Status
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_System_Config_Source_Sales_Order_Status
+{
 
     
-    public function toOptionArray($isMultiselect=false) {
+    public function toOptionArray($isMultiselect=false)
+    {
 	
 	$statuses = Mage::getSingleton('sales/order_config')->getStatuses();
 
@@ -15,7 +22,7 @@ class Temando_Temando_Model_System_Config_Source_Sales_Order_Status {
 		'label' => $label
 	    );
 	}
-	if(!$isMultiselect){
+	if (!$isMultiselect){
             array_unshift($options, array('value'=>'', 'label'=> Mage::helper('adminhtml')->__('--Please Select--')));
         }
 	return $options;

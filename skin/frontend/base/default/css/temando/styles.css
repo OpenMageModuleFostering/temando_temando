@@ -19,12 +19,50 @@ table.insurance td label {
     color: #F18200;
 }
 
-div.customer-instructions, div.customer-comment {
+div.customer-instructions, div.customer-comment, div.destination-type {
     background: none repeat scroll 0 0 #F9F3E3;
     border: 1px solid #BBAFA0;
     margin: 10px;
     padding: 15px;
     width: 92%;
+}
+table.delivery-options-table {
+    background: none repeat scroll 0 0 #F9F3E3;
+    border: 1px solid #BBAFA0;
+    margin: 10px;
+    padding: 15px;
+    width: 97%;
+}
+
+table.delivery-options-table th, table.delivery-options-table-onestep th {
+    font-weight: bold;
+    color: #F18200;
+}
+table.delivery-options-table td, table.delivery-options-table-onestep td {
+    border-right: none;
+    width: auto;
+}
+
+div.customer-instructions-onestep, div.deliverby-onestep, div.customer-comment-onestep, div.destination-type-onestep {
+    background: none repeat scroll 0 0 #F9F3E3;
+    border: 1px solid #BBAFA0;
+    margin: 5px 0;
+    padding: 14px;
+    width: 90%;
+}
+
+table.delivery-options-table-onestep {
+    background: none repeat scroll 0 0 #F9F3E3;
+    border: 1px solid #BBAFA0;
+    margin: 5px 0;
+    padding: 14px;
+    width: 100%;
+}
+
+span.destination-type-header {
+    font-weight: bold;
+    color: #F18200;
+    display: block;
 }
 
 .note {

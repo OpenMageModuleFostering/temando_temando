@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Shipment Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * @method int getId()
  * @method int getOrderId()
  * @method string getCustomerSelectedQuoteId()
@@ -17,6 +22,7 @@
  * @method string getReadyTime()
  * @method string getCustomerSelectedOptions()
  * @method string getOrderItems()
+ * @method string getDestinationType()
  *
  * @method Temando_Temando_Model_Shipment setId()
  * @method Temando_Temando_Model_Shipment setOrderId()
@@ -33,27 +39,28 @@
  * @method Temando_Temando_Model_Shipment setReadyTime()
  * @method Temando_Temando_Model_Shipment setCustomerSelectedOptions()
  * @method Temando_Temando_Model_Shipment setOrderItems()
+ * @method Temando_Temando_Model_Shipment setDestinationType()
  *
  */
 class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
 {
-    
+
     /**
      * @var Mage_Sales_Model_Order
      */
     protected $_order = null;
-    
+
     /**
      * @var array
      */
     protected $_boxes = null;
-    
+
     public function _construct()
     {
         parent::_construct();
         $this->_init('temando/shipment');
     }
-    
+
     /**
      * Overridden to enforce the use of custom getters.
      *
@@ -77,7 +84,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return parent::getData($key, $index);
     }
-    
+
     /**
      * Gets the Magento order associated with this shipment.
      *
@@ -90,7 +97,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return $this->_order;
     }
-    
+
     /**
      * Gets the creation date of this shipment.
      */
@@ -101,7 +108,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return null;
     }
-    
+
     /**
      * Gets the Magento order number (as shown to customers, e.g. 100000123)
      */
@@ -112,13 +119,13 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return null;
     }
-    
+
     public function getBoxes()
     {
         return Mage::getModel('temando/box')->getCollection()
             ->addFieldToFilter('shipment_id', $this->getId());
     }
-    
+
     /**
      * Gets the carrier description.
      *
@@ -138,7 +145,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return null;
     }
-    
+
     /**
      * Gets the selected quote.
      *
@@ -151,7 +158,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
     public function getSelectedQuote()
     {
         $quote = null;
-        
+
         switch ($this->getStatus()) {
             case Temando_Temando_Model_System_Config_Source_Shipment_Status::BOOKED:
                 $quote = Mage::getModel('temando/quote')
@@ -163,10 +170,10 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
                     ->load($this->getCustomerSelectedQuoteId());
                 break;
         }
-        
+
         return $quote;
     }
-    
+
     /**
      * Gets the quote using $this->getQuote(), and applies the selected
      * options to it as well.
@@ -176,25 +183,25 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
     public function getSelectedQuotePermutation()
     {
         $quote = $this->getSelectedQuote();
-        
+
         /* @var $quote Temando_Temando_Model_Quote */
         if ($quote !== null) {
             $options = Mage::getModel('temando/options');
             /* @var $options Temando_Temando_Model_Options */
 
-            $option_array = $this->getOptions();   
+            $option_array = $this->getOptions();
             foreach ($option_array as $option) {
                 $options->addItem($option);
             }
-            
+
             $permutations = $options->applyAll($quote);
-            
+
             if ($permutations) {
                 return reset($permutations);
             }
         }
     }
-    
+
     /**
      * Gets the shipping amount the customer paid on this order.
      */
@@ -205,7 +212,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return null;
     }
-    
+
     /**
      * Fixes up database-style dates after loading.
      *
@@ -220,14 +227,14 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
             $this->unsReadyTime();
         }
     }
-    
+
     /**
      * Gets Temando quotes for this shipment.
      */
     public function fetchQuotes($username = null, $password = null, $sandbox = false)
-    {        
+    {
         /* @var $request Temando_Temando_Model_Api_Request */
-        
+
 	$request = Mage::getModel('temando/api_request');
         $request
             ->setUsername($username)
@@ -238,7 +245,9 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
                 $this->getDestinationCountry(),
                 $this->getDestinationPostcode(),
                 $this->getDestinationCity(),
-                $this->getDestinationStreet())
+                $this->getDestinationStreet(),
+                $this->getDestinationType())
+            ->setDeliveryOptions($this->getDeliveryOptionsArray())
             ->setItems($this->getBoxes());
         if ($this->getReadyDate()) {
             $request->setReady(strtotime($this->getReadyDate()), $this->getReadyTime());
@@ -251,7 +260,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
 
         $request->getQuotes();
     }
-    
+
     /**
      * Clears all quotes from the database relating to this shipment.
      */
@@ -265,8 +274,8 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
         }
         return $this;
     }
-    
-    
+
+
     /**
      * Gets the quotes for this shipment from the database
      *
@@ -305,8 +314,8 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
                 ->addFieldToFilter('magento_quote_id', $this->getOrder()->getQuoteId());
         }
     }
-    
-    
+
+
     /**
      * Gets the customer selected options as an array.
      *
@@ -323,16 +332,16 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
     {
         $string = $this->getCustomerSelectedOptions();
         $elements = explode('_', $string);
-        
+
         $options = array();
-        
+
         for ($i = 0; $i < count($elements); $i += 2) {
             $options[$elements[$i]] = $elements[$i + 1];
         }
-        
+
         return $options;
     }
-    
+
     /**
      * Gets the customer selected options as an array of Option objects.
      *
@@ -370,29 +379,44 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
                 $options[] = $option;
             }
         }
-        
+
         return $options;
     }
-    
+
     /**
      * Checks wether this shipment can be shipped
-     * 
+     *
      * @return boolean
      */
     public function isStatusOpened()
     {
-	return 
+	return
 	    $this->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING;
     }
-    
+
     /**
      * Is this shipment a TZ pickup?
-     * 
+     *
      * @return boolean
      */
     public function isPickup()
     {
 	return (boolean)$this->getPickupDescription();
     }
-    
+
+    /**
+     * Transform saved delivery options to key=>val array
+     * of customer selected options
+     *
+     * @return array
+     */
+    public function getDeliveryOptionsArray()
+    {
+        $arr = array();
+        $deliveryOptions = explode(',', $this->getCustomerSelectedDeliveryOptions());
+        foreach ($deliveryOptions as $deliveryOption) {
+            $arr[$deliveryOption] = 'on';
+        }
+        return $arr;
+    }
 }

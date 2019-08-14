@@ -1,6 +1,10 @@
 <?php
-
 /**
+ * Option Boolean
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ *
  * A boolean (yes/no) option.
  *
  * The action (specified by $this->_action_type) is applied to quotes if the
@@ -13,10 +17,10 @@
  */
 abstract class Temando_Temando_Model_Option_Boolean extends Temando_Temando_Model_Option_Abstract
 {
-    
+
     const YES = 'Y';
     const NO = 'N';
-    
+
     protected function _setupValues()
     {
         $this->_values= array(
@@ -24,7 +28,7 @@ abstract class Temando_Temando_Model_Option_Boolean extends Temando_Temando_Mode
             self::NO => Mage::helper('temando')->__('No'),
         );
     }
-    
+
     /**
      * Only apply the action if the forced value is self::YES, or the value
      * is self::YES (as long as the forced value isn't self::NO).
@@ -42,5 +46,5 @@ abstract class Temando_Temando_Model_Option_Boolean extends Temando_Temando_Mode
             return false;
         }
     }
-    
+
 }

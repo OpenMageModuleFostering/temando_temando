@@ -1,32 +1,37 @@
 <?php
-
+/**
+ * Api Request Anything
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstract
-{   
+{
     const GOODS_CLASS    = 'General Goods';
     const GOODS_SUBCLASS = 'Household Goods';
     const PALLET_TYPE	 = 'Plain';
     const PALLET_NATURE  = 'Not Required';
-    
+
     /**
      * @var Mage_Sales_Model_Order_Item
      */
     protected $_item = null;
-    
+
     public function _construct()
     {
         parent::_construct();
         $this->_init('temando/api_request_anything');
     }
-    
+
     public function setItem($item)
     {
-        if ($item instanceof Mage_Sales_Model_Quote_Item || $item instanceof Mage_Sales_Model_Order_Item || 
+        if ($item instanceof Mage_Sales_Model_Quote_Item || $item instanceof Mage_Sales_Model_Order_Item ||
 		$item instanceof Mage_Sales_Model_Quote_Address_Item || $item instanceof Temando_Temando_Model_Box) {
             $this->_item = $item;
         }
         return $this;
     }
-    
+
     /**
      * Gets the order item for this Anything object.
      *
@@ -39,13 +44,13 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
         }
         return false;
     }
-    
+
     public function toRequestArray()
     {
         if (!$this->validate()) {
             return false;
         }
-                
+
         if ($this->_item instanceof Temando_Temando_Model_Box) {
             $anything = array(
                 'class'         => 'General Goods',
@@ -59,15 +64,16 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
                 'width'         => Mage::helper('temando')->getDistanceInCentimetres($this->_item->getWidth(), $this->_item->getMeasureUnit()),
                 'height'  	=> Mage::helper('temando')->getDistanceInCentimetres($this->_item->getHeight(), $this->_item->getMeasureUnit()),
                 'qualifierFreightGeneralFragile' => $this->_item->getFragile() == '1' ? 'Y' : 'N',
+                'qualifierFreightGeneralDangerousGoods' => $this->_item->getDangerous() == '1' ? 'Y' : 'N',
                 'description'   => $this->_item->getComment()
             );
 	    if($this->_item->getPackaging() == Temando_Temando_Model_System_Config_Source_Shipment_Packaging::PALLET) {
 		$anything['palletType']   = self::PALLET_TYPE;
 		$anything['palletNature'] = self::PALLET_NATURE;
 	    }
-            
+
         } else {
-	    
+
 	    Mage::helper('temando')->applyTemandoParamsToItem($this->_item);
 	    $anything = array(
 		'class'	=> 'General Goods',
@@ -81,6 +87,7 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
 		'width'		=> Mage::helper('temando')->getDistanceInCentimetres($this->_item->getTemandoWidth(), Mage::helper('temando')->getConfigData('units/measure')),
 		'height'	=> Mage::helper('temando')->getDistanceInCentimetres($this->_item->getTemandoHeight(), Mage::helper('temando')->getConfigData('units/measure')),
 		'qualifierFreightGeneralFragile' => $this->_item->getTemandoFragile() == '1' ? 'Y' : 'N',
+                'qualifierFreightGeneralDangerousGoods' => $this->_item->getTemandoDangerous() == '1' ? 'Y' : 'N',
 		'description'	=> $this->_item->getName(),
                 'articles' => $this->getArticlesElement()
 	    );
@@ -88,14 +95,14 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
 		$anything['palletType']   = self::PALLET_TYPE;
 		$anything['palletNature'] = self::PALLET_NATURE;
 	    }
-	    
-	} 
+
+	}
         return $anything;
-    }    
-    
+    }
+
     /**
      * Prepares articles element for this anything
-     * 
+     *
      * @return array
      */
     public function getArticlesElement()
@@ -111,7 +118,7 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
 	}
 	return $articles;
     }
-    
+
     public function validate()
     {
         return $this->_item instanceof Mage_Sales_Model_Quote_Item ||

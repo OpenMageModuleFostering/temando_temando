@@ -1,29 +1,28 @@
 <?php
-
+/**
+ * Temando Helper Data
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 
     const DEFAULT_WAREHOUSE_NAME = 'Magento Warehouse';
-    
+
     const DEFAULT_CURRENCY_CODE = 'AUD';
-    
+
     const DEFAULT_COUNTRY_ID = 'AU';
-    
+
     private $_temandoAttributes = array(
 	'temando_packaging_mode',
 	'temando_packaging',
 	'temando_fragile',
+        'temando_dangerous',
 	'temando_length',
 	'temando_width',
 	'temando_height'
     );
 
-    protected $_allowedCountries = array(
-        'AU' => 'Australia',
-        'NZ' => 'New Zealand',
-        'GB' => 'United Kingdom',
-        'US' => 'United States'
-    );
-    
     /**
      * Returns default weight unit
      */
@@ -31,15 +30,15 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
     {
         return Temando_Temando_Model_System_Config_Source_Unit_Weight::KILOGRAMS;
     }
-    
+
     /**
      * Returns default distance unit
      */
-    public function getDefaultDistanceUnit() 
+    public function getDefaultDistanceUnit()
     {
          return Temando_Temando_Model_System_Config_Source_Unit_Measure::CENTIMETRES;
     }
-    
+
     /**
      * Returns default currency code
      */
@@ -47,7 +46,7 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
     {
         return self::DEFAULT_CURRENCY_CODE;
     }
-    
+
     /**
      * Returns default country id
      */
@@ -55,48 +54,68 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
     {
         return self::DEFAULT_COUNTRY_ID;
     }
-    
+
 
     /**
      * Retrieves an element from the module configuration data.
      *
      * @param string $field
      */
-    public function getConfigData($field) {
+    public function getConfigData($field)
+    {
 	$path = 'temando/' . $field;
 	return Mage::getStoreConfig($path);
     }
 
     /**
+     * Returns an array of all Magento countries
+     *
+     * @return array
+     */
+    public function getAllCountries()
+    {
+        $countries = array();
+        $countryCollection = Mage::getModel('directory/country')->getCollection();
+        foreach ($countryCollection as $country) {
+            /* @var $country Mage_Directory_Model_Country */
+            $countries[$country->getId()] = $country->getName();
+        }
+        return $countries;
+    }
+
+    /**
      * Returns array of allowed countries based on Magento system configuration
      * and Temando plugin allowed countries.
-     * 
+     *
      * @param boolean $asJson
      * @return array
      */
-    public function getAllowedCountries($asJson = false) {
+    public function getAllowedCountries($asJson = false)
+    {
 	$specific = Mage::getStoreConfig('carriers/temando/sallowspecific');
 	//check if all allowed and return selected
-	if($specific == 1) {
+        if ($specific == 1) {
 	    $availableCountries = explode(',', Mage::getStoreConfig('carriers/temando/specificcountry'));
-	    $countries = array_intersect_key($this->_allowedCountries, array_flip($availableCountries));
-	    if($asJson) {
+            $countries = array_intersect_key($this->getAllCountries(), array_flip($availableCountries));
+            if ($asJson) {
 		return Mage::helper('core')->jsonEncode($countries);
 	    } else {
 		return $countries;
-	    }    
+	    }
 	}
 	//return all allowed
-	if($asJson) {
-	    return Mage::helper('core')->jsonEncode($this->_allowedCountries);
+        $availableCountries = explode(',', Mage::getStoreConfig('general/country/allow'));
+        $countries = array_intersect_key($this->getAllCountries(), array_flip($availableCountries));
+        if ($asJson) {
+            return Mage::helper('core')->jsonEncode($countries);
 	} else {
-	    return $this->_allowedCountries;	
+            return $countries;
 	}
     }
-    
+
     /**
      * Applies Temando attributes to sales quote item object
-     * 
+     *
      * @param Mage_Sales_Model_Order_Item $item
      */
     public function applyTemandoParamsToItem($item)
@@ -106,12 +125,12 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	    $item->setData($key, $val);
 	}
     }
-    
+
     /**
      * Returns values for Temando specific product attributes. Currently handles simple
      * and configurable products only. Default attribute values from configuration are
      * returned if product temando retrieval mode is set to 'Use Defaults'
-     * 
+     *
      * @param Mage_Sales_Model_Order_Item $item
      * @param Mage_Catalog_Model_Product $product
      * @return array Temando specific product attributes
@@ -175,7 +194,8 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
      * @param <type> $ready_time timestamp for when the package will be ready
      * to ship, defaults to 10 days from current date
      */
-    public function getReadyDate($ready_time = NULL) {
+    public function getReadyDate($ready_time = NULL)
+    {
 	if (is_null($ready_time)) {
 	    $ready_time = strtotime('+10 days');
 	}
@@ -191,18 +211,19 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
     /**
      * Gets selected simple product from configurable
      * (using the fact that getSku() on item returns selected simple product sku)
-     * 
+     *
      * @param Mage_Sales_Model_Order_Item $item
      * @return Mage_Catalog_Model_Product
      */
-    public function getSelectedSimpleProductFromConfigurable($item) {
+    public function getSelectedSimpleProductFromConfigurable($item)
+    {
 	$simpleProductId = Mage::getModel('catalog/product')->getIdBySku($item->getSku());
 	return Mage::getModel('catalog/product')->load($simpleProductId);
     }
-    
+
     /**
      * Retrieve Default Temando Product Attributes from Configuration
-     * 
+     *
      * @return array
      */
     public function getDefaultTemandoAttributes()
@@ -211,15 +232,16 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	    'temando_packaging_mode'  => 0, //defaults
 	    'temando_packaging'	    => $this->getConfigData('defaults/packaging'),
 	    'temando_fragile'	    => $this->getConfigData('defaults/fragile'),
+            'temando_dangerous'	    => $this->getConfigData('defaults/dangerous'),
 	    'temando_length'	    => (float)$this->getConfigData('defaults/length'),
 	    'temando_width'	    => (float)$this->getConfigData('defaults/width'),
 	    'temando_height'	    => (float)$this->getConfigData('defaults/height'),
 	);
     }
-    
+
     /**
      * Converts given weight from configured unit to grams
-     * 
+     *
      * @param float $value Weight to convert
      * @param string $currentUnit Current weight unit
      * @return float Converted weight in grams
@@ -232,22 +254,22 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	switch($currentUnit) {
 	    case Temando_Temando_Model_System_Config_Source_Unit_Weight::KILOGRAMS:
 		return $value * 1000; break;
-	    
-	    case Temando_Temando_Model_System_Config_Source_Unit_Weight::OUNCES: 
+
+	    case Temando_Temando_Model_System_Config_Source_Unit_Weight::OUNCES:
 		return $value * 28.3495; break;
-	    
-	    case Temando_Temando_Model_System_Config_Source_Unit_Weight::POUNDS: 
+
+	    case Temando_Temando_Model_System_Config_Source_Unit_Weight::POUNDS:
 		return $value * 453.592; break;
-	    
+
 	    default: return $value; break;
 	}
     }
-    
+
     /**
      * Converts given distance from configured unit to centimetres
-     * 
+     *
      * @param float $value Distance to convert
-     * @param string $currentUnit Current measure unit 
+     * @param string $currentUnit Current measure unit
      * @return float Converted distance in centimetres
      */
     public function getDistanceInCentimetres($value, $currentUnit = null)
@@ -257,33 +279,35 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	switch($currentUnit) {
 	    case Temando_Temando_Model_System_Config_Source_Unit_Measure::METRES:
 		return $value * 100; break;
-	    
+
 	    case Temando_Temando_Model_System_Config_Source_Unit_Measure::FEET:
 		return $value * 30.48; break;
-	    
+
 	    case Temando_Temando_Model_System_Config_Source_Unit_Measure::INCHES:
 		return $value * 2.54; break;
-	    
+
 	    default: return $value; break;
 	}
     }
 
     /**
      * Returns Client ID from system configuration
-     * 
+     *
      * @return string
      */
-    public function getClientId() {
+    public function getClientId()
+    {
 	return $this->getConfigData('general/client');
     }
 
     /**
      * Retrieves cached address validation results
-     * 
+     *
      * @param string $words
      * @return array of results or false if no cache
      */
-    public function getSuggestionsCache($words) {
+    public function getSuggestionsCache($words)
+    {
 	if (is_file($this->getFileCacheByWords($words))) {
 	    return file_get_contents($this->getFileCacheByWords($words));
 	}
@@ -293,25 +317,27 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
      * Returns path to the cache file
-     * 
+     *
      * @param string $words
      * @return string
      */
-    public function getFileCacheByWords($words) {
+    public function getFileCacheByWords($words)
+    {
 	$key = md5(strtolower(join('_', $words)));
 	$path = Mage::getBaseDir('cache');
 	return $path . DS . 'temando' . DS . $key[0] . DS . $key[1] . DS . $key . '.cache';
     }
 
     /**
-     * Register cached results 
+     * Register cached results
      * (saves results into a cache file or removes file if results empty)
-     * 
+     *
      * @param string $words
      * @param string $value
      * @return void
      */
-    public function setSuggestionsCache($words, $value) {
+    public function setSuggestionsCache($words, $value)
+    {
 	if (strlen(join(' ', $words)) > 4) {
 	    return;
 	}
@@ -338,7 +364,8 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
      * Returns region name saved in customers session
      * @return string|null
      */
-    public function getSessionRegion() {
+    public function getSessionRegion()
+    {
 	$data = Mage::getSingleton('customer/session')->getData('estimate_product_shipping');
 	if ($data) {
 	    return Mage::getModel('directory/region')->load($data['region_id'])->getName();
@@ -351,7 +378,8 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
      * Returns city name saved in customers session
      * @return string|null
      */
-    public function getSessionCity() {
+    public function getSessionCity()
+    {
 	$data = Mage::getSingleton('customer/session')->getData('estimate_product_shipping');
 	if ($data) {
 	    return $data['city'];
@@ -364,7 +392,8 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
      * Returns postal code saved in customers session
      * @return string|null
      */
-    public function getSessionPostcode() {
+    public function getSessionPostcode()
+    {
 	$data = Mage::getSingleton('customer/session')->getData('estimate_product_shipping');
 	if ($data) {
 	    return $data['postcode'];
@@ -377,7 +406,8 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
      * Returns id of the region saved in customers session
      * @return int|null
      */
-    public function getSessionRegionId() {
+    public function getSessionRegionId()
+    {
 	$data = Mage::getSingleton('customer/session')->getData('estimate_product_shipping');
 	if ($data) {
 	    return $data['region_id'];
@@ -388,21 +418,23 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
      * Return list of available origin locations
-     * 
+     *
      * @return array
      */
-    public function getLocationList() {
+    public function getLocationList()
+    {
 	return array(
 	    self::DEFAULT_WAREHOUSE_NAME => self::DEFAULT_WAREHOUSE_NAME
 	);
     }
-    
+
     /**
      * Returns location create/update request array
-     * 
+     *
      * @return array
      */
-    public function getOriginRequestArray(Varien_Object $data) {
+    public function getOriginRequestArray(Varien_Object $data)
+    {
 	return array(
 	    'description'   => self::DEFAULT_WAREHOUSE_NAME,
 	    'type'	    => 'Origin',
@@ -427,11 +459,12 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 
     /**
      * Returns true if street address is a PO Box
-     * 
+     *
      * @param string $street
-     * @return boolean 
+     * @return boolean
      */
-    public function isStreetWithPO($street) {
+    public function isStreetWithPO($street)
+    {
 	if (!is_string($street)) {
 	    return false;
 	}
@@ -453,11 +486,12 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
     /**
      * Returns true if shipping quote is dynamic quote obtained
      * from Temando API
-     * 
+     *
      * @param int $quote_id
      * @return boolean
      */
-    public function isQuoteDynamic($quote_id) {
+    public function isQuoteDynamic($quote_id)
+    {
 	$fixed_carriers = array(
 	    Temando_Temando_Model_Carrier::FLAT_RATE,
 	    Temando_Temando_Model_Carrier::FREE,
@@ -466,13 +500,13 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	if (in_array($quote_id, $fixed_carriers)) {
 	    return false;
 	}
-	
+
 	return true;
     }
-   
+
     /**
      * Creates a sales quote based on current ship request
-     * 
+     *
      * @param Mage_Shipping_Model_Rate_Request $request
      * @return Mage_Sales_Model_Quote
      */
@@ -496,5 +530,4 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
         $quote->collectTotals();
 	return $quote;
     }
-   
 }

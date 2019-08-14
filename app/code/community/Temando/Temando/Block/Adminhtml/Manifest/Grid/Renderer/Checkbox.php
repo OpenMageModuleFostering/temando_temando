@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Manifest Grid Renderer Checkbox
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Block_Adminhtml_Manifest_Grid_Renderer_Checkbox extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Massaction
 {
 

@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_Entity_Attribute_Source_Packaging_Mode extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
+/**
+ * Entity Attribute Source Packaging Mode
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_Entity_Attribute_Source_Packaging_Mode
+    extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
     
     public function getAllOptions()
@@ -58,7 +64,5 @@ class Temando_Temando_Model_Entity_Attribute_Source_Packaging_Mode extends Mage_
     {
         return Mage::getResourceModel('eav/entity_attribute')
             ->getFlatUpdateSelect($this->getAttribute(), $store);
-    }
-    
+    }   
 }
-

@@ -1,6 +1,10 @@
 <?php
-
-
+/**
+ * Product Shipping Methods
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Block_Product_Shipping_Methods extends Mage_Core_Block_Template
 {
 

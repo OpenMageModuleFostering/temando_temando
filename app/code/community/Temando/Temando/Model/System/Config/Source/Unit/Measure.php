@@ -1,6 +1,12 @@
 <?php
-
-class Temando_Temando_Model_System_Config_Source_Unit_Measure extends Temando_Temando_Model_System_Config_Source_Unit
+/**
+ * System Config Source Unit Measure
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Model_System_Config_Source_Unit_Measure
+    extends Temando_Temando_Model_System_Config_Source_Unit
 {
     
     const CENTIMETRES = 'Centimetres';

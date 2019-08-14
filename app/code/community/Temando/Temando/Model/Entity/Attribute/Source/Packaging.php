@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Entity Attribute Source Packaging
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Entity_Attribute_Source_Packaging extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
 {
     

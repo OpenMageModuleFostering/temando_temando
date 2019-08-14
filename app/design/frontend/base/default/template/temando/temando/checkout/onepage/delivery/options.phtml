@@ -1,0 +1,52 @@
+<?php 
+/* @var $this Temando_Temando_Block_Onepage_Shipping_Delivery_Options */ 
+$options = $this->getEnabledOptions();
+$selected_options = $this->getSelectedOptions();
+$residence = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE;
+$business = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_BUSINESS;
+?>
+<?php if ($this->showOptions()): ?> 
+<div id="destination-type" class="input-box destination-type"<?php if (!$this->showLocationType()): ?> style="display:none;"<?php endif; ?>>
+    <span class="destination-type-header">Deliver To</span>
+    <input type="radio" class="radio" id="residence" name="destination-type" value="<?php echo $residence; ?>" <?php if($this->getDestinationType() == $residence) echo "checked='checked'" ?> />
+    <label for="destination-type-residence"><?php echo ucwords($residence); ?></label>
+    <input type="radio" class="radio" id="business" name="destination-type" value="<?php echo $business; ?>" <?php if($this->getDestinationType() == $business) echo "checked='checked'" ?> />
+    <label for="destination-type-business"><?php echo ucwords($business); ?></label>
+</div>
+<?php if (!empty($options)): ?>
+<div id="delivery-options">
+    <table class="delivery-options-table" id="delivery-options-table">
+	<thead>
+	    <tr><th colspan="2"><?php echo Mage::helper('temando')->__('Extra Delivery Options'); ?></th></tr>
+	</thead>
+	<tbody>
+	    <?php foreach($options as $type => $toptions): ?>
+		<?php foreach($toptions as $key => $description): ?>
+		<tr>
+		    <td><input type="checkbox" id="delivery_option_<?php echo $key ?>" name="delivery_options[<?php echo $key ?>]" class="checkbox delivery-option <?php echo $type ?>" <?php if(array_key_exists($key, $selected_options)) echo "checked='checked'" ?> /></td>
+		    <td><?php echo $this->__($description) ?></td>
+		</tr>
+		<?php endforeach; ?>
+	    <?php endforeach; ?>
+	</tbody>
+    </table>
+</div>
+<?php endif; ?>
+<script type="text/javascript">
+//<![CDATA[
+$$('input[id^=delivery_option_]').invoke('on', 'change', function() {
+    refreshQuotes(true);
+});
+$$('input[id^=delivery_option_]').each(function(control) {
+   control.disabled = false; 
+});
+$$('input[name=destination-type]').each(function (control) {
+    Event.observe(control, 'click', function () {
+	delivery_type_update(control.id);
+	refreshQuotes(true);
+    });
+});
+delivery_type_update('<?php echo $this->getDestinationType(); ?>');
+//]]>
+</script>
+<?php endif; ?>

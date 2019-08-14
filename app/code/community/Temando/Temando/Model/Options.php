@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Options Model
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
 class Temando_Temando_Model_Options extends Varien_Data_Collection
 {
     

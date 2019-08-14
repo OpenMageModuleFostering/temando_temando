@@ -1,15 +1,23 @@
 <?php
+/**
+ * Shipment Controller
+ *
+ * @package     Temando_Temando
+ * @author      Temando Magento Team <marketing@temando.com>
+ */
+class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Controller_Action
+{
 
-class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Controller_Action {
-
-    public function indexAction() {
+    public function indexAction()
+    {
 	$this->loadLayout()
 		->_setActiveMenu('temando/shipment')
 		->_addBreadcrumb(Mage::helper('adminhtml')->__('Shipment Manager'), Mage::helper('adminhtml')->__('Shipment Manager'))
 		->renderLayout();
     }
 
-    public function editAction() {
+    public function editAction()
+    {
 	$id = $this->getRequest()->getParam('id');
 	$shipment = Mage::getModel('temando/shipment')->load($id);
 	/* @var $shipment Temando_Temando_Model_Shipment */
@@ -44,7 +52,8 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	}
     }
 
-    public function saveAction() {
+    public function saveAction()
+    {
 	if ($data = $this->getRequest()->getPost()) {
 	    $shipment = Mage::getModel('temando/shipment');
 	    /* @var $shipment Temando_Temando_Model_Shipment */
@@ -113,8 +122,8 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 
 		if ($shipment->getBoxes()) {
 		    $shipment->fetchQuotes(
-			    Mage::helper('temando')->getConfigData('general/username'), 
-			    Mage::helper('temando')->getConfigData('general/password'), 
+			    Mage::helper('temando')->getConfigData('general/username'),
+			    Mage::helper('temando')->getConfigData('general/password'),
 			    Mage::helper('temando')->getConfigData('general/sandbox')
 		    );
 		}
@@ -127,7 +136,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 			break;
 		    case 'next':
 			// TODO: save and next
-		    default:    
+		    default:
 			$this->_redirect('*/*/');
 			break;
 		}
@@ -142,7 +151,8 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	$this->_redirect('*/*/');
     }
 
-    protected function _validateFormData(&$data) {
+    protected function _validateFormData(&$data)
+    {
 	$return = array(
 	    'notices' => array(),
 	    'errors' => array(),
@@ -166,7 +176,8 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	return $return;
     }
 
-    public function bookAction() {
+    public function bookAction()
+    {
 	$shipment_id = $this->getRequest()->getParam('shipment');
 	$shipment = Mage::getModel('temando/shipment')
 		->load($shipment_id);
@@ -311,7 +322,8 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	$this->_redirect('*/*/edit', array('id' => $shipment_id));
     }
 
-    protected function _makeBooking(Temando_Temando_Model_Shipment $shipment, Temando_Temando_Model_Quote $quote) {
+    protected function _makeBooking(Temando_Temando_Model_Shipment $shipment, Temando_Temando_Model_Quote $quote)
+    {
 	$order = $shipment->getOrder();
 	/* @var $order Mage_Sales_Model_Order */
 
@@ -320,10 +332,12 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	$request
 		->setMagentoQuoteId($order->getQuoteId())
 		->setDestination(
-			$shipment->getDestinationCountry(), 
-			$shipment->getDestinationPostcode(), 
-			$shipment->getDestinationCity(), 
-			$shipment->getDestinationStreet())
+			$shipment->getDestinationCountry(),
+			$shipment->getDestinationPostcode(),
+			$shipment->getDestinationCity(),
+			$shipment->getDestinationStreet(),
+                        $shipment->getDestinationType())
+                ->setDeliveryOptions($shipment->getDeliveryOptionsArray())
 		->setItems($shipment->getBoxes()->getItems());
 	if ($shipment->getReadyDate()) {
 	    $request->setReady(strtotime($shipment->getReadyDate()), $shipment->getReadyTime());
@@ -341,7 +355,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	    'companyName' => $shipment->getDestinationCompanyName(),
 	    'street' => $shipment->getDestinationStreet(),
 	    'suburb' => $shipment->getDestinationCity(),
-	    'code' => sprintf("%04d", $shipment->getDestinationPostcode()),
+	    'code' => $shipment->getDestinationPostcode(),
 	    'country' => $shipment->getDestinationCountry(),
 	    'phone1' => $shipment->getDestinationPhone(),
 	    'phone2' => '',
@@ -369,14 +383,15 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	$api = Mage::getModel('temando/api_client');
 	/* @var $api Temando_Temando_Model_Api_Client */
 	$api->connect(
-		Mage::helper('temando')->getConfigData('general/username'), 
-		Mage::helper('temando')->getConfigData('general/password'), 
+		Mage::helper('temando')->getConfigData('general/username'),
+		Mage::helper('temando')->getConfigData('general/password'),
 		Mage::helper('temando')->getConfigData('general/sandbox')
 	);
 	return $api->makeBooking($request_array);
     }
 
-    protected function _processBookingResult($booking_result, Temando_Temando_Model_Shipment $shipment, Temando_Temando_Model_Quote $quote) {
+    protected function _processBookingResult($booking_result, Temando_Temando_Model_Shipment $shipment, Temando_Temando_Model_Quote $quote)
+    {
 	if ($booking_result) {
 
 	    if (!isset($booking_result->bookingNumber)) {
@@ -481,7 +496,8 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
     /**
      * Serve shipping labels
      */
-    public function consignmentAction() {
+    public function consignmentAction()
+    {
 	$shipment = Mage::getModel('temando/shipment')->load($this->getRequest()->getParam('id'));
 	/* @var $shipment Temando_Temando_Model_Shipment */
 
@@ -517,5 +533,4 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	    }
 	}
     }
-
 }
