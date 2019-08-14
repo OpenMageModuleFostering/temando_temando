@@ -11,6 +11,18 @@ class Temando_Temando_Adminhtml_WizardController extends Mage_Adminhtml_Controll
     const ERR_NO_SOAP = 'SOAP is not enabled on this server.  Please enable SOAP to use the Temando plugin.';
 
     /**
+     * Check admin permissions for this controller
+     * Add a comment to this line
+     *
+     * @return boolean
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('temando/configuration/wizard');
+    } 
+
+    /**
      * Adminhtml controller that redirects to the front end view and starts the wizard.
      * @return type
      */

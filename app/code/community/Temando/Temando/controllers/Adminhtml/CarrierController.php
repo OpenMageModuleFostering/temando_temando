@@ -12,6 +12,18 @@ class Temando_Temando_Adminhtml_CarrierController extends Mage_Adminhtml_Control
     const CARRIER_SUCCESS = 'Synchronized carriers';
 
     /**
+     * Check admin permissions for this controller
+     * Add a comment to this line
+     *
+     * @return boolean
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('temando');
+    } 
+    
+    /**
      * Adminhtml controller that refreshes carriers in the temando_carrier table.
      * @return
      */

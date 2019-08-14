@@ -6,6 +6,18 @@
  * @author      Temando Magento Team <marketing@temando.com>
  */
 class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller_Action {
+
+    /**
+     * Check admin permissions for this controller
+     * Add a comment to this line
+     *
+     * @return boolean
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('temando');
+    } 
     
     /**
      * Return JSON-encoded array of country regions

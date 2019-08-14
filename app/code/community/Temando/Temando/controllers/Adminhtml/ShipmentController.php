@@ -8,6 +8,18 @@
 class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Controller_Action
 {
 
+    /**
+     * Check admin permissions for this controller
+     * Add a comment to this line
+     *
+     * @return boolean
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('temando/shipment');
+    } 
+
     public function indexAction()
     {
 	$this->loadLayout()
