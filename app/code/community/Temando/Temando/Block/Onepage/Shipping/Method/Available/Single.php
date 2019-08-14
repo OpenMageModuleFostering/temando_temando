@@ -19,10 +19,12 @@ class Temando_Temando_Block_Onepage_Shipping_Method_Available_Single
         // line below to actually check if it is the only method
         return false;
         $groups = $this->getShippingRates();
-	if(count($groups) == 1) {
-	    $rates = array_pop($groups);
-	    if(count($rates) == 1) return true;
-	}
+        if (count($groups) == 1) {
+            $rates = array_pop($groups);
+            if (count($rates) == 1) {
+                return true;
+            }
+        }
         return false;
     }
     
@@ -32,11 +34,11 @@ class Temando_Temando_Block_Onepage_Shipping_Method_Available_Single
     public function getOptions()
     {
         $options = Mage::registry('temando_current_options');
-	if(!$options) {
-	    $options = array();
-	}
-	
-	return $options;
+        if (!$options) {
+            $options = array();
+        }
+        
+        return $options;
     }
     
     
@@ -49,12 +51,11 @@ class Temando_Temando_Block_Onepage_Shipping_Method_Available_Single
      */
     public function getClassFromRateCode($code)
     {
-	$class = '';
-	if(preg_match('/^temando_/', $code)) {
-	    preg_match_all('/(insurance|carbonoffset|footprints)_(Y|N)/', $code, $matches);
-	    $class = implode(' ', $matches[0]);
-	}
-	return $class;
+        $class = '';
+        if (preg_match('/^temando_/', $code)) {
+            preg_match_all('/(insurance|carbonoffset|footprints)_(Y|N)/', $code, $matches);
+            $class = implode(' ', $matches[0]);
+        }
+        return $class;
     }
-    
 }

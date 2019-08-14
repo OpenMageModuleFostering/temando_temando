@@ -18,7 +18,7 @@ class Temando_Temando_Model_System_Config_Source_Unit_Measure
     {
         $this->_options = array(
             self::CENTIMETRES => 'Centimetres',
-        	self::METRES      => 'Metres',
+            self::METRES      => 'Metres',
             self::INCHES      => 'Inches',
             self::FEET        => 'Feet',
         );
@@ -28,10 +28,9 @@ class Temando_Temando_Model_System_Config_Source_Unit_Measure
     {
         $this->_brief_options = array(
             self::CENTIMETRES => 'cm',
-        	self::METRES      => 'm',
+            self::METRES      => 'm',
             self::INCHES      => 'in.',
             self::FEET        => 'ft.',
         );
     }
-    
 }

@@ -12,7 +12,9 @@ class Temando_Temando_Model_Option_Footprints
     protected $_id = 'footprints';
     protected $_name = 'Include Charitable Micro donation';
     protected $_action_type = 'footprints';
-    protected $_desc = "Include a $1 donation to charity in your transaction. The Footprints Network aggregates thousands of donations from online transactions to fund community development projects. Visit Footprintsnetwork.org to view projects.";
+    protected $_desc = "Include a $1 donation to charity in your transaction.
+    The Footprints Network aggregates thousands of donations from online
+    transactions to fund community development projects. Visit Footprintsnetwork.org to view projects.";
     
     /**
      * Sets the current "setting" for footprints.

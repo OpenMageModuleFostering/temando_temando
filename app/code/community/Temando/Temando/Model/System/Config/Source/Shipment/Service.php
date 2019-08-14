@@ -21,5 +21,4 @@ class Temando_Temando_Model_System_Config_Source_Shipment_Service
             self::STANDARD      => Mage::helper('temando')->__('Standard'),
         );
     }
-    
 }

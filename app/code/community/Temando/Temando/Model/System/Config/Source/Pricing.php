@@ -24,7 +24,8 @@ class Temando_Temando_Model_System_Config_Source_Pricing
             self::DYNAMIC                      => Mage::helper('temando')->__('Dynamic Pricing (All)'),
             self::DYNAMIC_CHEAPEST             => Mage::helper('temando')->__('Dynamic Pricing (Cheapest only)'),
             self::DYNAMIC_FASTEST              => Mage::helper('temando')->__('Dynamic Pricing (Fastest only)'),
-            self::DYNAMIC_FASTEST_AND_CHEAPEST => Mage::helper('temando')->__('Dynamic Pricing (Cheapest and Fastest only)'),
+            self::DYNAMIC_FASTEST_AND_CHEAPEST => Mage::helper('temando')
+                ->__('Dynamic Pricing (Cheapest and Fastest only)'),
         );
     }
     

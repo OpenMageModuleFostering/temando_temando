@@ -19,10 +19,19 @@
                     <show_in_store>1</show_in_store>
                     <comment><![CDATA[<div style="padding:10px;background-color:#fff;border:1px solid #ddd;margin-bottom:7px;">If you don't have a Temando account, you can <a href="https://www.temando.com/register/" target="_blank">Sign Up</a> immediately.</div>]]></comment>
                     <fields>
+                        <version translate="label">
+                            <label>Version</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>temando/adminhtml_system_config_form_field_version</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </version>
                         <sandbox translate="label">
                             <label>Sandbox</label>
                             <frontend_type>select</frontend_type>
-                            <sort_order>20</sort_order>
+                            <sort_order>30</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -32,7 +41,7 @@
                         <client>
                             <label>Client ID</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
+                            <sort_order>40</sort_order>
                             <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <backend_model>temando/system_config_backend_form_field_required_text</backend_model>
                             <show_in_default>1</show_in_default>
@@ -44,7 +53,7 @@
                             <frontend_type>text</frontend_type>
                             <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <backend_model>temando/system_config_backend_form_field_required_text</backend_model>
-                            <sort_order>40</sort_order>
+                            <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -54,7 +63,7 @@
                             <frontend_type>password</frontend_type>
                             <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <backend_model>temando/system_config_backend_form_field_required_text</backend_model>
-                            <sort_order>50</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -63,7 +72,7 @@
                             <label>Payment Type</label>
                             <frontend_type>select</frontend_type>
                             <source_model>temando/system_config_source_payment</source_model>
-                            <sort_order>60</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -454,7 +463,6 @@
                         <region translate="label">
                             <label>Region/State</label>
                             <frontend_type>text</frontend_type>
-                            <frontend_model>temando/adminhtml_system_config_form_field_required</frontend_model>
                             <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
@@ -548,6 +556,36 @@
                         </warehouse_button>
                     </fields>
                 </origin>
+                <avs translate="label">
+                    <label>Address Validation System</label>
+                    <frontend_model>temando/adminhtml_system_config_form_fieldset_general</frontend_model>
+                    <sort_order>150</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <frontend translate="label">
+                            <label>Enabled on Front-end</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use JavaScript Address Validation System on Frontend]]></comment>
+                        </frontend>
+                        <backend translate="label">
+                            <label>Enabled on Back-end</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment><![CDATA[Use JavaScript Address Validation System on Backend]]></comment>
+                        </backend>                        
+                    </fields>
+                </avs>
             </groups>
         </temando>
         <carriers>

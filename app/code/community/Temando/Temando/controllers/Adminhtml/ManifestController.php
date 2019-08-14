@@ -18,13 +18,16 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
     {
         return Mage::getSingleton('admin/session')
             ->isAllowed('temando/manifest');
-    } 
+    }
     
     public function indexAction()
     {
         $this->loadLayout()
             ->_setActiveMenu('temando/manifest')
-            ->_addBreadcrumb(Mage::helper('adminhtml')->__('Manage Manifests'), Mage::helper('adminhtml')->__('Manage Manifests'))
+            ->_addBreadcrumb(
+                Mage::helper('adminhtml')->__('Manage Manifests'),
+                Mage::helper('adminhtml')->__('Manage Manifests')
+            )
             ->renderLayout();
     }
 
@@ -67,10 +70,10 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
 
         $carriers_options = Mage::getModel('temando/shipping_carrier_temando_source_method')->getOptions();
         foreach ($carriers as $carrierId) {
-	    
-	    if(!$carrierId)
-		continue;
-	    
+        
+            if (!$carrierId) {
+                continue;
+            }
             $request = array(
                 'carrierId' => $carrierId,
                 'location'  => $this->getRequest()->getParam('warehouse_id'),
@@ -81,12 +84,15 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
 
             try {
                 $api = Mage::getModel('temando/api_client');
-		/* @var $api Temando_Temando_Model_Api_Client */
+        /* @var $api Temando_Temando_Model_Api_Client */
                 $api->connect(
                     Mage::helper('temando')->getConfigData('general/username'),
                     Mage::helper('temando')->getConfigData('general/password'),
-                    Mage::helper('temando')->getConfigData('general/sandbox'));
+                    Mage::helper('temando')->getConfigData('general/sandbox')
+                );
+
                 $result = $api->getManifest($request);
+
                 if (!$result) {
                     throw new Exception('Cannot send request');
                 }
@@ -126,7 +132,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
                         ->addSuccess($this->__('Manifest successful added for carrier: ') . $carrier_name);
             } catch (Exception $e) {
                 $this->_getSession()
-                        ->addError($e->getMessage());
+                    ->addError($e->getMessage());
             }
         }
 
@@ -143,7 +149,9 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
         }
         
         if (count($carriers) != 1) {
-            $this->_getSession()->addError($this->__('Please only select one carrier at a time to retrieve a previous manifest.'));
+            $this->_getSession()->addError(
+                $this->__('Please only select one carrier at a time to retrieve a previous manifest.')
+            );
             $this->_redirect('*/*/');
         } else {
             $carriers_options = Mage::getModel('temando/shipping_carrier_temando_source_method')->getOptions();
@@ -158,11 +166,13 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
             );
             try {
                 $api = Mage::getModel('temando/api_client');
-		/* @var $api Temando_Temando_Model_Api_Client */
-		$api->connect(
+                /* @var $api Temando_Temando_Model_Api_Client */
+                $api->connect(
                     Mage::helper('temando')->getConfigData('general/username'),
                     Mage::helper('temando')->getConfigData('general/password'),
-                    Mage::helper('temando')->getConfigData('general/sandbox'));
+                    Mage::helper('temando')->getConfigData('general/sandbox')
+                );
+
                 $result = $api->getManifest($request);
                 if (!$result) {
                     throw new Exception('Cannot send request');
@@ -181,15 +191,22 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
                             ->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
                             ->setHeader('Content-type', $result->manifestDocumentType, true)
                             ->setHeader('Content-Length', $length)
-                            ->setHeader('Content-Disposition', 'attachment; filename="manifest-' . $carrierId . '-' . $post['from'] . '.pdf"')
-                            ->setHeader('Last-Modified', date('r'));
+                            ->setHeader(
+                                'Content-Disposition',
+                                'attachment; filename="manifest-' .
+                                $carrierId . '-' . $post['from'] . '.pdf"'
+                            )
+                            ->setHeader(
+                                'Last-Modified',
+                                date('r')
+                            );
                     $this->getResponse()->clearBody();
                     $this->getResponse()->sendHeaders();
                     print $doc;
-                }	    
+                }
             } catch (Exception $e) {
                 $this->_getSession()
-                        ->addError($e->getMessage());
+                    ->addError($e->getMessage());
                 $this->_redirect('*/*/');
             }
         }
@@ -214,9 +231,16 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
                     ->setHttpResponseCode(200)
                     ->setHeader('Pragma', 'public', true)
                     ->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
-                    ->setHeader('Content-type', $manifest->getManifestDocumentType(), true)
+                    ->setHeader(
+                        'Content-type',
+                        $manifest->getManifestDocumentType(),
+                        true
+                    )
                     ->setHeader('Content-Length', $document_length)
-                    ->setHeader('Content-Disposition', 'attachment; filename="manifest-'.$manifest->getId().$extension.'"')
+                    ->setHeader(
+                        'Content-Disposition',
+                        'attachment; filename="manifest-'.$manifest->getId().$extension.'"'
+                    )
                     ->setHeader('Last-Modified', date('r'));
                 $this->getResponse()->clearBody();
                 $this->getResponse()->sendHeaders();
@@ -277,7 +301,8 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
                     Mage::helper('temando')->getConfigData('general/username'),
                     Mage::helper('temando')->getConfigData('general/password'),
                     Mage::helper('temando')->getConfigData('general/sandbox'),
-                    true);
+                    true
+                );
                 $result = $api->confirmManifest($request);
                 if (!$result) {
                     throw new Exception('Cannot send request');
@@ -285,7 +310,11 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
 
                 $carrier_name = $carriers_options[$manifest->getCarrierId()];
                 if (!isset($result->manifestDocument) || !((string)$result->manifestDocument)) {
-                    throw new Exception('No data for carrier: ' . $carrier_name . 'and date ' . $manifest->getStartDate());
+                    throw new Exception(
+                        'No data for carrier: ' .
+                        $carrier_name . 'and date ' .
+                        $manifest->getStartDate()
+                    );
                 }
 
                 if (isset($result->manifestDocumentType)) {
@@ -304,14 +333,18 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
                 $manifest->setData('type', 'Confirmed');
                 $manifest->save();
                 $this->_getSession()
-                        ->addSuccess($this->__('Manifest successful confirmed for carrier: ' . $carrier_name . ' and date ' . $manifest->getStartDate()));
+                    ->addSuccess(
+                        $this->__(
+                            'Manifest successful confirmed for carrier: ' .
+                            $carrier_name . ' and date ' . $manifest->getStartDate()
+                        )
+                    );
             } catch (Exception $e) {
                 $this->_getSession()
-                        ->addError($e->getMessage());
+                    ->addError($e->getMessage());
             }
         }
 
         $this->_redirect('*/*/');
     }
-    
 }

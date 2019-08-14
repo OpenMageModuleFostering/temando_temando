@@ -49,7 +49,7 @@ class Temando_Temando_Model_System_Config_Source_Shipment_Packaging
      */
     public function getOptionId($label)
     {
-	return array_search(strtolower(trim($label)), array_map('strtolower', $this->getOptions()));
+        return array_search(strtolower(trim($label)), array_map('strtolower', $this->getOptions()));
     }
     
 }

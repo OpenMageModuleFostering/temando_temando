@@ -8,7 +8,8 @@
 class Temando_Temando_Block_Wizard_Html extends Mage_Install_Block_Abstract
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 

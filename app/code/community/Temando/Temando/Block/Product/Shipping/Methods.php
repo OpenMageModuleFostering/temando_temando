@@ -10,8 +10,8 @@ class Temando_Temando_Block_Product_Shipping_Methods extends Mage_Core_Block_Tem
 
     public function getEstimateRates()
     {
-	$rates = Mage::registry('product_rates');
-	return $rates;
+        $rates = Mage::registry('product_rates');
+        return $rates;
         //return Mage::registry('product_rates');
     }
 

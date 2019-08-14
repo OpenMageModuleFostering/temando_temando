@@ -34,11 +34,11 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Insurance
 
     public function isAdminSelect()
     {
-        if ($this->getShipment() && !is_null(Mage::getSingleton('adminhtml/session')->getData('insurance_' . $this->getShipment()->getId()))) {
+        if ($this->getShipment() && !is_null(
+            Mage::getSingleton('adminhtml/session')->getData('insurance_' . $this->getShipment()->getId())
+        )) {
             return true;
         }
-
         return false;
     }
-    
 }

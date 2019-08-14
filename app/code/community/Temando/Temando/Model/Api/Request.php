@@ -10,7 +10,7 @@
  * @method array  getDeliveryOptions()
  */
 class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
-{ 
+{
     /**
      * @var Temando_Temando_Model_Api_Request_Anythings
      */
@@ -47,6 +47,7 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
         $this->_anythings = Mage::getModel('temando/api_request_anythings');
         $this->_anywhere = Mage::getModel('temando/api_request_anywhere');
         $this->_anytime = Mage::getModel('temando/api_request_anytime');
+        $this->setGoodsCurrency(Mage::helper('temando')->getCurrencyCode());
     }
     
     public function setItems($items)
@@ -55,8 +56,13 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
         return $this;
     }
     
-    public function setDestination($country, $postcode, $city, $street = null, $destinationType = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE)
-    {
+    public function setDestination(
+        $country,
+        $postcode,
+        $city,
+        $street = null,
+        $destinationType = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_RESIDENCE
+    ) {
         $this->_anywhere
             ->setDestinationCountry($country)
             ->setDestinationPostcode($postcode)
@@ -112,10 +118,12 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
 
         try {
             $api = Mage::getModel('temando/api_client')->connect(
-			$this->getUsername(), $this->getPassword(), $this->getSandbox()
-	    );
-            $quotes = $api->getQuotes($request);           
-        } catch(Exception $e) {
+                $this->getUsername(),
+                $this->getPassword(),
+                $this->getSandbox()
+            );
+            $quotes = $api->getQuotes($request);
+        } catch (Exception $e) {
             throw $e;
         }
         
@@ -168,7 +176,7 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
             return false;
         }
         
-        $goodsValue = $this->_anythings->getGoodsValue();        
+        $goodsValue = $this->_anythings->getGoodsValue();
         $return = array(
             'anythings' => $this->_anythings->toRequestArray(),
             'anywhere' => $this
@@ -180,6 +188,7 @@ class Temando_Temando_Model_Api_Request extends Mage_Core_Model_Abstract
         if ($goodsValue) {
             $return['general'] = array(
                 'goodsValue' => round($goodsValue, 2),
+                'goodsCurrency' => $this->getGoodsCurrency()
             );
         }
 

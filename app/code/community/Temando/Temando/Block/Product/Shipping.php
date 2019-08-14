@@ -71,15 +71,13 @@ class Temando_Temando_Block_Product_Shipping extends Mage_Core_Block_Template
         return '';
     }
 
-    public function getCountryOptions() 
+    public function getCountryOptions()
     {
-	return Mage::helper('temando')->getAllowedCountries();
+        return Mage::helper('temando')->getAllowedCountries();
     }
 
     public function getQty()
     {
         return '1';
     }
-
-
 }

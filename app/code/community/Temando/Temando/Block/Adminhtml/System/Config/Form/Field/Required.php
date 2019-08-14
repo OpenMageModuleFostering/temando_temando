@@ -31,7 +31,8 @@ class Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Required
     protected function _addStar($html)
     {
         $search = '<label for="' . $this->_element->getHtmlId() . '">' . $this->_element->getLabel() . '</label>';
-        $replacement = '<label for="' . $this->_element->getHtmlId() . '">' . $this->_element->getLabel() . ' <span class="required">*</span></label>';
+        $replacement = '<label for="' . $this->_element->getHtmlId() . '">' . $this->_element->getLabel() .
+        ' <span class="required">*</span></label>';
         
         return str_replace($search, $replacement, $html);
     }

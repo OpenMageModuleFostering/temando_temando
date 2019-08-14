@@ -8,7 +8,6 @@
 class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Products
     extends Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract
 {
-	
     /**
      * Gets a Magento catalog product belonging to a Magento order item.
      *

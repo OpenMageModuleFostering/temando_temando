@@ -13,13 +13,14 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Quotes
     protected $_fastest_quote_id;
     protected $_customer_selected_quote_id;
     
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         if (($quotes = $this->getQuotes()->load())) {
-            if(($cheapest_quote = $quotes->getCheapest())) {
+            if (($cheapest_quote = $quotes->getCheapest())) {
                 $this->_cheapest_quote_id = $cheapest_quote->getId();
             }
-            if(($fastest_quote = $quotes->getFastest())) {
+            if (($fastest_quote = $quotes->getFastest())) {
                 $this->_fastest_quote_id = $fastest_quote->getId();
             }
         }
@@ -59,9 +60,7 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Quotes
                 $text .= ', ';
             }
             $text .= $this->__('Customer Selected');
-        }	
-        
+        }
         return $text;
     }
-    
 }

@@ -35,7 +35,7 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
     public function _construct()
     {
         parent::_construct();
-	$this->_prepareClient()->_loadDefaultCountry();
+        $this->_prepareClient()->_loadDefaultCountry();
     }
     
     /**
@@ -46,19 +46,19 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
      */
     public function getSuggestions()
     {
-	if(!$this->_validate()) {
-	    return array();
-	}
-	
-	$url = sprintf(self::AVS_URL, strtoupper($this->getCountry()), rawurlencode($this->getQuery()));
-	try {
-	    $this->_client->setUri($url);
+        if (!$this->_validate()) {
+            return array();
+        }
+        
+        $url = sprintf(self::AVS_URL, strtoupper($this->getCountry()), rawurlencode($this->getQuery()));
+        try {
+            $this->_client->setUri($url);
             $rawBody = $this->_client->request(Varien_Http_Client::GET)->getRawBody();
             return Mage::helper('core')->jsonDecode($rawBody, true);
-	} catch (Exception $e) {
-	    Mage::log($e->getMessage(), null, 'temando.log', true);
-	    return array();
-	}
+        } catch (Exception $e) {
+            Mage::log($e->getMessage(), null, 'temando.log', true);
+            return array();
+        }
     }
     
     /**
@@ -68,12 +68,11 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
      */
     protected function _validate()
     {
-	if (strlen(trim($this->getCountry())) === 0 && $this->_defaultCountry) {
-            $this->setCountry($this->_defaultCountry);
+        if (strlen(trim($this->getCountry())) === 0 && $this->_defaultCountry) {
+                $this->setCountry($this->_defaultCountry);
         }
-	return 	strlen(trim($this->getCountry())) > 0 &&
-		strlen(trim($this->getQuery())) > 0;
-	
+        return  strlen(trim($this->getCountry())) > 0 &&
+            strlen(trim($this->getQuery())) > 0;
     }
     
     /**
@@ -83,11 +82,11 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
      */
     protected function _prepareClient()
     {
-	if(!$this->_client) {
-	    $this->_client = new Varien_Http_Client();
-	    $this->_client->setConfig(array('maxredirects' => 0, 'timeout' => 15));
-	}
-	return $this;
+        if (!$this->_client) {
+            $this->_client = new Varien_Http_Client();
+            $this->_client->setConfig(array('maxredirects' => 0, 'timeout' => 15));
+        }
+        return $this;
     }
     
     /**
@@ -97,7 +96,7 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
      */
     protected function _loadDefaultCountry()
     {
-        if(is_null($this->_defaultCountry)) {
+        if (is_null($this->_defaultCountry)) {
             $allowed = Mage::helper('temando')->getAllowedCountries();
             if (count($allowed) === 1) {
                 //one allowed country - load as default
@@ -107,5 +106,4 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
         }
         return $this;
     }
-    
 }

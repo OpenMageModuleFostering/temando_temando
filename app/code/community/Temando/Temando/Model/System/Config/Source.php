@@ -62,7 +62,7 @@ abstract class Temando_Temando_Model_System_Config_Source
         
         foreach ($input as $key => $value) {
             $array[] = array(
-            	'value' => $key,
+                'value' => $key,
                 'label' => $value,
             );
         }

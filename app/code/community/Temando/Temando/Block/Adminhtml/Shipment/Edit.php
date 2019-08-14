@@ -16,56 +16,69 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit
         parent::__construct();
         $this->_blockGroup = 'temando';
         $this->_controller = 'adminhtml_shipment';
-        
         $this->removeButton('save');
         $this->removeButton('delete');
-
         $add_button_method = 'addButton';
         if (!method_exists($this, $add_button_method)) {
             $add_button_method = '_addButton';
         }
 
-        $this->$add_button_method('disabled_pickslip', array(
-	    'label'	=> Mage::helper('temando')->__('Pick Slip'),
-	    'id'	=> 'disabled_pickslip',
-	    'onclick'	=> 'return false',
-	    'class'	=> 'go disabled',
-            'title'     => Mage::helper('temando')->__('Available in the Business Extension')
-	));
+        $this->$add_button_method(
+            'disabled_pickslip',
+            array(
+                'label' => Mage::helper('temando')->__('Pick Slip'),
+                'id'    => 'disabled_pickslip',
+                'onclick'   => 'return false',
+                'class' => 'go disabled',
+                'title'     => Mage::helper('temando')->__('Available in the Business Extension')
+            )
+        );
         
-        if ($this->getShipment()->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING) {
-            $this->$add_button_method('getquote', array(
-                'label' => Mage::helper('temando')->__('Save and Get Quotes'),
-                'id' => 'getquote',
-                'onclick' => 'saveAndGetQuotes()',
-                'value' => '',
-                'class' => 'save',
-            ));
+        if ($this->getShipment()->getStatus() ==
+        Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING) {
+            $this->$add_button_method(
+                'getquote',
+                array(
+                    'label' => Mage::helper('temando')->__('Save and Get Quotes'),
+                    'id' => 'getquote',
+                    'onclick' => 'saveAndGetQuotes()',
+                    'value' => '',
+                    'class' => 'save',
+                )
+            );
         }
         
         if ($this->getShipment()->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::BOOKED) {
             $class = 'go';
             $title = Mage::helper('temando')->__('View Consignment');
             
-	    $labelType = Mage::helper('temando')->getConfigData('options/label_type');
+            $labelType = Mage::helper('temando')->getConfigData('options/label_type');
             $hasConsignment = true;
             
-            if ((!$this->getShipment()->getConsignmentDocument() && $labelType == Temando_Temando_Model_System_Config_Source_Labeltype::STANDARD) || 
-                    (!$this->getShipment()->getLabelDocument() && $labelType == Temando_Temando_Model_System_Config_Source_Labeltype::THERMAL)) {
+            if ((!$this->getShipment()->getConsignmentDocument() &&
+            $labelType == Temando_Temando_Model_System_Config_Source_Labeltype::STANDARD) ||
+            (!$this->getShipment()->getLabelDocument() &&
+            $labelType == Temando_Temando_Model_System_Config_Source_Labeltype::THERMAL)) {
                 $class .= ' disabled';
                 $hasConsignment = false;
                 $title = Mage::helper('temando')->__('No Consignment');
             }
             
-            $this->$add_button_method('consignment', array(
-                'label' => $title,
-                'id' => 'consignment',
-                'onclick' => $hasConsignment ? "window.location = '" . $this->getUrl('*/*/consignment', array('id' => $this->getRequest()->getParam('id'))) . "'" : "",
-                'value' => '',
-                'class' => $class,
-            ));
-	    
-	    $this->_removeButton('reset');
+            $this->$add_button_method(
+                'consignment',
+                array(
+                    'label' => $title,
+                    'id' => 'consignment',
+                    'onclick' => $hasConsignment ? "window.location = '" . $this->getUrl(
+                        '*/*/consignment',
+                        array(
+                            'id' => $this->getRequest()->getParam('id'))
+                    ) . "'" : "",
+                    'value' => '',
+                    'class' => $class,
+                )
+            );
+            $this->_removeButton('reset');
         }
 
         $max_boxes = 40;
@@ -168,7 +181,7 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit
      */
     public function getOrder()
     {
-        if($this->getShipment()) {
+        if ($this->getShipment()) {
             return $this->getShipment()->getOrder();
         }
         return null;
@@ -180,7 +193,13 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit
             return $foo= Mage::helper('temando')->__(
                 'Order # %s | %s',
                 $this->htmlEscape($this->getShipment()->getOrder()->getRealOrderId()),
-                $this->htmlEscape($this->formatDate($this->getShipment()->getOrder()->getCreatedAtDate(), 'medium', true))
+                $this->htmlEscape(
+                    $this->formatDate(
+                        $this->getShipment()->getOrder()->getCreatedAtDate(),
+                        'medium',
+                        true
+                    )
+                )
             );
         }
     }
@@ -225,5 +244,4 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit
         }
         return $products;
     }
-    
 }

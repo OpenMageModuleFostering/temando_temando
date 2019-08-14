@@ -13,7 +13,7 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Status
      */
     protected $_customer_selected_quote = null;
     
-	/**
+    /**
      * Gets the description of the Temando quote selected by the customer.
      *
      * @return Temando_Temando_Model_Quote
@@ -28,5 +28,4 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Status
         return Mage::getModel('temando/system_config_source_shipment_status')
             ->getOptionLabel($this->getShipment()->getStatus());
     }
-    
 }

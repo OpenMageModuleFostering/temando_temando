@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Temando_Temando>
-            <version>1.4.1</version>
+            <version>1.4.5</version>
         </Temando_Temando>
     </modules>
     <global>
@@ -213,6 +213,10 @@
                 <phone1><![CDATA[02 1234 5678]]></phone1>
                 <email><![CDATA[sales@temando.com]]></email>
 	    </origin>
+            <avs>                
+                <frontend><![CDATA[1]]></frontend>
+                <backend><![CDATA[1]]></backend>         
+            </avs>            
         </temando>
         <carriers>
             <temando>
@@ -230,5 +234,5 @@
                 <sort_order>0</sort_order>
             </temando>
         </carriers>
-    </default>
+    </default> 
 </config>

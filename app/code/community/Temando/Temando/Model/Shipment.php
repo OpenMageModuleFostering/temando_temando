@@ -76,10 +76,14 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
     public function getData($key = '', $index = null)
     {
         switch ($key) {
-            case 'selected_quote_description': return $this->getSelectedQuoteDescription();
-            case 'created_at':                 return $this->getCreatedAt();
-            case 'order_number':               return $this->getOrderNumber();
-            case 'shipping_paid':              return $this->getShippingPaid();
+            case 'selected_quote_description':
+                return $this->getSelectedQuoteDescription();
+            case 'created_at':
+                return $this->getCreatedAt();
+            case 'order_number':
+                return $this->getOrderNumber();
+            case 'shipping_paid':
+                return $this->getShippingPaid();
             default:
         }
         return parent::getData($key, $index);
@@ -235,18 +239,20 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
     {
         /* @var $request Temando_Temando_Model_Api_Request */
 
-	$request = Mage::getModel('temando/api_request');
+        $request = Mage::getModel('temando/api_request');
         $request
             ->setUsername($username)
             ->setPassword($password)
             ->setSandbox($sandbox)
             ->setMagentoQuoteId($this->getOrder()->getQuoteId())
+            ->setGoodsCurrency(Mage::app()->getStore($this->getStoreId())->getCurrentCurrencyCode())
             ->setDestination(
                 $this->getDestinationCountry(),
                 $this->getDestinationPostcode(),
                 $this->getDestinationCity(),
                 $this->getDestinationStreet(),
-                $this->getDestinationType())
+                $this->getDestinationType()
+            )
             ->setDeliveryOptions($this->getDeliveryOptionsArray())
             ->setItems($this->getBoxes());
         if ($this->getReadyDate()) {
@@ -368,11 +374,11 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
                     }
                 }
             }
-	    try {
-		$option = Mage::getModel('temando/option_' . $id);
-	    } catch(Exception $e) {
-		$option = false;
-	    }
+            try {
+                $option = Mage::getModel('temando/option_' . $id);
+            } catch (Exception $e) {
+                $option = false;
+            }
             if ($option) {
                 /* @var $option Temando_Temando_Model_Option_Abstract */
                 $option->setForcedValue($value);
@@ -390,8 +396,7 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
      */
     public function isStatusOpened()
     {
-	return
-	    $this->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING;
+        return $this->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING;
     }
 
     /**
@@ -401,7 +406,17 @@ class Temando_Temando_Model_Shipment extends Mage_Core_Model_Abstract
      */
     public function isPickup()
     {
-	return (boolean)$this->getPickupDescription();
+        return (boolean)$this->getPickupDescription();
+    }
+    
+    /**
+     * Gets store ID from shipment order
+     *
+     * @return int
+     */
+    public function getStoreId()
+    {
+        return $this->getOrder()->getStoreId();
     }
 
     /**

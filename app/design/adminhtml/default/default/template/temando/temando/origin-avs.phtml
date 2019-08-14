@@ -1,3 +1,4 @@
+<?php if(Mage::helper('temando')->getConfigData('avs/backend')):?>
 <script type="text/javascript">
 //<![CDATA[
     var address_validation_url = '<?php echo $this->getUrl('etemando/pcs/autocompletecart', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
@@ -9,3 +10,4 @@
     );
 //]]
 </script>
+<?php endif;?>

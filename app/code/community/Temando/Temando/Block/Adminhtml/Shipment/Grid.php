@@ -14,25 +14,31 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid
         parent::__construct();
         $this->setSaveParametersInSession(true);
     }
-    
-    protected function _prepareLayout() {
+
+    protected function _prepareLayout()
+    {
         parent::_prepareLayout();
-        $this->setChild('batch_button', $this->getLayout()->createBlock('adminhtml/widget_button')
-                        ->setData(array(
-                            'label' => Mage::helper('adminhtml')->__('Batch Booking'),
-                            'onclick' => 'return false',
-                            'class' => 'disabled',
-                            'title' => 'Available in the Business Extension'
-                        ))
+        $this->setChild(
+            'batch_button',
+            $this->getLayout()->createBlock('adminhtml/widget_button')->setData(
+                array(
+                    'label' => Mage::helper('adminhtml')->__('Batch Booking'),
+                    'onclick' => 'return false',
+                    'class' => 'disabled',
+                    'title' => 'Available in the Business Extension'
+                )
+            )
         );
         return $this;
     }
 
-    public function getBatchButtonHtml() {
+    public function getBatchButtonHtml()
+    {
         return $this->getChildHtml('batch_button');
     }
 
-    public function getMainButtonsHtml() {
+    public function getMainButtonsHtml()
+    {
         $html = '';
         if ($this->getFilterVisibility()) {
             $html.= $this->getBatchButtonHtml();
@@ -44,15 +50,23 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid
 
     protected function _prepareCollection()
     {
-	$collection = Mage::getModel('temando/shipment')->getCollection();
-        $collection->join('sales/order', 'main_table.order_id=`sales/order`.entity_id', array('increment_id', 'created_at', 'shipping_amount'));
+        $collection = Mage::getModel('temando/shipment')->getCollection();
+        $collection->join(
+            'sales/order',
+            'main_table.order_id=`sales/order`.entity_id',
+            array(
+                'increment_id',
+                'created_at',
+                'shipping_amount'
+            )
+        );
         /* @var $collection Temando_Temando_Model_Shipment */
-	
-	$collection->getSelect()->order(array(
-	    'main_table.status ASC',
-	    'created_at DESC'
-	));
-	
+
+        $collection->getSelect()->order(array(
+            'main_table.status ASC',
+            'created_at DESC'
+        ));
+
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -61,41 +75,41 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid
     {
         $this->addColumn('order_number', array(
             'header' => Mage::helper('temando')->__('Order #'),
-	    'width' => '100px',
+            'width' => '100px',
             'index' => 'increment_id',
         ));
 
         $this->addColumn('created_at', array(
             'header' => Mage::helper('temando')->__('Purchased On'),
-	    'width' => '160px',
-	    'type' => 'datetime',
+            'width' => '160px',
+            'type' => 'datetime',
             'index' => 'created_at',
-	    'filter_index' => '`sales/order`.created_at',
+            'filter_index' => '`sales/order`.created_at',
         ));
-        
+
         $this->addColumn('status', array(
             'header' => Mage::helper('temando')->__('Status'),
             'index' => 'status',
             'type'  => 'options',
             'width' => '100px',
             'options' => Mage::getSingleton('temando/system_config_source_shipment_status')->getOptions(),
-	    'filter_index' => 'main_table.status',
+            'filter_index' => 'main_table.status',
         ));
-        
+
         $this->addColumn('anticipated_cost', array(
             'header' => Mage::helper('temando')->__('Anticipated Cost'),
             'align' => 'left',
-	    'type'  => 'currency',
-	    'currency_code' => Mage::helper('temando')->getDefaultCurrencyCode(),
+            'type'  => 'currency',
             'index' => 'anticipated_cost',
+            'renderer'  => new Temando_Temando_Block_Adminhtml_Shipment_Grid_Renderer_Currency()
         ));
-        
+
         $this->addColumn('shipping_paid', array(
             'header' => Mage::helper('temando')->__('Shipping Paid'),
             'align' => 'left',
-	    'type'  => 'currency',
-	    'currency_code' => Mage::app()->getStore()->getCurrentCurrencyCode(),
+            'type'  => 'currency',
             'index' => 'shipping_amount',
+            'renderer'  => new Temando_Temando_Block_Adminhtml_Shipment_Grid_Renderer_Shipcurrency()
         ));
 
         $this->addColumn('selected_quote_description', array(
@@ -103,7 +117,7 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid
             'align' => 'left',
             'index' => 'customer_selected_quote_description',
         ));
-	
+
         $this->addColumn('action', array(
             'header' => Mage::helper('temando')->__('Action'),
             'width' => '100',
@@ -124,11 +138,10 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid
 
         return parent::_prepareColumns();
     }
-   
+
 
     public function getRowUrl($row)
     {
         return $this->getUrl('*/*/edit', array('id' => $row->getId()));
     }
-
 }

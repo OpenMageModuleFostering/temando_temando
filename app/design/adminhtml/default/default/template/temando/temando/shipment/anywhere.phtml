@@ -103,6 +103,7 @@ $_shipment = $this->getShipment();
         </table>
     </div>
 </div>
+<?php if(Mage::helper('temando')->getConfigData('avs/backend')):?>
 <script type="text/javascript">
 //<[CDATA[
 var shipping_estimator_url = '<?php echo $this->getUrl('etemando/pcs/autocompletecart', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
@@ -114,3 +115,4 @@ var avs = new Avs(
 );
 //]]>
 </script>
+<?php endif;?>

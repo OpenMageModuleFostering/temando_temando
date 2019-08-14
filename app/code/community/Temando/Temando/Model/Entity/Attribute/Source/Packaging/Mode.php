@@ -64,5 +64,5 @@ class Temando_Temando_Model_Entity_Attribute_Source_Packaging_Mode
     {
         return Mage::getResourceModel('eav/entity_attribute')
             ->getFlatUpdateSelect($this->getAttribute(), $store);
-    }   
+    }
 }

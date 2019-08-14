@@ -11,7 +11,9 @@ class Temando_Temando_Model_Option_Carbonoffset extends Temando_Temando_Model_Op
     protected $_id = 'carbonoffset';
     protected $_name = 'Include Carbon Offset';
     protected $_action_type = 'carbon';
-    protected $_desc = "The Gaia Partnership's CO2counter calculates the carbon emissions that are attributed to your transport needs. If you do not wish to offset the carbon emissions from your transport service please unselect the tick box above.";
+    protected $_desc = "The Gaia Partnership's CO2counter calculates the carbon emissions that are attributed to
+    your transport needs. If you do not wish to offset the carbon emissions from your transport service please
+    unselect the tick box above.";
     
     /**
      * Sets the current "setting" for carbon offsets.
@@ -40,7 +42,7 @@ class Temando_Temando_Model_Option_Carbonoffset extends Temando_Temando_Model_Op
         return $this;
     }
     
-	/**
+    /**
      * Sets the markup amount.
      *
      * @param float $value

@@ -11,7 +11,8 @@ class Temando_Temando_Model_Option_Insurance extends Temando_Temando_Model_Optio
     protected $_id = 'insurance';
     protected $_name = 'Include Delivery Insurance';
     protected $_action_type = 'insurance';
-    protected $_desc = 'For your convenience, the company arranging the transport of your newly purchased item provides you with insurance for a nominal fee.';
+    protected $_desc = 'For your convenience, the company arranging the transport of your newly purchased item
+    provides you with insurance for a nominal fee.';
     
     /**
      * Sets the current "setting" for insurance.

@@ -56,7 +56,7 @@ abstract class Temando_Temando_Model_System_Config_Source_Unit
     
     public function getOptionValue($value)
     {
-	return array_search($value, array_flip($this->_brief_options));
+        return array_search($value, array_flip($this->_brief_options));
     }
     
 }

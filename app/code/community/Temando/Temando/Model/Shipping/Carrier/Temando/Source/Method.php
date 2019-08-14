@@ -36,47 +36,46 @@ class Temando_Temando_Model_Shipping_Carrier_Temando_Source_Method
         $carriers = Mage::getModel('temando/carrier')->getCollection();
         $carriers->setOrder('company_name', 'ASC');
         foreach ($carriers as $carrier) {
-	    if(!$carrier->getCarrierId())
-		continue;
-	    
+            if (!$carrier->getCarrierId()) {
+                continue;
+            }
             $options[$carrier->getCarrierId()] = $carrier->getCompanyName();
         }
-
         return $options;
-    }  
+    }
     
     /**
      * Gets all the options for html form.
      * 
      * @return array ( 0 => array(
-     *		'label' = 'my label',
-     *		'value' = 'my value'
-     *		)
+     *      'label' = 'my label',
+     *      'value' = 'my value'
+     *      )
      * );
      */
     public function getOptionsForForm($enabledOnly = false)
     {
-	$options = array();
+        $options = array();
         $carriers = Mage::getModel('temando/carrier')->getCollection();
         $carriers->setOrder('company_name', 'ASC');
         foreach ($carriers as $carrier) {
-	    if(!$carrier->getCarrierId())
-		continue;
-	    
-	    //skip carriers which are not allowed in config
-	    if($enabledOnly) {
-		$allowedCarriers = explode(',', Mage::getStoreConfig('carriers/temando/allowed_methods'));
-		if(!in_array($carrier->getCarrierId(), $allowedCarriers)) {
-		    continue;
-		}
-	    }
-	    
-	    $options[] = array(
-		'label' => $carrier->getCompanyName(),
-		'value' => $carrier->getCarrierId()
-	    );
+            if (!$carrier->getCarrierId()) {
+                continue;
+            }
+            
+            //skip carriers which are not allowed in config
+            if ($enabledOnly) {
+                $allowedCarriers = explode(',', Mage::getStoreConfig('carriers/temando/allowed_methods'));
+                if (!in_array($carrier->getCarrierId(), $allowedCarriers)) {
+                    continue;
+                }
+            }
+            
+            $options[] = array(
+            'label' => $carrier->getCompanyName(),
+            'value' => $carrier->getCarrierId()
+            );
         }
-
         return $options;
-    }      
+    }
 }

@@ -5,9 +5,9 @@
  * @package     Temando_Temando
  * @author      Temando Magento Team <marketing@temando.com>
  */
-class Temando_Temando_Block_Adminhtml_Manifest_Grid_Renderer_Checkbox extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Massaction
+class Temando_Temando_Block_Adminhtml_Manifest_Grid_Renderer_Checkbox
+    extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Massaction
 {
-
     protected function _getCheckboxHtml($value, $checked)
     {
         $disabled = '';
@@ -17,7 +17,8 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid_Renderer_Checkbox extends Ma
             $checked = '';
         }
 
-        return '<input type="checkbox" name="'.$this->getColumn()->getName().'" value="' . $value . '" class="massaction-checkbox"'.$checked.$disabled.' />';
+        return '<input type="checkbox" name="'.$this->getColumn()->getName().
+        '" value="' . $value . '" class="massaction-checkbox"'.$checked.$disabled.' />';
     }
     /**
      * Renders grid column
@@ -30,9 +31,6 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid_Renderer_Checkbox extends Ma
         if ($row->getType() == 'Confirmed') {
             $this->setDisabledRow(true);
         }
-
         return parent::render($row);
     }
-
 }
- 

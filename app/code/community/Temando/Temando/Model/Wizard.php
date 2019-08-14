@@ -8,17 +8,21 @@
 class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
 {
 
-    const ERR_WHS_SYNC = 'An error occured when synchronizing with temando.com.  Origin location not saved on temando.com.';
+    const ERR_WHS_SYNC = 'An error occured when synchronizing with temando.com.
+                            Origin location not saved on temando.com.';
     const SUC_WHS_SYNC = 'Origin location saved on temando.com.';
 
-    public function _construct() {
+    public function _construct()
+    {
         parent::_construct();
     }
 
     /**
      * Creates the cancel url from the current admin url
      */
-    public function createCancelUrl() {
+
+    public function createCancelUrl()
+    {
         $url = Mage::getBaseUrl() . Mage::getConfig()->getNode('admin/routers/adminhtml/args/frontName');
         Mage::getSingleton('core/session')->setTemandoCancelUrl($url);
     }
@@ -28,12 +32,14 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $params
      * @return boolean
      */
-    public function checkAccount($params) {
+
+    public function checkAccount($params)
+    {
         try {
+
             $api = Mage::getModel('temando/api_client');
             /* @var $api Temando_Temando_Model_Api_Client */
-            $api->connect(
-                    $params['general_username'], $params['general_password'], $params['general_sandbox']);
+            $api->connect($params['general_username'], $params['general_password'], $params['general_sandbox']);
             $result = $api->getLocations(array('clientId' => $params['general_client']));
             if (!$result) {
                 Mage::getSingleton('core/session')->addError(self::ERR_NO_CONNECT);
@@ -51,13 +57,14 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $params
      * @return \Temando_Temando_Model_Wizard
      */
-    public function _saveTemando($params) {
+    public function _saveTemando($params)
+    {
+
         foreach ($params as $key => $value) {
-            if (strstr($key, '_', TRUE) != 'region') {
+            if (strstr($key, '_', true) != 'region') {
                 $this->setTmdConfig('temando/' . $key, $value);
             }
         }
-
         return $this;
     }
 
@@ -66,9 +73,11 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $params
      * @return \Temando_Temando_Model_Wizard
      */
-    public function _saveCarrier($params) {
+    public function _saveCarrier($params)
+    {
+
         foreach ($params as $key => $value) {
-            if (strstr($key, '_', TRUE) != 'email') {
+            if (strstr($key, '_', true) != 'email') {
                 $this->setTmdConfig('carriers/' . $key, $value);
             }
         }
@@ -79,18 +88,20 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * Sync origin data with Temando
      * @return \Temando_Temando_Model_Wizard
      */
-    public function _syncOrigin() {
+    public function _syncOrigin()
+    {
 
         try {
             $api = Mage::getModel('temando/api_client');
             $api->connect(
-                    Mage::helper('temando')->getConfigData('general/username'),
-                    Mage::helper('temando')->getConfigData('general/password'),
-                    Mage::helper('temando')->getConfigData('general/sandbox')
+                Mage::helper('temando')->getConfigData('general/username'),
+                Mage::helper('temando')->getConfigData('general/password'),
+                Mage::helper('temando')->getConfigData('general/sandbox')
             );
 
             //try to update 'Magento Warehouse'
-            $magentoWarehouse = Mage::helper('temando')->getOriginRequestArray(new Varien_Object($this->getFieldsetData()));
+            $magentoWarehouse = Mage::helper('temando')->
+                getOriginRequestArray(new Varien_Object($this->getFieldsetData()));
             try {
                 $api->updateLocation(array('location' => $magentoWarehouse));
             } catch (Exception $e) {
@@ -117,7 +128,10 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $params
      * @return \Temando_Temando_Model_Wizard
      */
-    public function setTmdSession($name, $params) {
+
+    public function setTmdSession($name, $params)
+    {
+
         Mage::getSingleton('core/session')->setData($name, $params);
         return $this;
     }
@@ -127,7 +141,10 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $name
      * @return type
      */
-    protected function getTmdSession($name) {
+
+    protected function getTmdSession($name)
+    {
+
         $session = Mage::getSingleton('core/session')->getData($name);
         return $session;
     }
@@ -137,7 +154,10 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $step
      * @return \Temando_Temando_Model_Wizard
      */
-    public function setTmdStep($step) {
+
+    public function setTmdStep($step)
+    {
+
         Mage::getSingleton('core/session')->setTemandoWizardStep($step);
         return $this;
     }
@@ -146,7 +166,10 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * Unsets step data from the session
      * @return \Temando_Temando_Model_Wizard
      */
-    public function unsetTmdStep() {
+
+    public function unsetTmdStep()
+    {
+
         Mage::getSingleton('core/session')->unsetTemandoWizardStep();
         return $this;
     }
@@ -156,8 +179,11 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
      * @param type $key
      * @param type $value
      */
-    protected function setTmdConfig($key, $value) {
-        $path = strstr($key, '_', TRUE);
+
+    protected function setTmdConfig($key, $value)
+    {
+
+        $path = strstr($key, '_', true);
         $key = substr(strstr($key, '_'), 1);
         if (is_array($value)) {
             $value = implode(',', $value);
@@ -169,7 +195,9 @@ class Temando_Temando_Model_Wizard extends Mage_Core_Model_Abstract
     /**
      * Sends an email if customer wants more information
      */
-    public function sendEmail() {
+
+    public function sendEmail()
+    {
 
         $email = $this->getTmdSession('temando_wizard_carriers');
 

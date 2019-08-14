@@ -22,7 +22,7 @@ class Temando_Temando_Model_System_Config_Source_Wizard
             self::ACCOUNT  => 'temando/temando/wizard/account.phtml',
             self::CARRIERS => 'temando/temando/wizard/carriers.phtml',
             self::CATALOG_PRODUCT => 'temando/temando/wizard/catalog_product.phtml',
-            self::ORIGIN => 'temando/temando/wizard/origin.phtml', 
+            self::ORIGIN => 'temando/temando/wizard/origin.phtml',
             self::RULE => 'temando/temando/wizard/rule.phtml',
             self::END => 'temando/temando/wizard/end.phtml'
         );

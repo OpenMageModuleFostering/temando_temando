@@ -30,8 +30,8 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
 
         $this->addColumn('created_at', array(
             'header' => Mage::helper('temando')->__('Created At'),
-        	'width' => '100px',
-        	'type' => 'datetime',
+            'width' => '100px',
+            'type' => 'datetime',
             'index' => 'created_at',
         ));
         
@@ -52,8 +52,8 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
 
         $this->addColumn('start_date', array(
             'header' => Mage::helper('temando')->__('Date'),
-        	'width' => '100px',
-        	'type'  => 'date',
+            'width' => '100px',
+            'type'  => 'date',
             'index' => 'start_date',
         ));
 
@@ -65,7 +65,8 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
             'options' => array('Awaiting Confirmation' => 'Awaiting Confirmation', 'Confirmed' => 'Confirmed'),
         ));
 
-        $this->addColumn('action_man',
+        $this->addColumn(
+            'action_man',
             array(
                 'header'    =>  Mage::helper('temando')->__('Manifest Document'),
                 'width'     => '100',
@@ -81,9 +82,11 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
                 'filter'    => false,
                 'sortable'  => false,
                 'is_system' => true,
-        ));
+            )
+        );
 
-        $this->addColumn('action_lab',
+        $this->addColumn(
+            'action_lab',
             array(
                 'header'    =>  Mage::helper('temando')->__('Label Document'),
                 'width'     => '100',
@@ -99,7 +102,8 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
                 'filter'    => false,
                 'sortable'  => false,
                 'is_system' => true,
-        ));
+            )
+        );
 
         return parent::_prepareColumns();
     }
@@ -112,7 +116,6 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
     {
         $this->setMassactionIdField('manifest_id');
         $this->getMassactionBlock()->setFormFieldName('manifest');
-
         $this->getMassactionBlock()->addItem('confirm', array(
              'label'=> Mage::helper('catalog')->__('Confirm'),
              'url'  => $this->getUrl('*/*/massConfirm'),
@@ -152,5 +155,4 @@ class Temando_Temando_Block_Adminhtml_Manifest_Grid
         $this->_columns = array_merge($this->_columns, $oldColumns);
         return $this;
     }
-
 }

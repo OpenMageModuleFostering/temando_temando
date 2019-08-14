@@ -168,9 +168,15 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
                 ->setEtaTo($response->etaTo)
                 ->setGuaranteedEta($response->guaranteedEta == 'Y')
                 ->setExtras($extras_array)
-                ->setCarbonTotalPrice(array_key_exists('carbonoffset', $extras_array) ? $extras_array['carbonoffset']['totalPrice'] : 0)
-                ->setInsuranceTotalPrice(array_key_exists('insurance', $extras_array) ? $extras_array['insurance']['totalPrice'] : 0)
-		->setFootprintsTotalPrice(array_key_exists('footprints', $extras_array) ? $extras_array['footprints']['totalPrice'] : 0)
+                ->setCarbonTotalPrice(
+                    array_key_exists('carbonoffset', $extras_array) ? $extras_array['carbonoffset']['totalPrice'] : 0
+                )
+                ->setInsuranceTotalPrice(
+                    array_key_exists('insurance', $extras_array) ? $extras_array['insurance']['totalPrice'] : 0
+                )
+                ->setFootprintsTotalPrice(
+                    array_key_exists('footprints', $extras_array) ? $extras_array['footprints']['totalPrice'] : 0
+                )
                 ->setLoaded(true);
         }
         return $this;
@@ -192,7 +198,7 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
             $carbon = false;
         }
 
-	if (isset($options['footprints']) && ($options['footprints'] === 'Y')) {
+        if (isset($options['footprints']) && ($options['footprints'] === 'Y')) {
             $footprints = $extras['footprints'];
         } else {
             $footprints = false;
@@ -221,9 +227,9 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         if ($insurance) {
             $request['extras']['extra'][] = $insurance;
         }
-	if ($footprints) {
-	    $request['extras']['extra'][] = $footprints;
-	}
+        if ($footprints) {
+            $request['extras']['extra'][] = $footprints;
+        }
 
         return $request;
     }
@@ -247,33 +253,31 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
         $title = '';
         $title .= $this->getCarrier()->getCompanyName();
 
-	if ($showMethod && $showEta) {
-	    $title .= ' - ' . $this->getDeliveryMethod(). ' [' . $this->getEtaDescription() . ']';
-	} else if ($showMethod) {
-	    $title .= ' - ' . $this->getDeliveryMethod();
-	} else if ($showEta) {
-	    $title .= ' [' . $this->getEtaDescription(). ']';
-	}
+        if ($showMethod && $showEta) {
+            $title .= ' - ' . $this->getDeliveryMethod(). ' [' . $this->getEtaDescription() . ']';
+        } elseif ($showMethod) {
+            $title .= ' - ' . $this->getDeliveryMethod();
+        } elseif ($showEta) {
+            $title .= ' [' . $this->getEtaDescription(). ']';
+        }
 
-        return $title . ' ' . $this->getExtraTitle();;
+        return $title . ' ' . $this->getExtraTitle();
     }
 
 
     public function getTotalPriceIncSelectedExtras()
     {
-	$price = $this->getTotalPrice();
-	if($this->getInsuranceIncluded()) {
-	    $price += $this->getInsuranceTotalPrice();
-	}
-	if($this->getCarbonIncluded()) {
-	    $price += $this->getCarbonTotalPrice();
-	}
-	if($this->getFootprintsIncluded()) {
-	    $price += $this->getFootprintsTotalPrice();
-	}
-
-	return $price;
-
+        $price = $this->getTotalPrice();
+        if ($this->getInsuranceIncluded()) {
+            $price += $this->getInsuranceTotalPrice();
+        }
+        if ($this->getCarbonIncluded()) {
+            $price += $this->getCarbonTotalPrice();
+        }
+        if ($this->getFootprintsIncluded()) {
+            $price += $this->getFootprintsTotalPrice();
+        }
+        return $price;
     }
 
     public function getExtraTitle()
@@ -290,7 +294,7 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
             }
             $title .= Mage::helper('temando')->__(' carbon offset');
         }
-	if ($this->getFootprintsIncluded()) {
+        if ($this->getFootprintsIncluded()) {
             if ($this->getInsuranceIncluded() || $this->getCarbonIncluded()) {
                 $title .= Mage::helper('temando')->__(' and ');
             } else {

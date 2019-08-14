@@ -5,7 +5,7 @@
  * @package     Temando_Temando
  * @author      Temando Magento Team <marketing@temando.com>
  */
-class Temando_Temando_Model_System_Config_Source_Rule_Action_Filter 
+class Temando_Temando_Model_System_Config_Source_Rule_Action_Filter
     extends Temando_Temando_Model_System_Config_Source {
     
     const DYNAMIC_ALL                  = 1;
@@ -22,5 +22,4 @@ class Temando_Temando_Model_System_Config_Source_Rule_Action_Filter
             self::DYNAMIC_FASTEST_AND_CHEAPEST => Mage::helper('temando')->__('Cheapest and Fastest only'),
         );
     }
-    
 }

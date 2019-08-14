@@ -20,13 +20,14 @@ class Temando_Temando_Adminhtml_WizardController extends Mage_Adminhtml_Controll
     {
         return Mage::getSingleton('admin/session')
             ->isAllowed('temando/configuration/wizard');
-    } 
+    }
 
     /**
      * Adminhtml controller that redirects to the front end view and starts the wizard.
      * @return type
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $params = array('id' => md5(Mage::getSingleton('core/session')->getSessionId()));
         if ($this->checkSoap()) {
             Mage::getSingleton('adminhtml/session')->addError(self::ERR_NO_SOAP);
@@ -40,13 +41,12 @@ class Temando_Temando_Adminhtml_WizardController extends Mage_Adminhtml_Controll
      * Checks to see if the SOAP extension is loaded
      * @return boolean
      */
-    public function checkSoap() {
+    public function checkSoap()
+    {
         if (!extension_loaded('soap')) {
             return true;
         } else {
             return false;
         }
     }
-
 }
-

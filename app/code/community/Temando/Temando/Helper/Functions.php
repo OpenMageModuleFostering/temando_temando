@@ -17,7 +17,7 @@ class Temando_Temando_Helper_Functions extends Mage_Core_Helper_Abstract
         return $fastest;
     }
 
-    protected function  _getFaster($a, $b)
+    protected function _getFaster($a, $b)
     {
         // if one is null, return the other.
         if (is_null($a)) {
@@ -64,13 +64,14 @@ class Temando_Temando_Helper_Functions extends Mage_Core_Helper_Abstract
 
     public function getCheapestAndFastestQuotes($quotes)
     {
-	$cheapest = $this->getCheapestQuote($quotes);
-	$fastest = $this->getFastestQuote($quotes);
+        $cheapest = $this->getCheapestQuote($quotes);
+        $fastest = $this->getFastestQuote($quotes);
 
-	if($cheapest->getId() === $fastest->getId())
-	    return array($cheapest);
+        if ($cheapest->getId() === $fastest->getId()) {
+            return array($cheapest);
+        }
 
-	return array($cheapest, $fastest);
+        return array($cheapest, $fastest);
     }
 
 }

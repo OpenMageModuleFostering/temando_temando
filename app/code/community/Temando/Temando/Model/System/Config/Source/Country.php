@@ -13,14 +13,11 @@ class Temando_Temando_Model_System_Config_Source_Country
     
     public function _setupOptions()
     {
-	
-	if (!$this->_options) {
-	    $countries = Mage::getResourceModel('directory/country_collection')->loadData()->toOptionArray(false);
-	    
-	    foreach($countries as $country => $arr) {
-		$this->_options[$arr['value']] = $arr['label']; 
-	    }
-	}
+        if (!$this->_options) {
+            $countries = Mage::getResourceModel('directory/country_collection')->loadData()->toOptionArray(false);
+            foreach ($countries as $country => $arr) {
+                $this->_options[$arr['value']] = $arr['label'];
+            }
+        }
     }
-    
 }

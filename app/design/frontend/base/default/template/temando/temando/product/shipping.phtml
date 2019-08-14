@@ -43,6 +43,7 @@
         </div>
     </div>
 </div>
+<?php if(Mage::helper('temando')->getConfigData('avs/frontend')):?>
 <script type="text/javascript">
 //<![CDATA[
 var shipping_estimator_url = '<?php echo $this->getUrl('etemando/pcs/product', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
@@ -51,3 +52,4 @@ var avs = new Avs( avs_url, 'postcode', 'city', 'country_id');
 //]]>
 </script>
 <?php endif; ?>
+<?php endif;?>

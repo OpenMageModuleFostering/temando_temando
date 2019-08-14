@@ -22,7 +22,7 @@
 
 class Temando_Temando_Model_Shipping_Carrier_Temando
     extends Mage_Shipping_Model_Carrier_Abstract
-	implements Mage_Shipping_Model_Carrier_Interface
+    implements Mage_Shipping_Model_Carrier_Interface
 {
     /**
      * Error Constants
@@ -43,7 +43,9 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
      * @var array
      */
     protected static $_errors_map = array(
-        "The 'destinationCountry', 'destinationCode' and 'destinationSuburb' elements (within the 'Anywhere' type) do not contain valid values.  These values must match with the predefined settings in the Temando system."
+        "The 'destinationCountry', 'destinationCode' and 'destinationSuburb' elements 
+        (within the 'Anywhere' type) do not contain valid values.  
+        These values must match with the predefined settings in the Temando system."
                 => "Invalid suburb / postcode combination."
     );
 
@@ -105,8 +107,14 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         parent::__construct();
         $this->_pricing_method = $this->getConfigData('pricing/method');
-        $this->setIsProductPage(("etemando" == Mage::app()->getRequest()->getModuleName()) && ("pcs" == Mage::app()->getRequest()->getControllerName()));
-	$this->setIsCartPage(("checkout" == Mage::app()->getRequest()->getModuleName()) && ("cart" == Mage::app()->getRequest()->getControllerName()));
+        $this->setIsProductPage(
+            ("etemando" == Mage::app()->getRequest()->getModuleName()) &&
+            ("pcs" == Mage::app()->getRequest()->getControllerName())
+        );
+        $this->setIsCartPage(
+            ("checkout" == Mage::app()->getRequest()->getModuleName()) &&
+            ("cart" == Mage::app()->getRequest()->getControllerName())
+        );
 
         $this->setUpdateDeliveryOptions(Mage::app()->getRequest()->getParam('delivery_option_change', false));
 
@@ -160,7 +168,10 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     protected function _getRateFromQuote($quote, $method_id)
     {
         $price = $this->getFinalPriceWithHandlingFee($quote->getTotalPrice());
-        $title = $quote->getDescription($this->getConfigData('options/show_transit_type'), $this->getConfigData('options/show_transit_time'));
+        $title = $quote->getDescription(
+            $this->getConfigData('options/show_transit_type'),
+            $this->getConfigData('options/show_transit_time')
+        );
 
         $method = Mage::getModel('shipping/rate_result_method')
             ->setCarrier($this->_code)
@@ -183,7 +194,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     {
         if ($price === false) {
             $cost = $this->getConfigData('pricing/shipping_fee');
-	    $price = $this->getFinalPriceWithHandlingFee($cost);
+            $price = $this->getFinalPriceWithHandlingFee($cost);
         } else {
             $cost = $price;
         }
@@ -253,88 +264,91 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
      */
     public function collectRates(Mage_Shipping_Model_Rate_Request $request)
     {
-	$result = Mage::getModel('shipping/rate_result');
-	/* @var $result Mage_Shipping_Model_Rate_Result */
+        $result = Mage::getModel('shipping/rate_result');
+        /* @var $result Mage_Shipping_Model_Rate_Result */
 
-	//check origin/destination country
+        //check origin/destination country
         if (!$this->_canShip($request)) {
             return;
             // by default no error will show. Remove the above and uncomment
             // the line below to enable an error in the shipping method
-	    // return $this->_getErrorMethod(self::ERR_INVALID_COUNTRY);
-	}
+            // return $this->_getErrorMethod(self::ERR_INVALID_COUNTRY);
+        }
 
-	//OneStepCheckout inserts '-' in city/pcode if no default configured
+        //OneStepCheckout inserts '-' in city/pcode if no default configured
         if (!$request->getDestCountryId() || !$request->getDestPostcode() || !$request->getDestCity() ||
-		$request->getDestPostcode() == '-' || $request->getDestCity() == '-') {
-	    return $this->_getErrorMethod(self::ERR_INVALID_DEST);
+            $request->getDestPostcode() == '-' || $request->getDestCity() == '-') {
+            return $this->_getErrorMethod(self::ERR_INVALID_DEST);
         }
 
         //get magento sales quote & id
-	$salesQuote = Mage::getSingleton('checkout/session')->getQuote();
-	/* @var $salesQuote Mage_Sales_Model_Quote */
-	if (!$salesQuote->getId() && Mage::app()->getStore()->isAdmin()) {
-	    $salesQuote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
-	}
-	if ($this->getIsProductPage()) {
-	    $salesQuote = Mage::helper('temando')->getDummySalesQuoteFromRequest($request);
-	}
-	$salesQuoteId = $salesQuote->getId();
+        $salesQuote = Mage::getSingleton('checkout/session')->getQuote();
+        /* @var $salesQuote Mage_Sales_Model_Quote */
+        if (!$salesQuote->getId() && Mage::app()->getStore()->isAdmin()) {
+            $salesQuote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        }
+        if ($this->getIsProductPage()) {
+            $salesQuote = Mage::helper('temando')->getDummySalesQuoteFromRequest($request);
+        }
+        $salesQuoteId = $salesQuote->getId();
 
-	//check if eligible for free shipping
+        //check if eligible for free shipping
         if ($this->isFreeShipping($salesQuote)) {
             $result->append($this->_getFlatRateMethod('0.00', true));
-	    return $result;
+            return $result;
         }
 
-	//check for flat rate
+        //check for flat rate
         if ($this->_pricing_method == Temando_Temando_Model_System_Config_Source_Pricing::FLAT_RATE) {
             $result->append($this->_getFlatRateMethod());
-	    return $result;
+            return $result;
         }
 
-	//prepare extras
-        $insurance = Mage::getModel('temando/option_insurance')->setSetting(Mage::getStoreConfig('temando/insurance/status'));
-        $carbon = Mage::getModel('temando/option_carbonoffset')->setSetting(Mage::getStoreConfig('temando/carbon/status'));
-	$footprints = Mage::getModel('temando/option_footprints')->setSetting(Mage::getStoreConfig('temando/footprints/status'));
+        //prepare extras
+        $insurance = Mage::getModel('temando/option_insurance')
+            ->setSetting(Mage::getStoreConfig('temando/insurance/status'));
+        $carbon = Mage::getModel('temando/option_carbonoffset')
+            ->setSetting(Mage::getStoreConfig('temando/carbon/status'));
+        $footprints = Mage::getModel('temando/option_footprints')
+            ->setSetting(Mage::getStoreConfig('temando/footprints/status'));
 
-        if ($this->getIsProductPage() || $this->getIsCartPage())
-	{
-            if (!in_array($insurance->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES, Temando_Temando_Model_Option_Boolean::NO))) {
+        if ($this->getIsProductPage() || $this->getIsCartPage()) {
+            if (!in_array($insurance->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES,
+                Temando_Temando_Model_Option_Boolean::NO))) {
                 $insurance->setForcedValue(Temando_Temando_Model_Option_Boolean::NO);
             }
 
-            if (!in_array($carbon->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES, Temando_Temando_Model_Option_Boolean::NO))) {
+            if (!in_array($carbon->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES,
+                Temando_Temando_Model_Option_Boolean::NO))) {
                 $carbon->setForcedValue(Temando_Temando_Model_Option_Boolean::NO);
             }
 
-	    if (!in_array($footprints->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES, Temando_Temando_Model_Option_Boolean::NO))) {
+            if (!in_array($footprints->getForcedValue(), array(Temando_Temando_Model_Option_Boolean::YES,
+                Temando_Temando_Model_Option_Boolean::NO))) {
                 $footprints->setForcedValue(Temando_Temando_Model_Option_Boolean::NO);
             }
         }
         /* @var Temando_Temando_Model_Options $options */
         $options = Mage::getModel('temando/options')->addItem($insurance)->addItem($carbon)->addItem($footprints);
 
-	//save current extras
+        //save current extras
         if (is_null(Mage::registry('temando_current_options'))) {
             Mage::register('temando_current_options', $options);
         }
 
-	//get available shipping methods (quotes from the API)
-	//check if request same as previous
-	$lastRequest = Mage::getSingleton('checkout/session')->getTemandoRequestString();
-        if ($lastRequest == $this->_createRequestString($request, $salesQuoteId) && !$this->getUpdateDeliveryOptions())
-	{
+        //get available shipping methods (quotes from the API)
+        //check if request same as previous
+        $lastRequest = Mage::getSingleton('checkout/session')->getTemandoRequestString();
+        if ($lastRequest == $this->_createRequestString($request, $salesQuoteId) &&
+            !$this->getUpdateDeliveryOptions()) {
             //request is the same as previous, load existing quotes from DB
             $quotes = Mage::getModel('temando/quote')->getCollection()
-		    ->addFieldToFilter('magento_quote_id', $salesQuoteId)
-		    ->getItems();
-        }
-	else
-	{
+            ->addFieldToFilter('magento_quote_id', $salesQuoteId)
+            ->getItems();
+        } else {
             try {
-		$apiRequest = Mage::getModel('temando/api_request');
-		$apiRequest
+                $apiRequest = Mage::getModel('temando/api_request');
+                $apiRequest
                     ->setUsername($this->getConfigData('general/username'))
                     ->setPassword($this->getConfigData('general/password'))
                     ->setSandbox($this->getConfigData('general/sandbox'))
@@ -344,56 +358,58 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
                         $request->getDestPostcode(),
                         $request->getDestCity(),
                         $request->getDestStreet(),
-                        $this->getDestinationType())
+                        $this->getDestinationType()
+                    )
                     ->setItems($request->getAllItems())
-		    ->setReady(Mage::helper('temando')->getReadyDate())
+                    ->setReady(Mage::helper('temando')->getReadyDate())
                     ->setDeliveryOptions($this->getDeliveryOptions())
-		    ->setAllowedCarriers($this->getAllowedMethods());
+                    ->setAllowedCarriers($this->getAllowedMethods());
 
                 $coll = $apiRequest->getQuotes();
-		if ($coll instanceof Temando_Temando_Model_Mysql4_Quote_Collection) {
-		    $quotes = $coll->getItems();
-		}
+                if ($coll instanceof Temando_Temando_Model_Mysql4_Quote_Collection) {
+                    $quotes = $coll->getItems();
+                }
             } catch (Exception $e) {
-                switch(Mage::helper('temando')->getConfigData('pricing/error_process')) {
-		    case Temando_Temando_Model_System_Config_Source_Errorprocess::VIEW:
-			return $this->_getErrorMethod($e->getMessage());
-			break;
-		    case Temando_Temando_Model_System_Config_Source_Errorprocess::FLAT:
-			$result->append($this->_getFlatRateMethod());
-			return $result;
-			break;
-		}
+                switch (Mage::helper('temando')->getConfigData('pricing/error_process')) {
+                    case Temando_Temando_Model_System_Config_Source_Errorprocess::VIEW:
+                        return $this->_getErrorMethod($e->getMessage());
+                        break;
+                    case Temando_Temando_Model_System_Config_Source_Errorprocess::FLAT:
+                        $result->append($this->_getFlatRateMethod());
+                        return $result;
+                    break;
+                }
             }
         }
 
-	//process filters and apply extras
-	if(empty($quotes)) {
-	    return $this->_getErrorMethod(self::ERR_NO_METHODS);
-	} else {
-	    switch($this->_pricing_method) {
-		case Temando_Temando_Model_System_Config_Source_Pricing::DYNAMIC_CHEAPEST:
-		    $quotes = Mage::helper('temando/functions')->getCheapestQuote($quotes);
-		    break;
-		case Temando_Temando_Model_System_Config_Source_Pricing::DYNAMIC_FASTEST:
-		    $quotes = Mage::helper('temando/functions')->getFastestQuote($quotes);
-		    break;
-		case Temando_Temando_Model_System_Config_Source_Pricing::DYNAMIC_FASTEST_AND_CHEAPEST:
-		    $quotes = Mage::helper('temando/functions')->getCheapestAndFastestQuotes($quotes);
-		    break;
-	    }
-	    if(!is_array($quotes)) { $quotes = array($quotes); }
-	    foreach($quotes as $id => $quote)
-	    {
-		$permutations = $options->applyAll($quote);
-		foreach($permutations as $permId => $permutation) {
-		    $result->append($this->_getRateFromQuote($permutation, $quote->getId() . '_' . $permId));
-		}
-	    }
-
-	}
-
-        Mage::getSingleton('checkout/session')->setTemandoRequestString($this->_createRequestString($request, $salesQuoteId));
+        //process filters and apply extras
+        if (empty($quotes)) {
+            return $this->_getErrorMethod(self::ERR_NO_METHODS);
+        } else {
+            switch($this->_pricing_method) {
+                case Temando_Temando_Model_System_Config_Source_Pricing::DYNAMIC_CHEAPEST:
+                    $quotes = Mage::helper('temando/functions')->getCheapestQuote($quotes);
+                    break;
+                case Temando_Temando_Model_System_Config_Source_Pricing::DYNAMIC_FASTEST:
+                    $quotes = Mage::helper('temando/functions')->getFastestQuote($quotes);
+                    break;
+                case Temando_Temando_Model_System_Config_Source_Pricing::DYNAMIC_FASTEST_AND_CHEAPEST:
+                    $quotes = Mage::helper('temando/functions')->getCheapestAndFastestQuotes($quotes);
+                    break;
+            }
+            if (!is_array($quotes)) {
+                $quotes = array($quotes);
+            }
+            foreach ($quotes as $id => $quote) {
+                $permutations = $options->applyAll($quote);
+                foreach ($permutations as $permId => $permutation) {
+                    $result->append($this->_getRateFromQuote($permutation, $quote->getId() . '_' . $permId));
+                }
+            }
+        }
+        Mage::getSingleton('checkout/session')->setTemandoRequestString(
+            $this->_createRequestString($request, $salesQuoteId)
+        );
         return $result;
     }
 
@@ -405,27 +421,32 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
      */
     public function isFreeShipping($salesQuote)
     {
-	//check pricing method first
-	if($this->_pricing_method == Temando_Temando_Model_System_Config_Source_Pricing::FREE) {
-	    return true;
-	}
+        //check pricing method first
+        if ($this->_pricing_method == Temando_Temando_Model_System_Config_Source_Pricing::FREE) {
+            return true;
+        }
 
-	//check if all items have free shipping or free shipping over amount enabled and valid for this request
-	$allItemsFree = true; $total = 0;
+        //check if all items have free shipping or free shipping over amount enabled and valid for this request
+        $allItemsFree = true;
+        $total = 0;
         foreach ($salesQuote->getAllItems() as $item) {
-	    /* @var $item Mage_Sales_Model_Quote_Item */
-            if ($item->getProduct()->isVirtual() || $item->getParentItem()) { continue; }
-            if ($item->getFreeShipping()) { continue; }
+        /* @var $item Mage_Sales_Model_Quote_Item */
+            if ($item->getProduct()->isVirtual() || $item->getParentItem()) {
+                continue;
+            }
+            if ($item->getFreeShipping()) {
+                continue;
+            }
 
-	    //not all items with free shipping if here
+            //not all items with free shipping if here
             $allItemsFree = false;
         }
 
-	if ($allItemsFree) {
-	     return true;
-	}
+        if ($allItemsFree) {
+             return true;
+        }
 
-	return false;
+        return false;
     }
 
     /**
@@ -444,7 +465,8 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         $api->connect(
             Mage::helper('temando')->getConfigData('general/username'),
             Mage::helper('temando')->getConfigData('general/password'),
-            Mage::helper('temando')->getConfigData('general/sandbox'));
+            Mage::helper('temando')->getConfigData('general/sandbox')
+        );
 
         $_t = explode('Request Id: ', $tracking_number);
         if (isset($_t[1])) {
@@ -472,7 +494,8 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
                 $text .= $status->request->quotes->quote->trackingFurtherDetails;
             }
             if (isset($status->request->quotes->quote->trackingLastChecked)) {
-                $text .= 'Last Update: ' . date('Y-m-d h:ia', strtotime($status->request->quotes->quote->trackingLastChecked));
+                $text .= 'Last Update: ' .
+                    date('Y-m-d h:ia', strtotime($status->request->quotes->quote->trackingLastChecked));
             }
 
             if ($text) {
@@ -496,7 +519,9 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
                 $result->setProgressdetail($trackingHistories);
             }
         } else {
-            $result->setErrorMessage(Mage::helper('temando')->__('An error occurred while fetching the shipment status.'));
+            $result->setErrorMessage(
+                Mage::helper('temando')->__('An error occurred while fetching the shipment status.')
+            );
         }
 
         return $result;

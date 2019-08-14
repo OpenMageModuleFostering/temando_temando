@@ -31,24 +31,26 @@ $installer
         'tinyint(1) NOT NULL DEFAULT 0 AFTER `fragile`'
 );
 
-$installer->addAttribute('catalog_product', 'temando_dangerous',
-        array(
-            'type' => 'int',
-            'label' => 'Dangerous',
-            'group' => 'Temando',
-            'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
-            'source' => 'eav/entity_attribute_source_boolean',
-            'input' => 'select',
-            'default' => false,
-            'visible' => true,
-            'required' => false,
-            'user_defined' => false,
-            'searchable' => false,
-            'filterable' => false,
-            'comparable' => false,
-            'visible_on_front' => false,
-            'unique' => false
-        )
+$installer->addAttribute(
+    'catalog_product',
+    'temando_dangerous',
+    array(
+        'type' => 'int',
+        'label' => 'Dangerous',
+        'group' => 'Temando',
+        'global' => Mage_Catalog_Model_Resource_Eav_Attribute::SCOPE_GLOBAL,
+        'source' => 'eav/entity_attribute_source_boolean',
+        'input' => 'select',
+        'default' => false,
+        'visible' => true,
+        'required' => false,
+        'user_defined' => false,
+        'searchable' => false,
+        'filterable' => false,
+        'comparable' => false,
+        'visible_on_front' => false,
+        'unique' => false
+    )
 );
 
 $installer

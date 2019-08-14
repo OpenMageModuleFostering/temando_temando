@@ -25,12 +25,15 @@ class Temando_Temando_Model_Mysql4_Shipment_Collection
      */
     public function loadByOrderId($orderId)
     {
-	if(!$orderId) return false;
+        if (!$orderId) {
+            return false;
+        }
 
-	$this->addFieldToFilter('order_id', $orderId)->load();
-	if($this->count())
-	    return $this->getFirstItem ();
+        $this->addFieldToFilter('order_id', $orderId)->load();
+        if ($this->count()) {
+            return $this->getFirstItem();
+        }
 
-	return false;
+        return false;
     }
 }

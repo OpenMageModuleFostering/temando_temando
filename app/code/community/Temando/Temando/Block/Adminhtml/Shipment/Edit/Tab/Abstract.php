@@ -60,7 +60,8 @@ abstract class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Abstract
             ->getBriefOptionLabel($unit);
     }
     
-    public function getTemandoHelper() {
+    public function getTemandoHelper()
+    {
         if (!$this->_helper) {
             $this->_helper = Mage::helper('temando');
         }

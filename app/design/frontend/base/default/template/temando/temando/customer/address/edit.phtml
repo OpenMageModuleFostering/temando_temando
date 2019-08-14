@@ -163,6 +163,7 @@
     new RegionUpdater('country', 'region', 'region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'zip');
 //]]>
 </script>
+<?php if(Mage::helper('temando')->getConfigData('avs/frontend')):?>
 <script type="text/javascript">
 //<![CDATA[
 new Avs(
@@ -173,3 +174,4 @@ new Avs(
 );
 //]]>
 </script>
+<?php endif;?>

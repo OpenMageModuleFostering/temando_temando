@@ -24,10 +24,10 @@ class Temando_Temando_Model_Options extends Varien_Data_Collection
         }
         
         /* @var $quote Temando_Temando_Model_Quote */
-        $quotes = array(); 
+        $quotes = array();
         foreach ($this->_listPermutations() as $permutation) {
             // apply every option to the quote
-	    $permutation_id = '';
+            $permutation_id = '';
             $new_quote = clone $quote;
             $valid = true;
 
@@ -43,12 +43,13 @@ class Temando_Temando_Model_Options extends Varien_Data_Collection
 
                     if ($extras && isset($extras[$option_id])) {
                         $extra_field = $extras[$option_id];
-                        if (isset($extra_field['mandatory']) && ($option_value == 'N') && ($extra_field['mandatory'] == 'Y')) {
+                        if (isset($extra_field['mandatory'])
+                        && ($option_value == 'N') && ($extra_field['mandatory'] == 'Y')) {
                             $valid = false;
                         }
                     }
                 }
-		
+        
                 $option->apply($option_value, $new_quote);
                 
                 $permutation_id .= $option_id . '_' . $option_value . '_';
@@ -98,26 +99,27 @@ class Temando_Temando_Model_Options extends Varien_Data_Collection
             $options = $this->_items;
         }
         
-    	if (count($options) > 0) {
-    		// remove head of list and keep it in $current_option
-    		$current_option = each($options);
-    		array_shift($options);
-    		
-    		// build up permutations
-    		$permutations = array();
-    		
-    		foreach ($current_option['value']->getValues() as $value => $label) {
-    		    // only use this value if there's no forced value, or if this is the forced value.
-    		    if ($current_option['value']->getForcedValue() === null || $current_option['value']->getForcedValue() == $value) {
-        			$progress[$current_option['key']] = $value;
-        			$permutations = array_merge($permutations, $this->_listPermutations($options, $progress));
-    		    }
-    		}
-    		
-    		return $permutations;
-    	} else {
-    		return array($progress);
-    	}
+        if (count($options) > 0) {
+            // remove head of list and keep it in $current_option
+            $current_option = each($options);
+            array_shift($options);
+            
+            // build up permutations
+            $permutations = array();
+            
+            foreach ($current_option['value']->getValues() as $value => $label) {
+                // only use this value if there's no forced value, or if this is the forced value.
+                if ($current_option['value']->getForcedValue() === null
+                    || $current_option['value']->getForcedValue() == $value) {
+                    $progress[$current_option['key']] = $value;
+                    $permutations = array_merge($permutations, $this->_listPermutations($options, $progress));
+                }
+            }
+            
+            return $permutations;
+        } else {
+            return array($progress);
+        }
     }
     
 }

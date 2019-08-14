@@ -127,6 +127,7 @@
     var dataForm = new VarienForm('form-validate');
     var OriginRegionUpdater = new RegionUpdater('origin_country', 'region_name', 'origin_region', <?php echo $this->helper('temando/wizard')->getRegionJson() ?>, undefined, 'origin_postcode');
 </script>
+<?php if(Mage::helper('temando')->getConfigData('avs/backend')):?>
 <script type="text/javascript">
 //<[CDATA[    
     var shipping_estimator_url = '<?php echo $this->getUrl('etemando/pcs/autocompletecart', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
@@ -138,3 +139,4 @@
             );
 //]]>
 </script>
+<?php endif;?>

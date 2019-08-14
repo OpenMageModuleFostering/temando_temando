@@ -137,6 +137,7 @@ $business = Temando_Temando_Model_Checkout_Delivery_Options::DESTINATION_BUSINES
         </script>
     </div>
 </div>
+<?php if(Mage::helper('temando')->getConfigData('avs/frontend')):?>
 <script type="text/javascript">
 //<[CDATA[
 var shipping_estimator_url = '<?php echo $this->getUrl('etemando/pcs/autocompletecart', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>';
@@ -148,3 +149,4 @@ var avs = new Avs(
 );
 //]]>
 </script>
+<?php endif;?>
