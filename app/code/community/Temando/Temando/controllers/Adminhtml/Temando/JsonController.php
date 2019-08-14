@@ -5,7 +5,7 @@
  * @package     Temando_Temando
  * @author      Temando Magento Team <marketing@temando.com>
  */
-class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller_Action {
+class Temando_Temando_Adminhtml_Temando_JsonController extends Mage_Adminhtml_Controller_Action {
 
     /**
      * Check admin permissions for this controller
@@ -18,7 +18,7 @@ class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller
         return Mage::getSingleton('admin/session')
             ->isAllowed('temando');
     }
-    
+
     /**
      * Return JSON-encoded array of country regions
      *
@@ -32,7 +32,7 @@ class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller
         $colRegions = Mage::getResourceModel('directory/region_collection')
             ->addCountryFilter($countryId)
             ->load();
-            
+
         $arrRegions = $this->_toOptionArray($colRegions);
         if (!empty($arrRegions)) {
             foreach ($arrRegions as $region) {
@@ -42,7 +42,7 @@ class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller
 
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($arrRes));
     }
-    
+
     private function _toOptionArray(Mage_Directory_Model_Resource_Region_Collection $collection)
     {
         $options = array();
@@ -55,7 +55,7 @@ class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller
                 );
             }
         }
-    
+
         if (count($options) > 0) {
             array_unshift(
                 $options,
@@ -66,7 +66,7 @@ class Temando_Temando_Adminhtml_JsonController extends Mage_Adminhtml_Controller
                 )
             );
         }
-    
+
         return $options;
     }
 }

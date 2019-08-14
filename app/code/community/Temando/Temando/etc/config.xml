@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Temando_Temando>
-            <version>1.4.6</version>
+            <version>1.4.7</version>
         </Temando_Temando>
     </modules>
     <global>
@@ -127,13 +127,13 @@
     </frontend>
     <admin>
         <routers>
-            <temando>
-                <use>admin</use>
+            <adminhtml>
                 <args>
-                    <module>Temando_Temando</module>
-                    <frontName>temando</frontName>
+                    <modules>
+                        <temando_temando after="Mage_Adminhtml">Temando_Temando_Adminhtml</temando_temando>
+                    </modules>
                 </args>
-            </temando>
+            </adminhtml>
         </routers>
     </admin>
     <adminhtml>
@@ -213,10 +213,10 @@
                 <phone1><![CDATA[02 1234 5678]]></phone1>
                 <email><![CDATA[sales@temando.com]]></email>
 	    </origin>
-            <avs>                
+            <avs>
                 <frontend><![CDATA[1]]></frontend>
-                <backend><![CDATA[1]]></backend>         
-            </avs>            
+                <backend><![CDATA[1]]></backend>
+            </avs>
         </temando>
         <carriers>
             <temando>
@@ -234,5 +234,5 @@
                 <sort_order>0</sort_order>
             </temando>
         </carriers>
-    </default> 
+    </default>
 </config>

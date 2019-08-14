@@ -1,13 +1,13 @@
 <script type="text/javascript">
 //<![CDATA[
-    
+
 var temandoOrigin = Class.create();
 temandoOrigin.prototype = {
     initialize : function()
     {
         this.reload = false;
         this.loader = new varienLoader(true);
-        this.regionsUrl = "<?php echo Mage::helper('adminhtml')->getUrl('temando/adminhtml_json/countryRegion') ?>";
+        this.regionsUrl = "<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/temando_json/countryRegion') ?>";
 	this.arrRegNames = ['region','state','destination_region'];
 
         this.bindCountryRegionRelation();
@@ -117,7 +117,7 @@ temandoOrigin.prototype = {
     }
 }
 
-temandoAddress = new temandoOrigin();    
-    
+temandoAddress = new temandoOrigin();
+
 //]]
 </script>

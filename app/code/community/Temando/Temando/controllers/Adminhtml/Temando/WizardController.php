@@ -5,7 +5,7 @@
  * @package     Temando_Temando
  * @author      Temando Magento Team <marketing@temando.com>
  */
-class Temando_Temando_Adminhtml_WizardController extends Mage_Adminhtml_Controller_Action
+class Temando_Temando_Adminhtml_Temando_WizardController extends Mage_Adminhtml_Controller_Action
 {
 
     const ERR_NO_SOAP = 'SOAP is not enabled on this server.  Please enable SOAP to use the Temando plugin.';

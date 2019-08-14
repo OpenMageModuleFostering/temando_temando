@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <layout>
-    
+
     <default>
         <reference name="head">
             <action method="addJs">
@@ -8,7 +8,7 @@
             </action>
         </reference>
     </default>
-    
+
     <default>
         <reference name="before_body_end">
             <block type='core/template' name="tmdmenu" template='temando/temando/menu.phtml' />
@@ -32,7 +32,7 @@
         </reference>
     </adminhtml_system_config_edit>
 
-    <temando_adminhtml_shipment_index>
+    <adminhtml_temando_shipment_index>
         <reference name="head">
             <action method="addItem">
                 <type>skin_css</type>
@@ -44,9 +44,9 @@
                 <block type="temando/adminhtml_shipment_grid" name="temando_shipment_grid" />
             </block>
         </reference>
-    </temando_adminhtml_shipment_index>
-    
-    <temando_adminhtml_shipment_edit>
+    </adminhtml_temando_shipment_index>
+
+    <adminhtml_temando_shipment_edit>
         <reference name="head">
             <block type="adminhtml/template" template="temando/temando/region.phtml" name="temando_region" output="toHtml" />
             <action method="addItem">
@@ -71,14 +71,14 @@
                 </action>
             </block>
         </reference>
-    </temando_adminhtml_shipment_edit>
+    </adminhtml_temando_shipment_edit>
 
-    <temando_adminhtml_manifest_index>
+    <adminhtml_temando_manifest_index>
         <reference name="content">
             <block type="temando/adminhtml_manifest" template="temando/temando/manifest.phtml" name="temando_manifest">
                 <block type="temando/adminhtml_manifest_filter_form" name="grid.filter.form" />
             </block>
         </reference>
-    </temando_adminhtml_manifest_index>
-    
+    </adminhtml_temando_manifest_index>
+
 </layout>

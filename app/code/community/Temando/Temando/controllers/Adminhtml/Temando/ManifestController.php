@@ -5,7 +5,7 @@
  * @package     Temando_Temando
  * @author      Temando Magento Team <marketing@temando.com>
  */
-class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Controller_Action
+class Temando_Temando_Adminhtml_Temando_ManifestController extends Mage_Adminhtml_Controller_Action
 {
 
     /**
@@ -19,7 +19,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
         return Mage::getSingleton('admin/session')
             ->isAllowed('temando/manifest');
     }
-    
+
     public function indexAction()
     {
         $this->loadLayout()
@@ -58,7 +58,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
         }
         return $array;
     }
-    
+
     public function addAction()
     {
         $postData = $this->getRequest()->getPost();
@@ -70,7 +70,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
 
         $carriers_options = Mage::getModel('temando/shipping_carrier_temando_source_method')->getOptions();
         foreach ($carriers as $carrierId) {
-        
+
             if (!$carrierId) {
                 continue;
             }
@@ -138,7 +138,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
 
         $this->_redirect('*/*/');
     }
-    
+
     public function retrieveAction()
     {
         $postData = $this->getRequest()->getPost();
@@ -147,7 +147,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
         if (!is_array($carriers)) {
             $carriers = array($carriers);
         }
-        
+
         if (count($carriers) != 1) {
             $this->_getSession()->addError(
                 $this->__('Please only select one carrier at a time to retrieve a previous manifest.')
@@ -156,7 +156,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
         } else {
             $carriers_options = Mage::getModel('temando/shipping_carrier_temando_source_method')->getOptions();
             $carrierId = $carriers[0];
-            
+
             $request = array(
                 'carrierId' => $carrierId,
                 'location'  => $this->getRequest()->getParam('warehouse_id'),
@@ -211,7 +211,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
             }
         }
     }
-    
+
     public function manifestAction()
     {
         $manifest = Mage::getModel('temando/manifest')

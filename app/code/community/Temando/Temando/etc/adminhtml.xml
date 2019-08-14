@@ -8,12 +8,12 @@
                 <shipment translate="title" module="temando">
                     <title>Manage Shipments</title>
                     <sort_order>10</sort_order>
-                    <action>temando/adminhtml_shipment</action>
+                    <action>adminhtml/temando_shipment</action>
                 </shipment>
                 <manifest translate="title" module="temando">
                     <title>Manage Manifests</title>
                     <sort_order>20</sort_order>
-                    <action>temando/adminhtml_manifest</action>
+                    <action>adminhtml/temando_manifest</action>
                 </manifest>
                 <configuration translate="title" module="temando">
                     <title>Configuration Settings</title>
@@ -32,7 +32,7 @@
                         <wizard>
 			    <title>Configuration Wizard</title>
 			    <sort_order>30</sort_order>
-			    <action>temando/adminhtml_wizard</action>
+			    <action>adminhtml/temando_wizard</action>
 			</wizard>
                     </children>
                 </configuration>

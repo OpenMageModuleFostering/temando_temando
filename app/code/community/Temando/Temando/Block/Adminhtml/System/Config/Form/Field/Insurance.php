@@ -13,7 +13,7 @@ class Temando_Temando_Block_Adminhtml_System_Config_Form_Field_Insurance
         "optional" => "<table><tr><td class='c1'>%optional_input%</td><td class='c2'>I confirm that
         I have read &amp; understood the terms &amp; conditions outlined in the
         <a href='http://www.temando.com/downloads/Product%20Disclosure%20Statement%20and%20Wording.pdf'
-        target='_blank'>Product Disclosure Statement and wording</a>, the 
+        target='_blank'>Product Disclosure Statement and wording</a>, the
         <a href='http://www.temando.com/downloads/Financial%20Services%20Guide.pdf' target='_blank'>
         Financial Services Guide</a> and the <a href='http://www.temando.com/downloads/Privacy%20Statement.pdf'
         target='_blank'>Privacy Statement</a> and will take advantage of this offer.</td></tr></table>",
@@ -53,7 +53,7 @@ Insurance is not currently available for clients using this extension in the US 
 <table style='padding-top: 10px;'><tr><td class='c1'>%mandatory_input%</td><td class='c2'>
 I confirm that I have read &amp; understood the terms &amp; conditions outlined in the
 <a href='http://www.temando.com/downloads/Product%20Disclosure%20Statement%20and%20Wording.pdf'
-target='_blank'>Product Disclosure Statement and wording</a>, the 
+target='_blank'>Product Disclosure Statement and wording</a>, the
 <a href='http://www.temando.com/downloads/Financial%20Services%20Guide.pdf' target='_blank'>
 Financial Services Guide</a> and the <a href='http://www.temando.com/downloads/Privacy%20Statement.pdf'
 target='_blank'>Privacy Statement</a> and will take advantage of this offer.</td></tr></table>",
@@ -81,7 +81,7 @@ and Conditions for a complete understanding):
 
 - Any living creature
 
-- Precious Metals, Precious Stones or Semi-precious Stones that are sent by themselves, 
+- Precious Metals, Precious Stones or Semi-precious Stones that are sent by themselves,
 i.e. this does not mean fixed items, e.g. rings, earrings),
 
 - Motor Vehicles and boats (note, this does not mean car parts, which can be covered).
@@ -90,7 +90,7 @@ Please also note that the insurance only covers items where the origin address a
 the delivery address are both located in Australia. In other words, if you are sending
 your item to a country that is not Australia, then there is no insurance. Conversely,
 if you are resident in a country other than Australia, but sending the item to
-Australia the insurance will not apply either. 
+Australia the insurance will not apply either.
 
 Insurance is not currently available for clients using this extension in the US
 and UK regions.</textarea>
@@ -127,8 +127,8 @@ Financial Services Guide</a> and the <a href='http://www.temando.com/downloads/P
                 $checked = false;
             }
 
-            $field  = "<input type='hidden' name='groups[insurance][fields][confirm_" . $k . "]
-            [value]' " . ($checked?'disabled="disabled""':'') . " value='N' id='optional_confirm_no' />";
+            $field  = "<input type='hidden' name='groups[insurance][fields][confirm_" . $k . "]";
+            $field .= "[value]' " . ($checked?'disabled="disabled""':'') . " value='N' id='optional_confirm_no' />";
             $field .= "<input type='checkbox' name='groups[insurance][fields][confirm_" .
             $k ."][value]' value='Y' " . ($checked?'checked="checked"':'') . ' onclick="if($(\'' .
             $k .'_confirm_no\')){$(\'' . $k .'_confirm_no\').disabled=this.checked;}" />';

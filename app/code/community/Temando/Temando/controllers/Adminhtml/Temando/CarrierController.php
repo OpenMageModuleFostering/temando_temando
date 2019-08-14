@@ -5,7 +5,7 @@
  * @package     Temando_Temando
  * @author      Temando Magento Team <marketing@temando.com>
  */
-class Temando_Temando_Adminhtml_CarrierController extends Mage_Adminhtml_Controller_Action
+class Temando_Temando_Adminhtml_Temando_CarrierController extends Mage_Adminhtml_Controller_Action
 {
 
     const CARRIER_ERROR = 'An error occured when synchronizing carriers with temando.com';
