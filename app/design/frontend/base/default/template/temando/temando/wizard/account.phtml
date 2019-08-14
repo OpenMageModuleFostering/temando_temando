@@ -2,7 +2,7 @@
     <h3><?php echo $this->__('Temando Account Details') ?></h3>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<h4>We have provided you with test credentials. To go live, enter your unique details.</h4>
+<h4><?php echo $this->__('We have provided you with test credentials. To go live, enter your unique details.'); ?></h4>
 <form action="<?php echo $this->getUrl('*/*/save', array('_current' => true)) ?>" method="post" id="form-validate">
     <fieldset class="group-select wide">
         <legend><?php echo $this->__('Account Details') ?></legend>

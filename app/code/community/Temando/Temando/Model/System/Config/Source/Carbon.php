@@ -10,9 +10,9 @@ class Temando_Temando_Model_System_Config_Source_Carbon extends Temando_Temando_
     protected function _setupOptions()
     {
         $this->_options = array(
-            self::DISABLED  => 'Disabled',
-            self::OPTIONAL  => 'Optional',
-            self::MANDATORY => 'Mandatory',
+            self::DISABLED  => Mage::helper('temando')->__('Disabled'),
+            self::OPTIONAL  => Mage::helper('temando')->__('Optional'),
+            self::MANDATORY => Mage::helper('temando')->__('Mandatory'),
         );
     }
     

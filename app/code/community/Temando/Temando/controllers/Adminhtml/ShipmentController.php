@@ -18,7 +18,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	    $notices = array();
 
 	    if (!count($shipment->getBoxes())) {
-		$notices[] = 'Quotes cannot be refreshed until at least one box is added to the shipment.';
+		$notices[] = Mage::helper('temando')->__('Quotes cannot be refreshed until at least one box is added to the shipment.');
 	    }
 
 	    foreach ($notices as $notice) {
@@ -62,7 +62,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 
 	    if ($result['errors']) {
 		$this->_getSession()
-			->addError('Validation errors:')
+			->addError(Mage::helper('temando')->__('Validation errors:'))
 			->setFormData($data);
 		foreach ($result['errors'] as $error) {
 		    $this->_getSession()->addError($error);
@@ -152,15 +152,15 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	    if ($timestamp) {
 		$data['ready_date'] = date('Y-m-d', $timestamp);
 	    } else {
-		$return['errors'][] = 'Pick-up date is not a valid date.';
+		$return['errors'][] = Mage::helper('temando')->__('Pick-up date is not a valid date.');
 	    }
 	}
 	if (strtotime($data['ready_date'] . ' + 1 day') < date('U')) {
-	    $return['notices'][] = 'Pick-up date is in the past.';
+	    $return['notices'][] = Mage::helper('temando')->__('Pick-up date is in the past.');
 	    unset($data['ready_date']);
 	}
 	if (!in_array($data['ready_time'], array('AM', 'PM', ''))) {
-	    $return['errors'][] = 'Pick-up time is not a valid selection.';
+	    $return['errors'][] = Mage::helper('temando')->__('Pick-up time is not a valid selection.');
 	}
 
 	return $return;
@@ -180,15 +180,15 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	$error = null;
 
 	if (!$shipment->getId()) {
-	    $error = 'Shipment does not exist.';
+	    $error = Mage::helper('temando')->__('Shipment does not exist.');
 	} else {
 	    if (!$quote->getId()) {
-		$error = 'Selected quote does not exist.';
+		$error = Mage::helper('temando')->__('Selected quote does not exist.');
 	    } else {
 		foreach ($shipment->getOptions() as $o) {
 		    if (("insurance" == $o->getId()) && ('Y' == $o->getForcedValue())) {
 			if ('Y' != Mage::helper('temando')->getConfigData('insurance/confirm_' . Mage::helper('temando')->getConfigData('insurance/status'))) {
-			    $error = 'Please agree to the insurance terms & conditions at System -> Configuration -> Temando Settings -> Insurance.';
+			    $error = Mage::helper('temando')->__('Please agree to the insurance terms & conditions at System -> Configuration -> Temando Settings -> Insurance.');
 			}
 		    }
 		}
@@ -270,7 +270,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	    /* @var Mage_Sales_Model_Order_Shipment_Track */
 	    $number = '';
 	    if ($booking_result->consignmentNumber) {
-		$number .= 'Consignment Number: ' . $booking_result->consignmentNumber;
+		$number .= Mage::helper('temando')->__('Consignment Number: ') . $booking_result->consignmentNumber;
 	    }
 
 	    if ($booking_result->requestId) {
@@ -278,7 +278,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 		    $number .= "\n<br />";
 		}
 
-		$number .= 'Request Id: ' . $booking_result->requestId;
+		$number .= Mage::helper('temando')->__('Request Id: ') . $booking_result->requestId;
 	    }
 
 	    $track
@@ -295,7 +295,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 			->addObject($magento_shipment)
 			->addObject($magento_shipment->getOrder())
 			->save();
-		$magento_shipment->sendEmail();
+		$magento_shipment->sendEmail()->setEmailSent(true)->save();
 	    } catch (Mage_Core_Exception $e) {
 		$error = $e->getMessage();
 	    }
@@ -442,7 +442,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 	    /* @var Mage_Sales_Model_Order_Shipment_Track */
 	    $number = '';
 	    if ($booking_result->consignmentNumber) {
-		$number .= 'Consignment Number: ' . $booking_result->consignmentNumber;
+		$number .= Mage::helper('temando')->__('Consignment Number: ') . $booking_result->consignmentNumber;
 	    }
 
 	    if ($booking_result->requestId) {
@@ -450,7 +450,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 		    $number .= "\n<br />";
 		}
 
-		$number .= 'Request Id: ' . $booking_result->requestId;
+		$number .= Mage::helper('temando')->__('Request Id: ') . $booking_result->requestId;
 	    }
 
 	    $track

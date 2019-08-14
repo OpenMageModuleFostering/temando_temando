@@ -268,23 +268,23 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
     {
         $title = '';
         if ($this->getInsuranceIncluded()) {
-            $title .= ', includes insurance';
+            $title .= Mage::helper('temando')->__(', includes insurance');
         }
         if ($this->getCarbonIncluded()) {
             if ($this->getInsuranceIncluded()) {
-                $title .= ' and ';
+                $title .= Mage::helper('temando')->__(' and ');
             } else {
-                $title .= ', includes ';
+                $title .= Mage::helper('temando')->__(', includes ');
             }
-            $title .= ' carbon offset';
+            $title .= Mage::helper('temando')->__(' carbon offset');
         }
 	if ($this->getFootprintsIncluded()) {
             if ($this->getInsuranceIncluded() || $this->getCarbonIncluded()) {
-                $title .= ' and ';
+                $title .= Mage::helper('temando')->__(' and ');
             } else {
-                $title .= ', includes ';
+                $title .= Mage::helper('temando')->__(', includes ');
             }
-            $title .= ' footprints';
+            $title .= Mage::helper('temando')->__(' footprints');
         }
 
         return $title;
@@ -298,10 +298,10 @@ class Temando_Temando_Model_Quote extends Mage_Core_Model_Abstract
             $title .= ' - ' . $this->getEtaTo();
         }
         
-        $title .= ' day';
+        $title .= Mage::helper('temando')->__(' day');
         
         if ($this->getEtaTo() > 1) {
-            $title .= 's';
+            $title .= Mage::helper('temando')->__('s');
         }
         
         return $title;

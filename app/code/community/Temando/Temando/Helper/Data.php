@@ -400,7 +400,7 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	    return true;
 	}
 
-	$templates = array('PO Box', 'P.O. Box', 'P.O Box', 'PO. Box', 'p o box', 'Post Office');
+	$templates = array('PO Box', 'P.O. Box', 'P.O Box', 'PO. Box', 'p o box', 'Post Office', 'Locked Bag', 'Lock Bag', 'Private Bag');
 	foreach ($templates as $t) {
 	    if (strpos(strtolower($street), strtolower($t)) !== false) {
 		return true;

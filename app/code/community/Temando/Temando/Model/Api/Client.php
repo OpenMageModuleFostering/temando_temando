@@ -25,7 +25,7 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
     public function connect($username = null, $password = null, $sandbox = false) {
 	$this->_is_sand = $sandbox;
 	if ($sandbox) {
-	    $url = "https://training-api3.temando.com/schema/2009_06/server.wsdl";
+	    $url = "https://api-demo.temando.com/schema/2009_06/server.wsdl";
 	} else {
 	    $url = "https://api.temando.com/schema/2009_06/server.wsdl";
 	}

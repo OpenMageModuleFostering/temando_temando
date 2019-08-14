@@ -38,21 +38,21 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit_Tab_Form_Quotes extends Tema
         $text = '';
         
         if ($this->_cheapest_quote_id == $quote->getId()) {
-            $text .= 'Cheapest';
+            $text .= $this->__('Cheapest');
         }
         
         if ($this->_fastest_quote_id == $quote->getId()) {
             if ($text) {
                 $text .= ', ';
             }
-            $text .= 'Fastest';
+            $text .= $this->__('Fastest');
         }
         
         if ($this->_customer_selected_quote_id == $quote->getId()) {
             if ($text) {
                 $text .= ', ';
             }
-            $text .= 'Customer Selected';
+            $text .= $this->__('Customer Selected');
         }	
         
         return $text;

@@ -62,7 +62,7 @@ function checkUnsavedChanges() {
 	//no changes
 	return true;
     }
-    return confirm('Unsaved changes will be lost. Continue booking?');
+    return confirm('<?php echo $this->__('Unsaved changes will be lost. Continue booking?'); ?>');
 }
 //]]>
 </script>

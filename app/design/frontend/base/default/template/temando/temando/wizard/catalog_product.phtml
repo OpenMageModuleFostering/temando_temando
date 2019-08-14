@@ -2,13 +2,13 @@
     <h3><?php echo $this->__('Catalog/Product') ?></h3>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<h4>This area relates to the unique packaging of your products.</h4>
-<p style="font-size: 11px;">Ensure you populate your Temando tab in the Magento Catalog section.</p>
+<h4><?php echo $this->__('This area relates to the unique packaging of your products.'); ?></h4>
+<p style="font-size: 11px;"><?php echo $this->__('Ensure you populate your Temando tab in the Magento Catalog section.'); ?></p>
 <form action="<?php echo $this->getUrl('*/*/save', array('_current' => true)) ?>" method="post" id="form-validate">
     <fieldset class="group-select wide">
         <legend><?php echo $this->__('Units') ?></legend>
         <h4 class="legend"><?php echo $this->__('Units') ?></h4>
-        <p style="font-size: 11px; color:#666;">Corresponds to the numerical values entered against each of your products in the catalogue.</p>
+        <p style="font-size: 11px; color:#666;"><?php echo $this->__('Corresponds to the numerical values entered against each of your products in the catalogue.'); ?></p>
         <ul>
             <li>
                 <div class="input-box">
@@ -33,7 +33,7 @@
     <fieldset class="group-select wide">
         <legend><?php echo $this->__('Default Packaing') ?></legend>
         <h4 class="legend"><?php echo $this->__('Default Packaing') ?></h4>
-        <p style="font-size: 11px; color:#666;">The default package you create will be used for a product if you have not pre-defined dimensions of a product in the Temando Tab of the Catalog section.</p>
+        <p style="font-size: 11px; color:#666;"><?php echo $this->__('The default package you create will be used for a product if you have not pre-defined dimensions of a product in the Temando Tab of the Catalog section.') ?></p>
         <ul>
             <li>
                 <div class="input-box">

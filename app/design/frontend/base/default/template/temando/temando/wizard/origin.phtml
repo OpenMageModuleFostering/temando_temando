@@ -2,7 +2,7 @@
     <h3><?php echo $this->__('Origin Location') ?></h3>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<h4>Temando will return quotes based on the origin location address.</h4>
+<h4><?php echo $this->__('Temando will return quotes based on the origin location address.') ?></h4>
 <form action="<?php echo $this->getUrl('*/*/save', array('_current' => true)) ?>" method="post" id="form-validate">
     <fieldset class="group-select wide">
         <legend><?php echo $this->__('Name & Address') ?></legend>

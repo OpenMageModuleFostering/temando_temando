@@ -106,7 +106,7 @@ class Temando_Temando_Adminhtml_ManifestController extends Mage_Adminhtml_Contro
 
                 $model->save();
                 $this->_getSession()
-                        ->addSuccess($this->__('Manifest successful added for carrier: ' . $carrier_name));
+                        ->addSuccess($this->__('Manifest successful added for carrier: ') . $carrier_name);
             } catch (Exception $e) {
                 $this->_getSession()
                         ->addError($e->getMessage());

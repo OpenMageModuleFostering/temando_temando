@@ -20,11 +20,11 @@ class Temando_Temando_Block_Adminhtml_Shipment_Edit extends Mage_Adminhtml_Block
         }
 
         $this->$add_button_method('disabled_pickslip', array(
-	    'label'	=> 'Pick Slip',
+	    'label'	=> Mage::helper('temando')->__('Pick Slip'),
 	    'id'	=> 'disabled_pickslip',
 	    'onclick'	=> 'return false',
 	    'class'	=> 'go disabled',
-            'title'     => 'Available in the Business Extension'
+            'title'     => Mage::helper('temando')->__('Available in the Business Extension')
 	));
         
         if ($this->getShipment()->getStatus() == Temando_Temando_Model_System_Config_Source_Shipment_Status::PENDING) {

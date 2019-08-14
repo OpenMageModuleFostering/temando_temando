@@ -36,7 +36,7 @@ abstract class Temando_Temando_Model_System_Config_Source
     {
         $options = $this->_options;
         if ($please_select) {
-            $options = array(null => '--Please Select--') + $options;
+            $options = array(null => Mage::helper('temando')->__('--Please Select--')) + $options;
         }
         return $options;
     }

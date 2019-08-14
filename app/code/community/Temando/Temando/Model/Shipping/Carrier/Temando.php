@@ -146,7 +146,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
             $cost = $price;
         }
 
-        $title = $free ? 'Free Shipping' : 'Flat Rate';
+        $title = $free ? Mage::helper('temando')->__('Free Shipping') : Mage::helper('temando')->__('Flat Rate');
         $method = Mage::getModel('shipping/rate_result_method')
             ->setCarrier($this->_code)
             ->setCarrierTitle($this->_title)

@@ -14,7 +14,7 @@ function option_update(sole)
     
     // hide all
     $$('input[name^=shipping_method]').each(function (control) {
-	if(control.id.match(/^s_method_temando_(\d+)/) && !control.id.match(/^s_method_temando_(10000|10001)/)) {
+	if(control.id.match(/^s_method_temando_(\d+)/) && !control.id.match(/^s_method_temando_(free|flat)/)) {
 	    control.up().hide();
 	    control.checked = false;
 	}
@@ -40,7 +40,7 @@ function option_update_onestep()
     
     // hide all
     $$('input[name^=shipping_method]').each(function (control) {
-	if(control.id.match(/^s_method_temando_(\d+)/) && !control.id.match(/^s_method_temando_(10000|10001)/)) {
+	if(control.id.match(/^s_method_temando_(\d+)/) && !control.id.match(/^s_method_temando_(free|flat)/)) {
 	    control.up().hide();
 	    control.checked = false;
 	}

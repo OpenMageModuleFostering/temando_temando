@@ -10,9 +10,9 @@ class Temando_Temando_Model_System_Config_Source_Shipment_Service extends Temand
     protected function _setupOptions()
     {
         $this->_options = array(
-            self::SAME_DAY	=> 'Same Day',
-            self::EXPRESS       => 'Express',
-            self::STANDARD      => 'Standard',
+            self::SAME_DAY	=> Mage::helper('temando')->__('Same Day'),
+            self::EXPRESS       => Mage::helper('temando')->__('Express'),
+            self::STANDARD      => Mage::helper('temando')->__('Standard'),
         );
     }
     

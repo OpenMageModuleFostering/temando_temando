@@ -9,8 +9,8 @@ class Temando_Temando_Model_System_Config_Source_Payment extends Temando_Temando
     protected function _setupOptions()
     {
         $this->_options = array(
-            self::CREDIT  => 'Credit',
-            self::ACCOUNT => 'Account'
+            self::CREDIT  => Mage::helper('temando')->__('Credit'),
+            self::ACCOUNT => Mage::helper('temando')->__('Account')
         );
     }
     

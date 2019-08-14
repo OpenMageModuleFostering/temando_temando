@@ -11,10 +11,10 @@ class Temando_Temando_Model_System_Config_Source_Rule_Action_Filter
     protected function _setupOptions()
     {
         $this->_options = array(
-            self::DYNAMIC_ALL                  => 'All Quotes',
-            self::DYNAMIC_CHEAPEST             => 'Cheapest only',
-            self::DYNAMIC_FASTEST              => 'Fastest only',
-            self::DYNAMIC_FASTEST_AND_CHEAPEST => 'Cheapest and Fastest only',
+            self::DYNAMIC_ALL                  => Mage::helper('temando')->__('All Quotes'),
+            self::DYNAMIC_CHEAPEST             => Mage::helper('temando')->__('Cheapest only'),
+            self::DYNAMIC_FASTEST              => Mage::helper('temando')->__('Fastest only'),
+            self::DYNAMIC_FASTEST_AND_CHEAPEST => Mage::helper('temando')->__('Cheapest and Fastest only'),
         );
     }
     

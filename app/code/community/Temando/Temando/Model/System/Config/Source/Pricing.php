@@ -13,12 +13,12 @@ class Temando_Temando_Model_System_Config_Source_Pricing extends Temando_Temando
     protected function _setupOptions()
     {
         $this->_options = array(
-            self::FREE                         => 'Free Shipping',
-            self::FLAT_RATE                    => 'Fixed Price / Flat Rate',
-            self::DYNAMIC                      => 'Dynamic Pricing (All)',
-            self::DYNAMIC_CHEAPEST             => 'Dynamic Pricing (Cheapest only)',
-            self::DYNAMIC_FASTEST              => 'Dynamic Pricing (Fastest only)',
-            self::DYNAMIC_FASTEST_AND_CHEAPEST => 'Dynamic Pricing (Cheapest and Fastest only)',
+            self::FREE                         => Mage::helper('temando')->__('Free Shipping'),
+            self::FLAT_RATE                    => Mage::helper('temando')->__('Fixed Price / Flat Rate'),
+            self::DYNAMIC                      => Mage::helper('temando')->__('Dynamic Pricing (All)'),
+            self::DYNAMIC_CHEAPEST             => Mage::helper('temando')->__('Dynamic Pricing (Cheapest only)'),
+            self::DYNAMIC_FASTEST              => Mage::helper('temando')->__('Dynamic Pricing (Fastest only)'),
+            self::DYNAMIC_FASTEST_AND_CHEAPEST => Mage::helper('temando')->__('Dynamic Pricing (Cheapest and Fastest only)'),
         );
     }
     

@@ -24,7 +24,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando_Source_Method
     public function getOptions($please_select = false)
     {
         if ($please_select) {
-            $options = array(null => '--Please Select--');
+            $options = array(null => Mage::helper('temando')->__('--Please Select--'));
         }
 
         $carriers = Mage::getModel('temando/carrier')->getCollection();

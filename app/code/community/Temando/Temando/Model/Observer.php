@@ -48,7 +48,7 @@ class Temando_Temando_Model_Observer
 	} else {
 	    //STATIC: flat rate / free shipping selected by customer
 	    $temando_shipment
-		    ->setCustomerSelectedQuoteDescription($selected_quote_id == Temando_Temando_Model_Carrier::FLAT_RATE ? 'Flat Rate' : 'Free Shipping')
+		    ->setCustomerSelectedQuoteDescription($selected_quote_id == Temando_Temando_Model_Carrier::FLAT_RATE ? Mage::helper('temando')->__('Flat Rate') : Mage::helper('temando')->__('Free Shipping'))
 		    ->setCustomerSelectedOptions('insurance_N_carbonoffset_N_footprints_N');
 	    
 	    if($selected_quote instanceof Temando_Temando_Model_Quote) {
@@ -124,8 +124,10 @@ class Temando_Temando_Model_Observer
             ->setReady()
             ->setAllowedCarriers($allowed_carriers);
 
-	$quotes = $request->getQuotes()->getItems();
-	return Mage::helper('temando/functions')->getCheapestQuote($quotes);
+	if ($quotes = $request->getQuotes() !== false) {
+	    return Mage::helper('temando/functions')->getCheapestQuote($quotes->getItems());
+	}
+	return null; 
     }
     
 

@@ -37,71 +37,10 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
         $this->renderLayout();
     }
     
-    public function autocomplete($field) {
-        
-        $query = $this->getRequest()->getParam('query');
-        
-        $country = $this->getRequest()->getParam('country');
-        
-	if (!$country || !array_key_exists($country, Mage::helper('temando')->getAllowedCountries())) {
-            return;
-        }
-        
-        $stateId = $this->getRequest()->getParam('state_id');
-        
-        $this->_result['query'] = $query;
-        
-        $collection = Mage::getModel('temando/pcs')->getCollection();
-	$collection
-	    ->addFieldToFilter('main_table.country_id', $country)
-	    ->addFieldToFilter($field, array('like' => $query . ' %'));
-        
-        if ($stateId) {
-            $collection->addFieldToFilter('main_table.region_id', $stateId);
-        }
-
-	$i = -1;
-	if (count($collection) > 0) {
-		$this->_result['data'] = array();
-		foreach ($collection as $item) {
-		   
-		    $value = $item->getData($field);
-		    if (!in_array($value, $this->_result['suggestions'])) {
-			$i++;
-			$this->_result['suggestions'][$i] = $value; 
-			$this->_result['data'][$i][] = $item->getData();
-		    } else {
-			$this->_result['data'][$i][] = $item->getData();
-		    }
-		}
-        }
-
-
-        $core_helper = Mage::helper('core');
-        if (method_exists($core_helper, "jsonEncode")) {
-            return Mage::helper('core')->jsonEncode($this->_result);
-        } else {
-            return Zend_Json::encode($this->_result);
-        }
-
-    }
-    
-    public function autocompletezipAction() {
-        
-        echo $this->autocomplete('postcode'); die;
-        
-    }
-        
-    public function autocompletecityAction() {
-        
-        echo $this->autocomplete('city'); die;
-        
-    }
-
     protected function _makeAutocomplete($query, $country = 'AU')
-    {
-        $this->_result['query'] = $query;
-	
+    {       
+        $this->_result['query'] = Mage::helper('core')->escapeHtml($query);
+        
 	$this->_getValidator();
 	$this->_validator->setCountry($country)->setQuery($query);
 	
@@ -255,7 +194,7 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
 
             $item = $quote->addProduct($product, new Varien_Object($request));
             if (!is_object($item)) {
-                throw new Exception('Cannot calculate shipping cost for separate item');
+                throw new Exception(Mage::helper('temando')->__('Cannot calculate shipping cost for separate item'));
             }
             $item->setStoreId(Mage::app()->getStore()->getId());
             $item->setQty($this->getRequest()->getParam('qty'));

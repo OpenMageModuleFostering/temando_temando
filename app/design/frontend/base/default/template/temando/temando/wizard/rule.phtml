@@ -2,7 +2,7 @@
     <h3><?php echo $this->__('Shipping Rule') ?></h3>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<h4>Create a shipping rule to customise the quotes displayed to your customers.</h4>
+<h4><?php echo $this->__('Create a shipping rule to customise the quotes displayed to your customers.'); ?></h4>
 <form action="<?php echo $this->getUrl('*/*/save', array('_current' => true)) ?>" method="post" id="form-validate">
     <fieldset class="group-select wide">
         <legend><?php echo $this->__('Type') ?></legend>

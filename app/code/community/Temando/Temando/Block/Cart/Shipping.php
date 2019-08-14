@@ -79,21 +79,4 @@ class Temando_Temando_Block_Cart_Shipping extends Mage_Checkout_Block_Cart_Shipp
         return $return;
     }
 
-    /**
-     * Translate block sentence
-     *
-     * @return string
-     */
-    public function __()
-    {
-        $args = func_get_args();
-        if ((count($args) == 1) && ('City' == $args[0])) {
-            $args[0] = 'Suburb';
-        }
-
-        $expr = new Mage_Core_Model_Translate_Expr(array_shift($args), $this->getModuleName());
-        array_unshift($args, $expr);
-        return Mage::app()->getTranslator()->translate($args);
-    }
-
 }

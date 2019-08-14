@@ -21,7 +21,7 @@ class Temando_Temando_Block_Adminhtml_Manifest extends Mage_Adminhtml_Block_Widg
             'onclick'   => 'addFormSubmit()'
         ));
         $this->$add_button_method('confirm', array(
-            'label'     => Mage::helper('temando')->__('confirm Manifests'),
+            'label'     => Mage::helper('temando')->__('Confirm Manifests'),
             'onclick'   => 'setLocation(\'' . $this->getUrl('*/*/confirm') .'\')',
         ));
     }

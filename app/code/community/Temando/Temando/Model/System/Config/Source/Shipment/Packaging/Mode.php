@@ -8,8 +8,8 @@ class Temando_Temando_Model_System_Config_Source_Shipment_Packaging_Mode extends
     protected function _setupOptions()
     {
         $this->_options = array(
-            self::USE_DEFAULTS	=> 'Use Defaults',
-            self::AS_DEFINED	=> 'As Defined',
+            self::USE_DEFAULTS	=> Mage::helper('temando')->__('Use Defaults'),
+            self::AS_DEFINED	=> Mage::helper('temando')->__('As Defined'),
         );
     }
     
