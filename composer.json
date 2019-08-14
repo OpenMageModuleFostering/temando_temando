@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Temando_Temando",
+    "type": "magento-module",
+    "license": "Open-Software-Licence",
+    "homepage": "",
+    "description": "Display delivery options and costs from multiple couriers at both a product and cart level. Streamline order shipping, print labels and much more.",
+    "authors": [
+    {
+        "name": "Temando",
+        "email": "marketing@temando.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
