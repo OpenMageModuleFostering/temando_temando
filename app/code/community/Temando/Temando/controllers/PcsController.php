@@ -37,8 +37,9 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
         $this->renderLayout();
     }
     
-    protected function _makeAutocomplete($query, $country = 'AU')
+    protected function _makeAutocomplete($query, $country = null)
     {       
+        $country = $country ? $country : Mage::helper('temando')->getDefaultCountryId();
         $this->_result['query'] = Mage::helper('core')->escapeHtml($query);
         
 	$this->_getValidator();
@@ -80,7 +81,7 @@ class Temando_Temando_PcsController extends Mage_Core_Controller_Front_Action
     public function autocompletecartAction() {
         
         $query = $this->getRequest()->getParam('query');
-	$country = $this->getRequest()->getParam('country','AU');
+	$country = $this->getRequest()->getParam('country', Mage::helper('temando')->getDefaultCountryId());
 	
 	echo $this->_makeAutocomplete($query, $country);
         exit;

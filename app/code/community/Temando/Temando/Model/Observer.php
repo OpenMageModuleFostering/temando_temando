@@ -124,7 +124,8 @@ class Temando_Temando_Model_Observer
             ->setReady()
             ->setAllowedCarriers($allowed_carriers);
 
-	if ($quotes = $request->getQuotes() !== false) {
+        $quotes = $request->getQuotes();
+        if ($quotes instanceof Temando_Temando_Model_Mysql4_Quote_Collection) {
 	    return Mage::helper('temando/functions')->getCheapestQuote($quotes->getItems());
 	}
 	return null; 
@@ -134,7 +135,7 @@ class Temando_Temando_Model_Observer
     public function hookCartSaveAddress($observer)
     {
         $post = $observer->getControllerAction()->getRequest()->getPost();
-        if (Mage::getStoreConfig('carriers/temando/active') && isset($post['country_id']) && ('AU' == $post['country_id']) && isset($post['region_id']) && isset($post['estimate_city']) && isset($post['estimate_postcode']) && isset($post['pcs'])) {
+        if (Mage::getStoreConfig('carriers/temando/active') && isset($post['country_id']) && (Mage::helper('temando')->getDefaultCountryId() == $post['country_id']) && isset($post['region_id']) && isset($post['estimate_city']) && isset($post['estimate_postcode']) && isset($post['pcs'])) {
             $data = array(
                 'country_id' => $post['country_id'],
                 'region_id' => $post['region_id'],

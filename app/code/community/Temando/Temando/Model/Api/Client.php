@@ -224,6 +224,24 @@ class Temando_Temando_Model_Api_Client extends Mage_Core_Model_Abstract {
     }
 
     /**
+     * get carriers
+     *
+     * @param $request
+     * @return bool
+     */
+    public function getCarriers($request) {
+	if (!$this->_client) {
+	    return false;
+	}
+
+	$response = $this->_client->getCarriers($request);
+	if(is_soap_fault($response)) {
+	    throw new Exception($response->faultstring);
+	}
+	return $response;
+    }
+
+    /**
      * Gets the multiplier for insurance (currently 1%).
      *
      * To add insurance to a quote, the total price should be multiplied by

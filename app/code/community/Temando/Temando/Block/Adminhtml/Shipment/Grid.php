@@ -80,7 +80,7 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid extends Mage_Adminhtml_Block
             'header' => Mage::helper('temando')->__('Anticipated Cost'),
             'align' => 'left',
 	    'type'  => 'currency',
-	    'currency_code' => 'AUD',
+	    'currency_code' => Mage::helper('temando')->getDefaultCurrencyCode(),
             'index' => 'anticipated_cost',
         ));
         

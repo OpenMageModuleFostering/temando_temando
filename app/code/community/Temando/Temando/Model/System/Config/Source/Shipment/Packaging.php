@@ -35,4 +35,15 @@ class Temando_Temando_Model_System_Config_Source_Shipment_Packaging extends Tema
         );
     }
     
+    /**
+     * Returns the option key by its label
+     * 
+     * @param string $label
+     * @return int
+     */
+    public function getOptionId($label)
+    {
+	return array_search(strtolower(trim($label)), array_map('strtolower', $this->getOptions()));
+    }
+    
 }

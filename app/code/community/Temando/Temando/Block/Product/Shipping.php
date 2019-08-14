@@ -18,7 +18,7 @@ class Temando_Temando_Block_Product_Shipping extends Mage_Core_Block_Template
             return Mage::getSingleton('customer/session')->getData('estimate_product_shipping')->getCountryId();
         }
 
-        return 'AU';
+        return Mage::helper('temando')->getDefaultCountryId();
     }
 
     public function getProductId()

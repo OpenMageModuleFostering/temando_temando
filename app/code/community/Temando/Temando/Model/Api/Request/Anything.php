@@ -81,7 +81,8 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
 		'width'		=> Mage::helper('temando')->getDistanceInCentimetres($this->_item->getTemandoWidth(), Mage::helper('temando')->getConfigData('units/measure')),
 		'height'	=> Mage::helper('temando')->getDistanceInCentimetres($this->_item->getTemandoHeight(), Mage::helper('temando')->getConfigData('units/measure')),
 		'qualifierFreightGeneralFragile' => $this->_item->getTemandoFragile() == '1' ? 'Y' : 'N',
-		'description'	=> $this->_item->getName()
+		'description'	=> $this->_item->getName(),
+                'articles' => $this->getArticlesElement()
 	    );
 	    if($this->_item->getTemandoPackaging() == Temando_Temando_Model_System_Config_Source_Shipment_Packaging::PALLET) {
 		$anything['palletType']   = self::PALLET_TYPE;
@@ -91,6 +92,26 @@ class Temando_Temando_Model_Api_Request_Anything extends Mage_Core_Model_Abstrac
 	} 
         return $anything;
     }    
+    
+    /**
+     * Prepares articles element for this anything
+     * 
+     * @return array
+     */
+    public function getArticlesElement()
+    {
+	$articles = array();
+        $qty = $this->_item->getQty() ? $this->_item->getQty() : $this->_item->getQtyOrdered();
+	for ($i = 1; $i <= $qty; $i++) {
+            $articles[] = array(
+                'sku'		=> $this->_item->getSku(),
+                'description'	=> $this->_item->getName(),
+                'goodsValue'	=> $this->_item->getPrice()
+            );
+	}
+	return $articles;
+    }
+    
     public function validate()
     {
         return $this->_item instanceof Mage_Sales_Model_Quote_Item ||

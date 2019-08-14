@@ -4,6 +4,10 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 
     const DEFAULT_WAREHOUSE_NAME = 'Magento Warehouse';
     
+    const DEFAULT_CURRENCY_CODE = 'AUD';
+    
+    const DEFAULT_COUNTRY_ID = 'AU';
+    
     private $_temandoAttributes = array(
 	'temando_packaging_mode',
 	'temando_packaging',
@@ -14,8 +18,44 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
     );
 
     protected $_allowedCountries = array(
-	'AU' => 'Australia',
+        'AU' => 'Australia',
+        'NZ' => 'New Zealand',
+        'GB' => 'United Kingdom',
+        'US' => 'United States'
     );
+    
+    /**
+     * Returns default weight unit
+     */
+    public function getDefaultWeightUnit()
+    {
+        return Temando_Temando_Model_System_Config_Source_Unit_Weight::KILOGRAMS;
+    }
+    
+    /**
+     * Returns default distance unit
+     */
+    public function getDefaultDistanceUnit() 
+    {
+         return Temando_Temando_Model_System_Config_Source_Unit_Measure::CENTIMETRES;
+    }
+    
+    /**
+     * Returns default currency code
+     */
+    public function getDefaultCurrencyCode()
+    {
+        return self::DEFAULT_CURRENCY_CODE;
+    }
+    
+    /**
+     * Returns default country id
+     */
+    public function getDefaultCountryId()
+    {
+        return self::DEFAULT_COUNTRY_ID;
+    }
+    
 
     /**
      * Retrieves an element from the module configuration data.
@@ -428,6 +468,33 @@ class Temando_Temando_Helper_Data extends Mage_Core_Helper_Abstract {
 	}
 	
 	return true;
+    }
+   
+    /**
+     * Creates a sales quote based on current ship request
+     * 
+     * @param Mage_Shipping_Model_Rate_Request $request
+     * @return Mage_Sales_Model_Quote
+     */
+    public function getDummySalesQuoteFromRequest(Mage_Shipping_Model_Rate_Request $request)
+    {
+	$quote = Mage::getModel('sales/quote');
+	/* @var $quote Mage_Sales_Model_Quote */
+	$address = Mage::getModel('sales/quote_address');
+	/* @var $address Mage_Sales_Model_Quote_Address */
+	$address->setCity($request->getDestCity())
+		->setPostcode($request->getDestPostcode())
+		->setCountryId($request->getDestCountryId())
+		->setStreet($request->getDestStreet())
+		->setRegion($request->getDestRegionCode())
+		->setRegionId($request->getDestRegionId());
+	$quote->addShippingAddress($address);
+	foreach($request->getAllItems() as $item) {
+	    $quote->addItem($item);
+        }
+	$quote->setId(100000000 + mt_rand(0, 100000));
+        $quote->collectTotals();
+	return $quote;
     }
    
 }

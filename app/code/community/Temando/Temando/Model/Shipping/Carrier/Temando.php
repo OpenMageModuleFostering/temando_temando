@@ -15,7 +15,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     /**
      * Error Constants
      */
-    const ERR_INVALID_COUNTRY = 'To and From addresses must be within Australia';
+    const ERR_INVALID_COUNTRY = 'Sorry, shipping to selected country is not available.';
     const ERR_INVALID_DEST    = 'Please enter a delivery address to view available shipping methods';
     const ERR_NO_METHODS      = 'No shipping methods available';
     const ERR_INTERNATIONAL   = 'International delivery is not available at this time.';
@@ -224,8 +224,19 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 	    return $this->_getErrorMethod(self::ERR_INVALID_DEST);
         }
 	
+        //get magento sales quote & id
+	$salesQuote = Mage::getSingleton('checkout/session')->getQuote();
+	/* @var $salesQuote Mage_Sales_Model_Quote */
+	if (!$salesQuote->getId() && Mage::app()->getStore()->isAdmin()) {
+	    $salesQuote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+	}
+	if ($this->getIsProductPage()) {
+	    $salesQuote = Mage::helper('temando')->getDummySalesQuoteFromRequest($request);
+	}
+	$salesQuoteId = $salesQuote->getId();
+	
 	//check if eligible for free shipping
-        if ($this->isFreeShipping($request)) {
+        if ($this->isFreeShipping($salesQuote)) {
             $result->append($this->_getFlatRateMethod('0.00', true));
 	    return $result;
         }
@@ -257,15 +268,6 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
         }
         /* @var Temando_Temando_Model_Options $options */
         $options = Mage::getModel('temando/options')->addItem($insurance)->addItem($carbon)->addItem($footprints);
-
-	//get magento sales quote id
-	$salesQuoteId = Mage::getSingleton('checkout/session')->getQuoteId();
-	if (!$salesQuoteId && Mage::app()->getStore()->isAdmin()) {
-	    $salesQuoteId = Mage::getSingleton('adminhtml/session_quote')->getQuote()->getId();
-	}
-	if (!$salesQuoteId && $this->getIsProductPage()) {
-	    $salesQuoteId = 100000000 + mt_rand(0, 100000);
-	}
 
 	//save current extras
         if (is_null(Mage::registry('temando_current_options'))) {
@@ -350,10 +352,10 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
     /**
      * Returns true if request is elegible for free shipping, false otherwise
      * 
-     * @param Mage_Shipping_Model_Rate_Request $request
+     * @param Mage_Sales_Model_Quote $salesQuote
      * @return boolean
      */
-    public function isFreeShipping($request)
+    public function isFreeShipping($salesQuote)
     {
 	//check pricing method first
 	if($this->_pricing_method == Temando_Temando_Model_System_Config_Source_Pricing::FREE) {
@@ -362,7 +364,7 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
 	
 	//check if all items have free shipping or free shipping over amount enabled and valid for this request
 	$allItemsFree = true; $total = 0;
-        foreach ($request->getAllItems() as $item) {
+        foreach ($salesQuote->getAllItems() as $item) {
 	    /* @var $item Mage_Sales_Model_Quote_Item */
             if ($item->getProduct()->isVirtual() || $item->getParentItem()) { continue; }
             if ($item->getFreeShipping()) { continue; }
@@ -437,6 +439,24 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
             if ($text) {
                 $result->setTrackSummary($text);
             }
+            
+            if (!isset($status->request->quotes->quote->trackingHistories->trackingHistory)) {
+                $status->request->quotes->quote->trackingHistories->trackingHistory = array();
+            } else if (isset($status->request->quotes->quote->trackingHistories->trackingHistory) && !is_array($status->request->quotes->quote->trackingHistories->trackingHistory)) {
+                $status->request->quotes->quote->trackingHistories->trackingHistory = array(0 => $status->request->quotes->quote->trackingHistories->trackingHistory);
+            }
+
+            $trackingHistories = array();
+            foreach ($status->request->quotes->quote->trackingHistories->trackingHistory as $trackData) {
+                $trackingHistories[] = array(
+                        'deliverylocation' => $trackData->trackingStatus,
+                        'deliverydate' => date('Y-m-d', strtotime($trackData->trackingStatusOccurred)),
+                        'deliverytime' => date('h:ia', strtotime($trackData->trackingStatusOccurred)),
+                        'activity' => $trackData->trackingFurtherDetails
+                    );
+            }
+            
+            $result->setProgressdetail($trackingHistories);
         } else {
             $result->setErrorMessage(Mage::helper('temando')->__('An error occurred while fetching the shipment status.'));
         }
