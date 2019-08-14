@@ -508,9 +508,9 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
 			->setHeader('Pragma', 'public', true)
 			->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
 			->setHeader('Content-type', $shipment->getConsignmentDocumentType(), true)
-			->setHeader('Content-Length', $document_length)
-			->setHeader('Content-Disposition', 'attachment; filename="order-' . $shipment->getOrderNumber() . '.pdf"')
-			->setHeader('Last-Modified', date('r'));
+			->setHeader('Content-Length', $document_length, true)
+			->setHeader('Content-Disposition', 'attachment; filename="order-' . $shipment->getOrderNumber() . '.pdf"', true)
+			->setHeader('Last-Modified', date('r'), true);
 		$this->getResponse()->clearBody();
 		$this->getResponse()->sendHeaders();
 		print $document;

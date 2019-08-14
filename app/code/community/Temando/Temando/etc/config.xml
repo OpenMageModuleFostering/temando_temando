@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Temando_Temando>
-            <version>1.0.0.1</version>
+            <version>1.1.0</version>
         </Temando_Temando>
     </modules>
     <global>
@@ -152,6 +152,7 @@
                 <status><![CDATA[optional]]></status>
             </footprints>
             <pricing>
+                <error_process><![CDATA[view]]></error_process>
                 <method><![CDATA[dynamic]]></method>
                 <shipping_fee><![CDATA[0]]></shipping_fee>
                 <handling_fee><![CDATA[0]]></handling_fee>
@@ -171,7 +172,16 @@
                 <height><![CDATA[10]]></height>
             </defaults>
 	    <origin>
-		<country><![CDATA[AU]]></country>
+                <contact_name><![CDATA[Temando User]]></contact_name>
+                <company_name><![CDATA[Temando]]></company_name>
+                <street><![CDATA[Level 4, 140 William Street]]></street>
+                <city><![CDATA[WOOLLOOMOOLOO]]></city>
+                <postcode><![CDATA[2011]]></postcode>
+                <country><![CDATA[AU]]></country>
+                <region><![CDATA[NSW]]></region>
+                <type><![CDATA[Business]]></type>
+                <phone1><![CDATA[02 1234 5678]]></phone1>
+                <email><![CDATA[sales@temando.com]]></email>
 	    </origin>
         </temando>
         <carriers>

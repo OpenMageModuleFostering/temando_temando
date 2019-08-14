@@ -12,7 +12,7 @@ class Temando_Temando_Model_Pcs extends Mage_Core_Model_Abstract
     /**
      * Address validation Temando AVS URL 
      */
-    const AVS_URL = "http://avs.temando.com/avs/search/country/%s/%s.json";
+    const AVS_URL = "http://avs.temando.com/avs/search/country/%s/%s.json?limit=1000";
     
     /**
      * The HTTP Client

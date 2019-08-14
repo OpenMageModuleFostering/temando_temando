@@ -21,6 +21,17 @@
         </reference>
     </etemando_pcs_product>
     
+    <etemando_wizard_index>
+        <label>Temando Wizard</label>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>temando/temando/wizard.phtml</template>
+            </action>
+            <block type="page/html" template="temando/temando/wizard/left.phtml" name="temando-left" as="temando-left"/>
+            <block type="temando/wizard_html" template="temando/temando/wizard/account.phtml" name="content" as="content"/>
+        </reference>
+    </etemando_wizard_index>
+    
     <checkout_onepage_index>
         <reference name="head">
             <action method="addItem">

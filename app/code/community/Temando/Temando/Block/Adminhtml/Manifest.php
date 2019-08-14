@@ -6,7 +6,7 @@ class Temando_Temando_Block_Adminhtml_Manifest extends Mage_Adminhtml_Block_Widg
     {
         $this->_blockGroup = 'temando';
         $this->_controller = 'adminhtml_manifest';
-        $this->_headerText = Mage::helper('temando')->__('Manage Shipments');
+        $this->_headerText = Mage::helper('temando')->__('Manage Manifests');
         parent::__construct();
         $this->setTemplate('temando/temando/manifest.phtml');
         $this->removeButton('add');

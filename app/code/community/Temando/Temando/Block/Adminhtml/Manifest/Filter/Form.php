@@ -15,7 +15,7 @@ class Temando_Temando_Block_Adminhtml_Manifest_Filter_Form extends Mage_Adminhtm
         );
         $htmlIdPrefix = 'add_manifest_';
         $form->setHtmlIdPrefix($htmlIdPrefix);
-        $fieldset = $form->addFieldset('base_fieldset', array('legend'=>Mage::helper('temando')->__('Create New Manifest')));
+        $fieldset = $form->addFieldset('base_fieldset', array('legend'=>Mage::helper('temando')->__('Create New Manifest - Please note, to manifest you must have a permanent pickup. Contact <a href="mailto:sales@temando.com">sales@temando.com</a> for more information.')));
 
         $dateFormatIso = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
 

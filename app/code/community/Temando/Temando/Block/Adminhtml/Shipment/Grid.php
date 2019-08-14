@@ -8,6 +8,33 @@ class Temando_Temando_Block_Adminhtml_Shipment_Grid extends Mage_Adminhtml_Block
         parent::__construct();
         $this->setSaveParametersInSession(true);
     }
+    
+    protected function _prepareLayout() {
+        parent::_prepareLayout();
+        $this->setChild('batch_button', $this->getLayout()->createBlock('adminhtml/widget_button')
+                        ->setData(array(
+                            'label' => Mage::helper('adminhtml')->__('Batch Booking'),
+                            'onclick' => 'return false',
+                            'class' => 'disabled',
+                            'title' => 'Available in the Business Extension'
+                        ))
+        );
+        return $this;
+    }
+
+    public function getBatchButtonHtml() {
+        return $this->getChildHtml('batch_button');
+    }
+
+    public function getMainButtonsHtml() {
+        $html = '';
+        if ($this->getFilterVisibility()) {
+            $html.= $this->getBatchButtonHtml();
+            $html.= $this->getResetFilterButtonHtml();
+            $html.= $this->getSearchButtonHtml();
+        }
+        return $html;
+    }
 
     protected function _prepareCollection()
     {
