@@ -383,7 +383,7 @@ class Temando_Temando_Adminhtml_ShipmentController extends Mage_Adminhtml_Contro
             'suburb' => $shipment->getDestinationCity(),
             'code' => $shipment->getDestinationPostcode(),
             'country' => $shipment->getDestinationCountry(),
-            'phone1' => $shipment->getDestinationPhone(),
+            'phone1' => preg_replace('/\D/', '', $shipment->getDestinationPhone()),
             'phone2' => '',
             'fax' => '',
             'email' => $shipment->getDestinationEmail(),

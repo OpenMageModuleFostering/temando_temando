@@ -382,6 +382,9 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
             }
         }
 
+        Mage::getSingleton('checkout/session')->setTemandoRequestString(
+            $this->_createRequestString($request, $salesQuoteId)
+        );
         //process filters and apply extras
         if (empty($quotes)) {
             return $this->_getErrorMethod(self::ERR_NO_METHODS);
@@ -407,9 +410,6 @@ class Temando_Temando_Model_Shipping_Carrier_Temando
                 }
             }
         }
-        Mage::getSingleton('checkout/session')->setTemandoRequestString(
-            $this->_createRequestString($request, $salesQuoteId)
-        );
         return $result;
     }
 
