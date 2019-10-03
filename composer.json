@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/Temando_Temando",
+    "name": "openmage-module-fostering\/temando_temando",
     "type": "magento-module",
-    "license": "Open-Software-Licence",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "Display delivery options and costs from multiple couriers at both a product and cart level. Streamline order shipping, print labels and much more.",
     "authors": [
